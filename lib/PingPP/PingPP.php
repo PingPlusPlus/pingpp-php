@@ -9,11 +9,11 @@ abstract class PingPP
     /**
      * @var string The base URL for the PingPP API.
      */
-    public static $apiBase = 'https://api.pingplusplus.com';
+    public static $apiBase = 'https://api.pingplusplus.com/';
     /**
      * @var string|null The version of the PingPP API to use for requests.
      */
-    public static $apiVersion = null;
+    public static $apiVersion = "2014-10-10";
     /**
      * @var boolean Defaults to true.
      */

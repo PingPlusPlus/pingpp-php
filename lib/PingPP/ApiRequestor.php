@@ -184,7 +184,7 @@ class PingPP_ApiRequestor
             'User-Agent: PingPP/v1 PhpBindings/' . PingPP::VERSION,
             'Authorization: Bearer ' . $myApiKey);
         if (PingPP::$apiVersion)
-            $headers[] = 'PingPP-Version: ' . PingPP::$apiVersion;
+            $headers[] = 'Pingplusplus-Version: ' . PingPP::$apiVersion;
         list($rbody, $rcode) = $this->_curlRequest(
             $method,
             $absUrl,
@@ -297,7 +297,7 @@ class PingPP_ApiRequestor
             $msg = "Could not connect to PingPP ($apiBase).  Please check your "
                 . "internet connection and try again.  If this problem persists, "
                 . "you should check PingPP's service status at "
-                . "https://twitter.com/pingppstatus, or";
+                . "https://pingplusplus.com, or";
             break;
         case CURLE_SSL_CACERT:
         case CURLE_SSL_PEER_CERTIFICATE:
@@ -350,7 +350,7 @@ class PingPP_ApiRequestor
                 "Could not connect to PingPP ($apiBase).  Please check your "
                 . "internet connection and try again.  If this problem persists, "
                 . "you should check PingPP's service status at "
-                . "https://twitter.com/pingppstatus. Reason was: $errstr"
+                . "https://pingplusplus.com. Reason was: $errstr"
             );
         }
 
