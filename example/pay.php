@@ -8,7 +8,7 @@
 */
 require_once(dirname(__FILE__) . '../lib/PingPP.php');
 
-$input_data = (array)json_decode(file_get_contents("php://input"));
+$input_data = json_decode(file_get_contents("php://input"), true);
 
 if(empty($input_data['channel']) || empty($input_data['amount'])) {
     exit();
