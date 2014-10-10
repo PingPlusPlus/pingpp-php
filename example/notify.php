@@ -7,7 +7,7 @@
  * 该代码仅供学习和研究 Ping++ SDK 使用，只是提供一个参考。
  */
 
-$input_data = (array)json_decode(file_get_contents("php://input"));
+$input_data = json_decode(file_get_contents("php://input"), true);
 if($input_data['object'] == 'charge')
 {
     //TODO update database
