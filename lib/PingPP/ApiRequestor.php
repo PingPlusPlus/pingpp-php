@@ -7,7 +7,7 @@ class PingPP_ApiRequestor
      */
     public $apiKey;
 
-    private static $preFlight;
+    private static $_preFlight;
 
     private static function blacklistedCerts()
     {
@@ -175,16 +175,21 @@ class PingPP_ApiRequestor
         $params = self::_encodeObjects($params);
         $langVersion = phpversion();
         $uname = php_uname();
-        $ua = array('bindings_version' => PingPP::VERSION,
+        $ua = array(
+            'bindings_version' => PingPP::VERSION,
             'lang' => 'php',
             'lang_version' => $langVersion,
             'publisher' => 'pingplusplus',
-            'uname' => $uname);
-        $headers = array('X-PingPP-Client-User-Agent: ' . json_encode($ua),
+            'uname' => $uname
+        );
+        $headers = array(
+            'X-PingPP-Client-User-Agent: ' . json_encode($ua),
             'User-Agent: PingPP/v1 PhpBindings/' . PingPP::VERSION,
-            'Authorization: Bearer ' . $myApiKey);
-        if (PingPP::$apiVersion)
+            'Authorization: Bearer ' . $myApiKey
+        );
+        if (PingPP::$apiVersion) {
             $headers[] = 'Pingplusplus-Version: ' . PingPP::$apiVersion;
+        }
         list($rbody, $rcode) = $this->_curlRequest(
             $method,
             $absUrl,
@@ -213,8 +218,8 @@ class PingPP_ApiRequestor
     private function _curlRequest($method, $absUrl, $headers, $params)
     {
 
-        if (!self::$preFlight) {
-            self::$preFlight = $this->checkSslCert($this->apiUrl());
+        if (!self::$_preFlight) {
+            self::$_preFlight = $this->checkSslCert($this->apiUrl());
         }
 
         $curl = curl_init();
@@ -328,10 +333,13 @@ class PingPP_ApiRequestor
          * approach raises the bar for an attacker significantly.
          */
 
-        $apiBase = PingPP::$apiBase;
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-            error_log("Warning: This version of PHP is too old to check SSL certificates correctly. " .
-                "PingPP cannot guarantee that the server has a certificate which is not blacklisted");
+        if (!function_exists('stream_context_get_params') ||
+            !function_exists('stream_socket_enable_crypto')) {
+            error_log(
+                'Warning: This version of PHP is too old to check SSL certificates '.
+                'correctly. PingPP cannot guarantee that the server has a '.
+                'certificate which is not blacklisted'
+            );
             return true;
         }
 
@@ -339,34 +347,39 @@ class PingPP_ApiRequestor
         $port = isset($url["port"]) ? $url["port"] : 443;
         $url = "ssl://{$url["host"]}:{$port}";
 
-        $sslContext = stream_context_create(array( 'ssl' => array(
-            'capture_peer_cert' => true,
-            'verify_peer'   => true,
-            'cafile'        => $this->caBundle(),
-        )));
-        $result = stream_socket_client($url, $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $sslContext);
+        $sslContext = stream_context_create(
+            array('ssl' => array(
+                'capture_peer_cert' => true,
+                'verify_peer'   => true,
+                'cafile'        => $this->caBundle(),
+            ))
+        );
+        $result = stream_socket_client(
+            $url, $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $sslContext
+        );
         if ($errno !== 0) {
+            $apiBase = PingPP::$apiBase;
             throw new PingPP_ApiConnectionError(
-                "Could not connect to PingPP ($apiBase).  Please check your "
-                . "internet connection and try again.  If this problem persists, "
-                . "you should check PingPP's service status at "
-                . "https://pingplusplus.com. Reason was: $errstr"
+                'Could not connect to PingPP ($apiBase).  Please check your '.
+                'internet connection and try again.  If this problem persists, '.
+                'you should check PingPP\'s service status at '.
+                'https://pingplusplus.com. Reason was: '.$errstr
             );
         }
 
         $params = stream_context_get_params($result);
 
         $cert = $params['options']['ssl']['peer_certificate'];
-        $cert_data = openssl_x509_parse( $cert );
 
         openssl_x509_export($cert, $pem_cert);
 
         if (self::isBlackListed($pem_cert)) {
             throw new PingPP_ApiConnectionError(
-                "Invalid server certificate. You tried to connect to a server that has a " .
-                "revoked SSL certificate, which means we cannot securely send data to " .
-                "that server.  Please email support@pingplusplus.com if you need help " .
-                "connecting to the correct API server."
+                'Invalid server certificate. You tried to connect to a server '.
+                'that has a revoked SSL certificate, which means we cannot '.
+                'securely send data to that server.  Please email '.
+                'support@pingplusplus.com if you need help connecting to the '.
+                'correct API server.'
             );
         }
 
