@@ -22,5 +22,3 @@ else
 {
     echo 'fail';
 }
-
-?>

@@ -251,6 +251,7 @@ class PingPP_ApiRequestor
         $opts[CURLOPT_TIMEOUT] = 80;
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_HTTPHEADER] = $headers;
+        $opts[CURLOPT_SSLVERSION] = CURL_SSLVERSION_TLSv1;
         if (!PingPP::$verifySslCerts)
             $opts[CURLOPT_SSL_VERIFYPEER] = false;
 
