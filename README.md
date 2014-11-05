@@ -1,4 +1,4 @@
-PHP SDK 
+pingpp php SDK
 =================
 
 ****
