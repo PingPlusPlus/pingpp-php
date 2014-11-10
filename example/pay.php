@@ -7,30 +7,34 @@
  * 该代码仅供学习和研究 Ping++ SDK 使用，只是提供一个参考。
 */
 require_once(dirname(__FILE__) . '/../lib/PingPP.php');
-
-$input_data = json_decode(file_get_contents('php://input'), true);
-
-if(empty($input_data['channel']) || empty($input_data['amount'])) {
+$input_data = json_decode(file_get_contents("php://input"), true);
+if (empty($input_data['channel']) || empty($input_data['amount'])) {
     exit();
 }
-
 $channel = strtolower($input_data['channel']);
 $amount = $input_data['amount'];
-
 $orderNo = substr(md5(time()), 0, 12);
 
-PingPP::setApiKey('YOUR-KEY');
+$extra = isset($input_data['extra']) ? $input_data['extra'] : null;
+if (!isset($extra)) {
+    if ($channel == 'alipay_wap') {
+        $extra = array('success_url' => 'www.success.com', 'cancel_url' => 'www.cancel.com');
+    } else if ($channel == 'upmp_wap') {
+        $extra = array('result_url' => 'www.result.com');
+    }
+}
+PingPP::setApiKey("sk_live_bDivDS50CeTOC4Sy94DaLGGK");
 $ch = PingPP_Charge::create(
     array(
-        'subject'  => 'Your Subject',
-        'body'     => 'Your Body',
-        'amount'   => $amount,
-        'order_no' => $orderNo,
-        'channel'  => $channel,
-        'client_ip'=> '127.0.0.1',
-        'currency'  => 'cny',
-        'app' => array('id' => 'YOUR-APP-ID')
+        "subject" => "一心一益",
+        "body" => "一个爱心一份公益",
+        "amount" => $amount,
+        "order_no" => $orderNo,
+        "currency" => "cny",
+        "extra" => $extra,
+        "channel" => $channel,
+        "client_ip" => $_SERVER["REMOTE_ADDR"],
+        "app" => array("id" => "app_bTyrT0DmfTmDGmT0")
     )
 );
-
 echo $ch;
