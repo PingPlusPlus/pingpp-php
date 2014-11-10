@@ -15,6 +15,7 @@ $channel = strtolower($input_data['channel']);
 $amount = $input_data['amount'];
 $orderNo = substr(md5(time()), 0, 12);
 
+//$extra 在渠道为 upmp_wap 和 alipay_wap 时，需要填入相应的参数，具体见技术指南。其他渠道时可以传空值也可以不传。
 $extra = isset($input_data['extra']) ? $input_data['extra'] : null;
 if (!isset($extra)) {
     if ($channel == 'alipay_wap') {
