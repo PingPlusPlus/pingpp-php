@@ -16,26 +16,34 @@ $amount = $input_data['amount'];
 $orderNo = substr(md5(time()), 0, 12);
 
 //$extra 在渠道为 upmp_wap 和 alipay_wap 时，需要填入相应的参数，具体见技术指南。其他渠道时可以传空值也可以不传。
-$extra = isset($input_data['extra']) ? $input_data['extra'] : null;
-if (!isset($extra)) {
-    if ($channel == 'alipay_wap') {
-        $extra = array('success_url' => 'www.success.com', 'cancel_url' => 'www.cancel.com');
-    } else if ($channel == 'upmp_wap') {
-        $extra = array('result_url' => 'www.result.com');
-    }
+$extra = array();
+switch ($channel) {
+    case 'alipay_wap':
+        $extra = array(
+            'success_url' => 'http://www.yourdomain.com/success',
+            'cancel_url' => 'http://www.yourdomain.com/cancel'
+        );
+        break;
+    case 'upmp_wap':
+        $extra = array(
+            'result_url' => 'http://www.yourdomain.com/result?code='
+        );
+        break;
 }
-PingPP::setApiKey("sk_live_bDivDS50CeTOC4Sy94DaLGGK");
+
+PingPP::setApiKey("YOUR-KEY");
 $ch = PingPP_Charge::create(
     array(
-        "subject" => "一心一益",
-        "body" => "一个爱心一份公益",
-        "amount" => $amount,
-        "order_no" => $orderNo,
-        "currency" => "cny",
-        "extra" => $extra,
-        "channel" => $channel,
+        "subject"   => "Your Subject",
+        "body"      => "Your Body",
+        "amount"    => $amount,
+        "order_no"  => $orderNo,
+        "currency"  => "cny",
+        "extra"     => $extra,
+        "channel"   => $channel,
         "client_ip" => $_SERVER["REMOTE_ADDR"],
-        "app" => array("id" => "app_bTyrT0DmfTmDGmT0")
+        "app"       => array("id" => "YOUR-APP-ID")
     )
 );
+
 echo $ch;
