@@ -57,7 +57,8 @@ abstract class PingPP_Util
     {
         $types = array(
             'charge' => 'PingPP_Charge',
-            'list' => 'PingPP_List'
+            'list' => 'PingPP_List',
+            'refund' => 'PingPP_Refund'
         );
         if (self::isList($resp)) {
             $mapped = array();

@@ -41,3 +41,4 @@ require(dirname(__FILE__) . '/PingPP/List.php');
 
 // PingPP API Resources
 require(dirname(__FILE__) . '/PingPP/Charge.php');
+require(dirname(__FILE__) . '/PingPP/Refund.php');
