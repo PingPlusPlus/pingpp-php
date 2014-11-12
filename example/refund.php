@@ -11,7 +11,7 @@ require_once(dirname(__FILE__) . '/../lib/PingPP.php');
 
 PingPP::setApiKey("YOUR-KEY");
 $ch = PingPP_Charge::retrieve("ch_id");
-$ch->refund(
+$ch->refunds->create(
     array(
         "amount" => 10,
         "description" => "apple"
