@@ -1,6 +1,6 @@
 <?php
 
-class PingPP_Object implements ArrayAccess
+class Pingpp_Object implements ArrayAccess
 {
     /**
      * @var array Attributes that should not be sent to the API because they're
@@ -15,8 +15,8 @@ class PingPP_Object implements ArrayAccess
 
     public static function init()
     {
-        self::$permanentAttributes = new PingPP_Util_Set(array('_apiKey', 'id'));
-        self::$nestedUpdatableAttributes = new PingPP_Util_Set(array('metadata'));
+        self::$permanentAttributes = new Pingpp_Util_Set(array('_apiKey', 'id'));
+        self::$nestedUpdatableAttributes = new Pingpp_Util_Set(array('metadata'));
     }
 
     protected $_apiKey;
@@ -29,8 +29,8 @@ class PingPP_Object implements ArrayAccess
     {
         $this->_apiKey = $apiKey;
         $this->_values = array();
-        $this->_unsavedValues = new PingPP_Util_Set();
-        $this->_transientValues = new PingPP_Util_Set();
+        $this->_unsavedValues = new Pingpp_Util_Set();
+        $this->_transientValues = new Pingpp_Util_Set();
 
         $this->_retrieveOptions = array();
         if (is_array($id)) {
@@ -82,17 +82,17 @@ class PingPP_Object implements ArrayAccess
         } else if ($this->_transientValues->includes($k)) {
             $class = get_class($this);
             $attrs = join(', ', array_keys($this->_values));
-            $message = "PingPP Notice: Undefined property of $class instance: $k. "
+            $message = "Pingpp Notice: Undefined property of $class instance: $k. "
                 . "HINT: The $k attribute was set in the past, however. "
                 . "It was then wiped when refreshing the object "
-                . "with the result returned by PingPP's API, "
+                . "with the result returned by Pingpp's API, "
                 . "probably as a result of a save(). The attributes currently "
                 . "available on this object are: $attrs";
             error_log($message);
             return null;
         } else {
             $class = get_class($this);
-            error_log("PingPP Notice: Undefined property of $class instance: $k");
+            error_log("Pingpp Notice: Undefined property of $class instance: $k");
             return null;
         }
     }
@@ -125,11 +125,11 @@ class PingPP_Object implements ArrayAccess
     /**
      * This unfortunately needs to be public to be used in Util.php
      *
-     * @param PingPP_Object $class
+     * @param Pingpp_Object $class
      * @param array $values
      * @param string|null $apiKey
      *
-     * @return PingPP_Object The object constructed from the given values.
+     * @return Pingpp_Object The object constructed from the given values.
      */
     public static function scopedConstructFrom($class, $values, $apiKey=null)
     {
@@ -142,7 +142,7 @@ class PingPP_Object implements ArrayAccess
      * @param array $values
      * @param string|null $apiKey
      *
-     * @return PingPP_Object The object of the same class as $this constructed
+     * @return Pingpp_Object The object of the same class as $this constructed
      *    from the given values.
      */
     public static function constructFrom($values, $apiKey=null)
@@ -166,7 +166,7 @@ class PingPP_Object implements ArrayAccess
         // customer, where there is no persistent card parameter.  Mark those values
         // which don't persist as transient
         if ($partial)
-            $removed = new PingPP_Util_Set();
+            $removed = new Pingpp_Util_Set();
         else
             $removed = array_diff(array_keys($this->_values), array_keys($values));
 
@@ -181,9 +181,9 @@ class PingPP_Object implements ArrayAccess
                 continue;
 
             if (self::$nestedUpdatableAttributes->includes($k) && is_array($v))
-                $this->_values[$k] = PingPP_Object::scopedConstructFrom('PingPP_AttachedObject', $v, $apiKey);
+                $this->_values[$k] = Pingpp_Object::scopedConstructFrom('Pingpp_AttachedObject', $v, $apiKey);
             else
-                $this->_values[$k] = PingPP_Util::convertToPingPPObject($v, $apiKey);
+                $this->_values[$k] = Pingpp_Util::convertToPingppObject($v, $apiKey);
 
             $this->_transientValues->discard($k);
             $this->_unsavedValues->discard($k);
@@ -209,7 +209,7 @@ class PingPP_Object implements ArrayAccess
 
         // Get nested updates.
         foreach (self::$nestedUpdatableAttributes->toArray() as $property) {
-            if (isset($this->$property) && $this->$property instanceOf PingPP_Object) {
+            if (isset($this->$property) && $this->$property instanceOf Pingpp_Object) {
                 $params[$property] = $this->$property->serializeParameters();
             }
         }
@@ -245,11 +245,11 @@ class PingPP_Object implements ArrayAccess
     public function __toArray($recursive=false)
     {
         if ($recursive)
-            return PingPP_Util::convertPingPPObjectToArray($this->_values);
+            return Pingpp_Util::convertPingppObjectToArray($this->_values);
         else
             return $this->_values;
     }
 }
 
 
-PingPP_Object::init();
+Pingpp_Object::init();

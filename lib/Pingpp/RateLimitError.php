@@ -1,6 +1,6 @@
 <?php
 
-class PingPP_RateLimitError extends PingPP_InvalidRequestError
+class Pingpp_RateLimitError extends Pingpp_InvalidRequestError
 {
     public function __construct($message, $param, $httpStatus=null,
         $httpBody=null, $jsonBody=null

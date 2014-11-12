@@ -1,32 +1,32 @@
 <?php
 
-class PingPP_Refund extends PingPP_ApiResource
+class Pingpp_Refund extends Pingpp_ApiResource
 {
   /**
-   * @return string The API URL for this PingPP refund.
+   * @return string The API URL for this Pingpp refund.
    */
   public function instanceUrl()
   {
     $id = $this['id'];
     $charge = $this['charge'];
     if (!$id) {
-      throw new PingPP_InvalidRequestError(
+      throw new Pingpp_InvalidRequestError(
           "Could not determine which URL to request: " .
           "class instance has invalid ID: $id",
           null
       );
     }
-    $id = PingPP_ApiRequestor::utf8($id);
-    $charge = PingPP_ApiRequestor::utf8($charge);
+    $id = Pingpp_ApiRequestor::utf8($id);
+    $charge = Pingpp_ApiRequestor::utf8($charge);
 
-    $base = self::classUrl('PingPP_Charge');
+    $base = self::classUrl('Pingpp_Charge');
     $chargeExtn = urlencode($charge);
     $extn = urlencode($id);
     return "$base/$chargeExtn/refunds/$extn";
   }
 
   /**
-   * @return PingPP_Refund The saved refund.
+   * @return Pingpp_Refund The saved refund.
    */
   public function save()
   {

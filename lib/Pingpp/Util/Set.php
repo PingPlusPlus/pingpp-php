@@ -1,6 +1,6 @@
 <?php
 
-class PingPP_Util_Set
+class Pingpp_Util_Set
 {
     private $_elts;
 

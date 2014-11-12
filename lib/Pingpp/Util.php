@@ -1,6 +1,6 @@
 <?php
 
-abstract class PingPP_Util
+abstract class Pingpp_Util
 {
     /**
      * Whether the provided array (or other) is a list rather than a dictionary.
@@ -13,7 +13,7 @@ abstract class PingPP_Util
         if (!is_array($array))
             return false;
 
-        // TODO: generally incorrect, but it's correct given PingPP's response
+        // TODO: generally incorrect, but it's correct given Pingpp's response
         foreach (array_keys($array) as $k) {
             if (!is_numeric($k))
                 return false;
@@ -22,12 +22,12 @@ abstract class PingPP_Util
     }
 
     /**
-     * Recursively converts the PHP PingPP object to an array.
+     * Recursively converts the PHP Pingpp object to an array.
      *
-     * @param array $values The PHP PingPP object to convert.
+     * @param array $values The PHP Pingpp object to convert.
      * @return array
      */
-    public static function convertPingPPObjectToArray($values)
+    public static function convertPingppObjectToArray($values)
     {
         $results = array();
         foreach ($values as $k => $v) {
@@ -35,10 +35,10 @@ abstract class PingPP_Util
             if ($k[0] == '_') {
                 continue;
             }
-            if ($v instanceof PingPP_Object) {
+            if ($v instanceof Pingpp_Object) {
                 $results[$k] = $v->__toArray(true);
             } else if (is_array($v)) {
-                $results[$k] = self::convertPingPPObjectToArray($v);
+                $results[$k] = self::convertPingppObjectToArray($v);
             } else {
                 $results[$k] = $v;
             }
@@ -47,23 +47,23 @@ abstract class PingPP_Util
     }
 
     /**
-     * Converts a response from the PingPP API to the corresponding PHP object.
+     * Converts a response from the Pingpp API to the corresponding PHP object.
      *
-     * @param array $resp The response from the PingPP API.
+     * @param array $resp The response from the Pingpp API.
      * @param string $apiKey
-     * @return PingPP_Object|array
+     * @return Pingpp_Object|array
      */
-    public static function convertToPingPPObject($resp, $apiKey)
+    public static function convertToPingppObject($resp, $apiKey)
     {
         $types = array(
-            'charge' => 'PingPP_Charge',
-            'list' => 'PingPP_List',
-            'refund' => 'PingPP_Refund'
+            'charge' => 'Pingpp_Charge',
+            'list' => 'Pingpp_List',
+            'refund' => 'Pingpp_Refund'
         );
         if (self::isList($resp)) {
             $mapped = array();
             foreach ($resp as $i)
-                array_push($mapped, self::convertToPingPPObject($i, $apiKey));
+                array_push($mapped, self::convertToPingppObject($i, $apiKey));
             return $mapped;
         } else if (is_array($resp)) {
             if (isset($resp['object']) 
@@ -71,9 +71,9 @@ abstract class PingPP_Util
                 && isset($types[$resp['object']])) {
                     $class = $types[$resp['object']];
                 } else {
-                    $class = 'PingPP_Object';
+                    $class = 'Pingpp_Object';
                 }
-            return PingPP_Object::scopedConstructFrom($class, $resp, $apiKey);
+            return Pingpp_Object::scopedConstructFrom($class, $resp, $apiKey);
         } else {
             return $resp;
         }

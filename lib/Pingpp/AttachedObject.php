@@ -1,7 +1,7 @@
 <?php
 
-// e.g. metadata on PingPP objects.
-class PingPP_AttachedObject extends PingPP_Object
+// e.g. metadata on Pingpp objects.
+class Pingpp_AttachedObject extends Pingpp_Object
 {
     /**
      * Updates this object.

@@ -1,17 +1,17 @@
 <?php
 
-abstract class PingPP
+abstract class Pingpp
 {
     /**
-     * @var string The PingPP API key to be used for requests.
+     * @var string The Pingpp API key to be used for requests.
      */
     public static $apiKey;
     /**
-     * @var string The base URL for the PingPP API.
+     * @var string The base URL for the Pingpp API.
      */
     public static $apiBase = 'https://api.pingplusplus.com/';
     /**
-     * @var string|null The version of the PingPP API to use for requests.
+     * @var string|null The version of the Pingpp API to use for requests.
      */
     public static $apiVersion = "2014-10-10";
     /**

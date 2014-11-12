@@ -1,6 +1,6 @@
 <?php
 
-class PingPP_InvalidRequestError extends PingPP_Error
+class Pingpp_InvalidRequestError extends Pingpp_Error
 {
     public function __construct($message, $param, $httpStatus=null,
         $httpBody=null, $jsonBody=null

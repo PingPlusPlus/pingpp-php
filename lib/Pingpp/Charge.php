@@ -1,12 +1,12 @@
 <?php
 
-class PingPP_Charge extends PingPP_ApiResource
+class Pingpp_Charge extends Pingpp_ApiResource
 {
     /**
      * @param string $id The ID of the charge to retrieve.
      * @param string|null $apiKey
      *
-     * @return PingPP_Charge
+     * @return Pingpp_Charge
      */
     public static function retrieve($id, $apiKey=null)
     {
@@ -18,7 +18,7 @@ class PingPP_Charge extends PingPP_ApiResource
      * @param array|null $params
      * @param string|null $apiKey
      *
-     * @return array An array of PingPP_Charges.
+     * @return array An array of Pingpp_Charges.
      */
     public static function all($params=null, $apiKey=null)
     {
@@ -30,7 +30,7 @@ class PingPP_Charge extends PingPP_ApiResource
      * @param array|null $params
      * @param string|null $apiKey
      *
-     * @return PingPP_Charge The created charge.
+     * @return Pingpp_Charge The created charge.
      */
     public static function create($params=null, $apiKey=null)
     {
@@ -39,7 +39,7 @@ class PingPP_Charge extends PingPP_ApiResource
     }
 
     /**
-     * @return PingPP_Charge The saved charge.
+     * @return Pingpp_Charge The saved charge.
      */
     public function save()
     {
@@ -50,11 +50,11 @@ class PingPP_Charge extends PingPP_ApiResource
     /**
      * @param array|null $params
      *
-     * @return PingPP_Charge The refunded charge.
+     * @return Pingpp_Charge The refunded charge.
      */
     public function refund($params=null)
     {
-        $requestor = new PingPP_ApiRequestor($this->_apiKey);
+        $requestor = new Pingpp_ApiRequestor($this->_apiKey);
         $url = $this->instanceUrl() . '/refunds';
         list($response, $apiKey) = $requestor->request('post', $url, $params);
         $this->refreshFrom($response, $apiKey);

@@ -1,6 +1,6 @@
 <?php
 
-class PingPP_ApiRequestor
+class Pingpp_ApiRequestor
 {
     /**
      * @var string $apiKey The API key that's to be used to make requests.
@@ -29,7 +29,7 @@ class PingPP_ApiRequestor
      */
     public static function apiUrl($url='')
     {
-        $apiBase = PingPP::$apiBase;
+        $apiBase = Pingpp::$apiBase;
         return "$apiBase$url";
     }
 
@@ -51,7 +51,7 @@ class PingPP_ApiRequestor
 
     private static function _encodeObjects($d)
     {
-        if ($d instanceof PingPP_ApiResource) {
+        if ($d instanceof Pingpp_ApiResource) {
             return self::utf8($d->id);
         } else if ($d === true) {
             return 'true';
@@ -121,17 +121,17 @@ class PingPP_ApiRequestor
      * @param int $rcode
      * @param array $resp
      *
-     * @throws PingPP_InvalidRequestError if the error is caused by the user.
-     * @throws PingPP_AuthenticationError if the error is caused by a lack of
+     * @throws Pingpp_InvalidRequestError if the error is caused by the user.
+     * @throws Pingpp_AuthenticationError if the error is caused by a lack of
      *    permissions.
-     * @throws PingPP_ApiError otherwise.
+     * @throws Pingpp_ApiError otherwise.
      */
     public function handleApiError($rbody, $rcode, $resp)
     {
         if (!is_array($resp) || !isset($resp['error'])) {
             $msg = "Invalid response object from API: $rbody "
                 ."(HTTP response code was $rcode)";
-            throw new PingPP_ApiError($msg, $rcode, $rbody, $resp);
+            throw new Pingpp_ApiError($msg, $rcode, $rbody, $resp);
         }
 
         $error = $resp['error'];
@@ -142,18 +142,18 @@ class PingPP_ApiRequestor
         switch ($rcode) {
         case 400:
             if ($code == 'rate_limit') {
-                throw new PingPP_RateLimitError(
+                throw new Pingpp_RateLimitError(
                     $msg, $param, $rcode, $rbody, $resp
                 );
             }
         case 404:
-            throw new PingPP_InvalidRequestError(
+            throw new Pingpp_InvalidRequestError(
                 $msg, $param, $rcode, $rbody, $resp
             );
         case 401:
-            throw new PingPP_AuthenticationError($msg, $rcode, $rbody, $resp);
+            throw new Pingpp_AuthenticationError($msg, $rcode, $rbody, $resp);
         default:
-            throw new PingPP_ApiError($msg, $rcode, $rbody, $resp);
+            throw new Pingpp_ApiError($msg, $rcode, $rbody, $resp);
         }
     }
 
@@ -161,14 +161,14 @@ class PingPP_ApiRequestor
     {
         $myApiKey = $this->_apiKey;
         if (!$myApiKey)
-            $myApiKey = PingPP::$apiKey;
+            $myApiKey = Pingpp::$apiKey;
 
         if (!$myApiKey) {
             $msg = 'No API key provided.  (HINT: set your API key using '
-                . '"PingPP::setApiKey(<API-KEY>)".  You can generate API keys from '
-                . 'the PingPP web interface.  See https://pingplusplus.com/api for '
+                . '"Pingpp::setApiKey(<API-KEY>)".  You can generate API keys from '
+                . 'the Pingpp web interface.  See https://pingplusplus.com/api for '
                 . 'details, or email support@pingplusplus.com if you have any questions.';
-            throw new PingPP_AuthenticationError($msg);
+            throw new Pingpp_AuthenticationError($msg);
         }
 
         $absUrl = $this->apiUrl($url);
@@ -176,19 +176,19 @@ class PingPP_ApiRequestor
         $langVersion = phpversion();
         $uname = php_uname();
         $ua = array(
-            'bindings_version' => PingPP::VERSION,
+            'bindings_version' => Pingpp::VERSION,
             'lang' => 'php',
             'lang_version' => $langVersion,
             'publisher' => 'pingplusplus',
             'uname' => $uname
         );
         $headers = array(
-            'X-PingPP-Client-User-Agent: ' . json_encode($ua),
-            'User-Agent: PingPP/v1 PhpBindings/' . PingPP::VERSION,
+            'X-Pingpp-Client-User-Agent: ' . json_encode($ua),
+            'User-Agent: Pingpp/v1 PhpBindings/' . Pingpp::VERSION,
             'Authorization: Bearer ' . $myApiKey
         );
-        if (PingPP::$apiVersion) {
-            $headers[] = 'Pingplusplus-Version: ' . PingPP::$apiVersion;
+        if (Pingpp::$apiVersion) {
+            $headers[] = 'Pingplusplus-Version: ' . Pingpp::$apiVersion;
         }
         list($rbody, $rcode) = $this->_curlRequest(
             $method,
@@ -206,7 +206,7 @@ class PingPP_ApiRequestor
         } catch (Exception $e) {
             $msg = "Invalid response body from API: $rbody "
                 . "(HTTP response code was $rcode)";
-            throw new PingPP_ApiError($msg, $rcode, $rbody);
+            throw new Pingpp_ApiError($msg, $rcode, $rbody);
         }
 
         if ($rcode < 200 || $rcode >= 300) {
@@ -241,7 +241,7 @@ class PingPP_ApiRequestor
                 $absUrl = "$absUrl?$encoded";
             }
         } else {
-            throw new PingPP_ApiError("Unrecognized method $method");
+            throw new Pingpp_ApiError("Unrecognized method $method");
         }
 
         $absUrl = self::utf8($absUrl);
@@ -252,7 +252,7 @@ class PingPP_ApiRequestor
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_HTTPHEADER] = $headers;
         $opts[CURLOPT_SSLVERSION] = CURL_SSLVERSION_TLSv1;
-        if (!PingPP::$verifySslCerts)
+        if (!Pingpp::$verifySslCerts)
             $opts[CURLOPT_SSL_VERIFYPEER] = false;
 
         curl_setopt_array($curl, $opts);
@@ -268,7 +268,7 @@ class PingPP_ApiRequestor
             $errno == CURLE_SSL_CACERT_BADFILE) {
                 array_push(
                     $headers,
-                    'X-PingPP-Client-Info: {"ca":"using PingPP-supplied CA bundle"}'
+                    'X-Pingpp-Client-Info: {"ca":"using Pingpp-supplied CA bundle"}'
                 );
                 $cert = $this->caBundle();
                 curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -291,42 +291,42 @@ class PingPP_ApiRequestor
     /**
      * @param number $errno
      * @param string $message
-     * @throws PingPP_ApiConnectionError
+     * @throws Pingpp_ApiConnectionError
      */
     public function handleCurlError($errno, $message)
     {
-        $apiBase = PingPP::$apiBase;
+        $apiBase = Pingpp::$apiBase;
         switch ($errno) {
         case CURLE_COULDNT_CONNECT:
         case CURLE_COULDNT_RESOLVE_HOST:
         case CURLE_OPERATION_TIMEOUTED:
-            $msg = "Could not connect to PingPP ($apiBase).  Please check your "
+            $msg = "Could not connect to Pingpp ($apiBase).  Please check your "
                 . "internet connection and try again.  If this problem persists, "
-                . "you should check PingPP's service status at "
+                . "you should check Pingpp's service status at "
                 . "https://pingplusplus.com, or";
             break;
         case CURLE_SSL_CACERT:
         case CURLE_SSL_PEER_CERTIFICATE:
-            $msg = "Could not verify PingPP's SSL certificate.  Please make sure "
+            $msg = "Could not verify Pingpp's SSL certificate.  Please make sure "
                 . "that your network is not intercepting certificates.  "
                 . "(Try going to $apiBase in your browser.)  "
                 . "If this problem persists,";
             break;
         default:
-            $msg = "Unexpected error communicating with PingPP.  "
+            $msg = "Unexpected error communicating with Pingpp.  "
                 . "If this problem persists,";
         }
         $msg .= " let us know at support@pingplusplus.com.";
 
         $msg .= "\n\n(Network error [errno $errno]: $message)";
-        throw new PingPP_ApiConnectionError($msg);
+        throw new Pingpp_ApiConnectionError($msg);
     }
 
     private function checkSslCert($url)
     {
         /* Preflight the SSL certificate presented by the backend. This isn't 100%
          * bulletproof, in that we're not actually validating the transport used to
-         * communicate with PingPP, merely that the first attempt to does not use a
+         * communicate with Pingpp, merely that the first attempt to does not use a
          * revoked certificate.
 
          * Unfortunately the interface to OpenSSL doesn't make it easy to check the
@@ -338,7 +338,7 @@ class PingPP_ApiRequestor
             !function_exists('stream_socket_enable_crypto')) {
             error_log(
                 'Warning: This version of PHP is too old to check SSL certificates '.
-                'correctly. PingPP cannot guarantee that the server has a '.
+                'correctly. Pingpp cannot guarantee that the server has a '.
                 'certificate which is not blacklisted'
             );
             return true;
@@ -359,11 +359,11 @@ class PingPP_ApiRequestor
             $url, $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $sslContext
         );
         if ($errno !== 0) {
-            $apiBase = PingPP::$apiBase;
-            throw new PingPP_ApiConnectionError(
-                'Could not connect to PingPP ($apiBase).  Please check your '.
+            $apiBase = Pingpp::$apiBase;
+            throw new Pingpp_ApiConnectionError(
+                'Could not connect to Pingpp ($apiBase).  Please check your '.
                 'internet connection and try again.  If this problem persists, '.
-                'you should check PingPP\'s service status at '.
+                'you should check Pingpp\'s service status at '.
                 'https://pingplusplus.com. Reason was: '.$errstr
             );
         }
@@ -375,7 +375,7 @@ class PingPP_ApiRequestor
         openssl_x509_export($cert, $pem_cert);
 
         if (self::isBlackListed($pem_cert)) {
-            throw new PingPP_ApiConnectionError(
+            throw new Pingpp_ApiConnectionError(
                 'Invalid server certificate. You tried to connect to a server '.
                 'that has a revoked SSL certificate, which means we cannot '.
                 'securely send data to that server.  Please email '.

@@ -1,6 +1,6 @@
 <?php
 
-abstract class PingPP_SingletonApiResource extends PingPP_ApiResource
+abstract class Pingpp_SingletonApiResource extends Pingpp_ApiResource
 {
     protected static function _scopedSingletonRetrieve($class, $apiKey=null)
     {
@@ -10,7 +10,7 @@ abstract class PingPP_SingletonApiResource extends PingPP_ApiResource
     }
 
     /**
-     * @param PingPP_SingletonApiResource $class
+     * @param Pingpp_SingletonApiResource $class
      * @return string The endpoint associated with this singleton class.
      */
     public static function classUrl($class)
