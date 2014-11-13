@@ -21,3 +21,8 @@ PHP SDK 要求 PHP 5.3 及以上版本
 ###1.0.2
 * 更改：<br>
 cURL 使用 TLSv1.x
+
+###1.0.3
+* 更改：<br>
+所有 PingPP 改成 Pingpp<br>
+Pingpp_Object 转成 JSON 时，用 stdClass 代替 array
