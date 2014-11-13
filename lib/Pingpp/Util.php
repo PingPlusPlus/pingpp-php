@@ -25,9 +25,10 @@ abstract class Pingpp_Util
      * Recursively converts the PHP Pingpp object to an array.
      *
      * @param array $values The PHP Pingpp object to convert.
+     * @param bool
      * @return array
      */
-    public static function convertPingppObjectToArray($values)
+    public static function convertPingppObjectToArray($values, $keep_object = false)
     {
         $results = array();
         foreach ($values as $k => $v) {
@@ -36,9 +37,9 @@ abstract class Pingpp_Util
                 continue;
             }
             if ($v instanceof Pingpp_Object) {
-                $results[$k] = $v->__toArray(true);
+                $results[$k] = $keep_object ? $v->__toStdObject(true) : $v->__toArray(true);
             } else if (is_array($v)) {
-                $results[$k] = self::convertPingppObjectToArray($v);
+                $results[$k] = self::convertPingppObjectToArray($v, $keep_object);
             } else {
                 $results[$k] = $v;
             }
@@ -47,9 +48,34 @@ abstract class Pingpp_Util
     }
 
     /**
+     * Recursively converts the PHP Pingpp object to an stdObject.
+     *
+     * @param array $values The PHP Pingpp object to convert.
+     * @return array
+     */
+    public static function convertPingppObjectToStdObject($values)
+    {
+        $results = new stdClass;
+        foreach ($values as $k => $v) {
+            // FIXME: this is an encapsulation violation
+            if ($k[0] == '_') {
+                continue;
+            }
+            if ($v instanceof Pingpp_Object) {
+                $results->$k = $v->__toStdObject(true);
+            } else if (is_array($v)) {
+                $results->$k = self::convertPingppObjectToArray($v, true);
+            } else {
+                $results->$k = $v;
+            }
+        }
+        return $results;
+    }
+
+    /**
      * Converts a response from the Pingpp API to the corresponding PHP object.
      *
-     * @param array $resp The response from the Pingpp API.
+     * @param stdObject $resp The response from the Pingpp API.
      * @param string $apiKey
      * @return Pingpp_Object|array
      */
@@ -65,11 +91,11 @@ abstract class Pingpp_Util
             foreach ($resp as $i)
                 array_push($mapped, self::convertToPingppObject($i, $apiKey));
             return $mapped;
-        } else if (is_array($resp)) {
-            if (isset($resp['object']) 
-                && is_string($resp['object'])
-                && isset($types[$resp['object']])) {
-                    $class = $types[$resp['object']];
+        } else if (is_object($resp)) {
+            if (isset($resp->object) 
+                && is_string($resp->object)
+                && isset($types[$resp->object])) {
+                    $class = $types[$resp->object];
                 } else {
                     $class = 'Pingpp_Object';
                 }

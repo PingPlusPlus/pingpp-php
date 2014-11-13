@@ -126,20 +126,20 @@ class Pingpp_Object implements ArrayAccess
      * This unfortunately needs to be public to be used in Util.php
      *
      * @param Pingpp_Object $class
-     * @param array $values
+     * @param stdObject $values
      * @param string|null $apiKey
      *
      * @return Pingpp_Object The object constructed from the given values.
      */
     public static function scopedConstructFrom($class, $values, $apiKey=null)
     {
-        $obj = new $class(isset($values['id']) ? $values['id'] : null, $apiKey);
+        $obj = new $class(isset($values->id) ? $values->id : null, $apiKey);
         $obj->refreshFrom($values, $apiKey);
         return $obj;
     }
 
     /**
-     * @param array $values
+     * @param stdObject $values
      * @param string|null $apiKey
      *
      * @return Pingpp_Object The object of the same class as $this constructed
@@ -154,7 +154,7 @@ class Pingpp_Object implements ArrayAccess
     /**
      * Refreshes this object using the provided values.
      *
-     * @param array $values
+     * @param stdObject $values
      * @param string $apiKey
      * @param boolean $partial Defaults to false.
      */
@@ -168,7 +168,7 @@ class Pingpp_Object implements ArrayAccess
         if ($partial)
             $removed = new Pingpp_Util_Set();
         else
-            $removed = array_diff(array_keys($this->_values), array_keys($values));
+            $removed = array_diff(array_keys($this->_values), array_keys(get_object_vars($values)));
 
         foreach ($removed as $k) {
             if (self::$permanentAttributes->includes($k))
@@ -180,7 +180,7 @@ class Pingpp_Object implements ArrayAccess
             if (self::$permanentAttributes->includes($k))
                 continue;
 
-            if (self::$nestedUpdatableAttributes->includes($k) && is_array($v))
+            if (self::$nestedUpdatableAttributes->includes($k) && is_object($v))
                 $this->_values[$k] = Pingpp_Object::scopedConstructFrom('Pingpp_AttachedObject', $v, $apiKey);
             else
                 $this->_values[$k] = Pingpp_Util::convertToPingppObject($v, $apiKey);
@@ -232,9 +232,9 @@ class Pingpp_Object implements ArrayAccess
     public function __toJSON()
     {
         if (defined('JSON_PRETTY_PRINT'))
-            return json_encode($this->__toArray(true), JSON_PRETTY_PRINT);
+            return json_encode($this->__toStdObject(), JSON_PRETTY_PRINT);
         else
-            return json_encode($this->__toArray(true));
+            return json_encode($this->__toStdObject());
     }
 
     public function __toString()
@@ -248,6 +248,11 @@ class Pingpp_Object implements ArrayAccess
             return Pingpp_Util::convertPingppObjectToArray($this->_values);
         else
             return $this->_values;
+    }
+
+    public function __toStdObject()
+    {
+        return Pingpp_Util::convertPingppObjectToStdObject($this->_values);
     }
 }
 

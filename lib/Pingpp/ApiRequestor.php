@@ -128,16 +128,16 @@ class Pingpp_ApiRequestor
      */
     public function handleApiError($rbody, $rcode, $resp)
     {
-        if (!is_array($resp) || !isset($resp['error'])) {
+        if (!is_object($resp) || !isset($resp->error)) {
             $msg = "Invalid response object from API: $rbody "
                 ."(HTTP response code was $rcode)";
             throw new Pingpp_ApiError($msg, $rcode, $rbody, $resp);
         }
 
-        $error = $resp['error'];
-        $msg = isset($error['message']) ? $error['message'] : null;
-        $param = isset($error['param']) ? $error['param'] : null;
-        $code = isset($error['code']) ? $error['code'] : null;
+        $error = $resp->error;
+        $msg = isset($error->message) ? $error->message : null;
+        $param = isset($error->param) ? $error->param : null;
+        $code = isset($error->code) ? $error->code : null;
 
         switch ($rcode) {
         case 400:
@@ -202,7 +202,7 @@ class Pingpp_ApiRequestor
     private function _interpretResponse($rbody, $rcode)
     {
         try {
-            $resp = json_decode($rbody, true);
+            $resp = json_decode($rbody);
         } catch (Exception $e) {
             $msg = "Invalid response body from API: $rbody "
                 . "(HTTP response code was $rcode)";
