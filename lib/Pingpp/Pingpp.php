@@ -18,7 +18,7 @@ abstract class Pingpp
      * @var boolean Defaults to true.
      */
     public static $verifySslCerts = true;
-    const VERSION = '1.0.3';
+    const VERSION = '1.0.4';
 
     /**
      * @return string The API key used for requests.

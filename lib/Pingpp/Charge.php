@@ -48,20 +48,6 @@ class Pingpp_Charge extends Pingpp_ApiResource
     }
 
     /**
-     * @param array|null $params
-     *
-     * @return Pingpp_Charge The refunded charge.
-     */
-    public function refund($params=null)
-    {
-        $requestor = new Pingpp_ApiRequestor($this->_apiKey);
-        $url = $this->instanceUrl() . '/refunds';
-        list($response, $apiKey) = $requestor->request('post', $url, $params);
-        $this->refreshFrom($response, $apiKey);
-        return $this;
-    }
-
-    /**
      * @return The json encoded credential.
      */
     public function getCredential()
