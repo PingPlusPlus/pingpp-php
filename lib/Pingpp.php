@@ -42,3 +42,6 @@ require(dirname(__FILE__) . '/Pingpp/List.php');
 // Pingpp API Resources
 require(dirname(__FILE__) . '/Pingpp/Charge.php');
 require(dirname(__FILE__) . '/Pingpp/Refund.php');
+
+// wx_pub OAuth 2.0 method
+require(dirname(__FILE__) . '/Pingpp/WxpubOAuth.php');

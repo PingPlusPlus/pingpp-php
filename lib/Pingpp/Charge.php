@@ -48,6 +48,7 @@ class Pingpp_Charge extends Pingpp_ApiResource
     }
 
     /**
+     * @deprecated
      * @return The json encoded credential.
      */
     public function getCredential()
