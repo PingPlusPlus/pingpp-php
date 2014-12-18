@@ -49,18 +49,18 @@ class Pingpp_ApiRequestor
             }
     }
 
-    private static function _encodeObjects($d)
+    private static function _encodeObjects($d, $is_post = false)
     {
         if ($d instanceof Pingpp_ApiResource) {
             return self::utf8($d->id);
-        } else if ($d === true) {
+        } else if ($d === true && !$is_post) {
             return 'true';
-        } else if ($d === false) {
+        } else if ($d === false && !$is_post) {
             return 'false';
         } else if (is_array($d)) {
             $res = array();
             foreach ($d as $k => $v)
-                $res[$k] = self::_encodeObjects($v);
+                $res[$k] = self::_encodeObjects($v, $is_post);
             return $res;
         } else {
             return self::utf8($d);
@@ -172,7 +172,7 @@ class Pingpp_ApiRequestor
         }
 
         $absUrl = $this->apiUrl($url);
-        $params = self::_encodeObjects($params);
+        $params = self::_encodeObjects($params, $method == 'post');
         $langVersion = phpversion();
         $uname = php_uname();
         $ua = array(
@@ -189,6 +189,9 @@ class Pingpp_ApiRequestor
         );
         if (Pingpp::$apiVersion) {
             $headers[] = 'Pingplusplus-Version: ' . Pingpp::$apiVersion;
+        }
+        if ($method == 'post') {
+            $headers[] = 'Content-type: application/json;charset=UTF-8';
         }
         list($rbody, $rcode) = $this->_curlRequest(
             $method,
@@ -233,7 +236,7 @@ class Pingpp_ApiRequestor
             }
         } else if ($method == 'post') {
             $opts[CURLOPT_POST] = 1;
-            $opts[CURLOPT_POSTFIELDS] = self::encode($params);
+            $opts[CURLOPT_POSTFIELDS] = json_encode($params);
         } else if ($method == 'delete') {
             $opts[CURLOPT_CUSTOMREQUEST] = 'DELETE';
             if (count($params) > 0) {
