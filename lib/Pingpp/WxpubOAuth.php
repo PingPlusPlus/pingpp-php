@@ -39,8 +39,8 @@ class WxpubOAuth
      * @param $redirect_url 授权后重定向的回调链接地址，重定向后此地址将带有授权code参数，
      *                      该地址的域名需在微信公众号平台上进行设置，
      *                      步骤为：登陆微信公众号平台 => 开发者中心 => 网页授权获取用户基本信息 => 修改
-     * @param bool $more_info TRUE 不弹出授权页面,直接跳转,这个只能拿到用户openid
-     *                        FALSE 弹出授权页面,这个可以通过 openid 拿到昵称、性别、所在地，
+     * @param bool $more_info FALSE 不弹出授权页面,直接跳转,这个只能拿到用户openid
+     *                        TRUE 弹出授权页面,这个可以通过 openid 拿到昵称、性别、所在地，
      * @return string 用于获取授权code的URL地址
      */
     public static function createOauthUrlForCode($app_id, $redirect_url, $more_info=FALSE)
