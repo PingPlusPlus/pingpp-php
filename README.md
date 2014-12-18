@@ -18,16 +18,19 @@ PHP SDK 要求 PHP 5.3 及以上版本
 
 ## 更新日志
 
-
-### 1.0.2
+### 1.0.4
 * 更改：<br>
-cURL 使用 TLSv1.x
+移除旧的 refund 方法
 
 ### 1.0.3
 * 更改：<br>
 所有 PingPP 改成 Pingpp<br>
 Pingpp_Object 转成 JSON 时，用 stdClass 代替 array
 
-### 1.0.4
+### 1.0.2
 * 更改：<br>
-移除旧的 refund 方法
+cURL 使用 TLSv1.x
+
+
+
+
