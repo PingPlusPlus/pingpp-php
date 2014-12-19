@@ -3,7 +3,8 @@
 
 /**
  * 用于微信公众号OAuth2.0鉴权，用户授权后获取授权用户唯一标识openid
- * WxpubOAuth中的方法都是可选的，开发者也可根据实际情况自行开发相关功能
+ * WxpubOAuth中的方法都是可选的，开发者也可根据实际情况自行开发相关功能，
+ * 详细内容可参考http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html
  */
 class WxpubOAuth
 {
