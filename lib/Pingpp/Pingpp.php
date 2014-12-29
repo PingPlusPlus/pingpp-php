@@ -9,16 +9,16 @@ abstract class Pingpp
     /**
      * @var string The base URL for the Pingpp API.
      */
-    public static $apiBase = 'https://api.pingplusplus.com/';
+    public static $apiBase = 'https://api.pingxx.com/';
     /**
      * @var string|null The version of the Pingpp API to use for requests.
      */
-    public static $apiVersion = "2014-10-10";
+    public static $apiVersion = "2015-01-01";
     /**
      * @var boolean Defaults to true.
      */
     public static $verifySslCerts = true;
-    const VERSION = '1.0.4';
+    const VERSION = '2.0.0;
 
     /**
      * @return string The API key used for requests.
