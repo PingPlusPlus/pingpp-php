@@ -13,7 +13,7 @@ class WxpubOAuth
      * @param $app_id 微信公众号应用唯一标识
      * @param $app_secret 微信公众号应用密钥（注意保密）
      * @param $code 授权code, 通过调用WxpubOAuth::createOauthUrlForCode来获取
-     * @return mixed openid 微信公众号授权用户唯一标识, 可用于微信网页内支付
+     * @return openid 微信公众号授权用户唯一标识, 可用于微信网页内支付
      */
     public static function getOpenid($app_id, $app_secret, $code)
     {
