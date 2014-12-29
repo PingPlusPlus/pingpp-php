@@ -166,8 +166,8 @@ class Pingpp_ApiRequestor
         if (!$myApiKey) {
             $msg = 'No API key provided.  (HINT: set your API key using '
                 . '"Pingpp::setApiKey(<API-KEY>)".  You can generate API keys from '
-                . 'the Pingpp web interface.  See https://pingplusplus.com/api for '
-                . 'details, or email support@pingplusplus.com if you have any questions.';
+                . 'the Pingpp web interface.  See https://pingxx.com/api for '
+                . 'details, or email support@pingxx.com if you have any questions.';
             throw new Pingpp_AuthenticationError($msg);
         }
 
@@ -184,7 +184,7 @@ class Pingpp_ApiRequestor
         );
         $headers = array(
             'X-Pingpp-Client-User-Agent: ' . json_encode($ua),
-            'User-Agent: Pingpp/v1 PhpBindings/' . Pingpp::VERSION,
+            'User-Agent: Pingplusplus/v1 PhpBindings/' . Pingpp::VERSION,
             'Authorization: Bearer ' . $myApiKey
         );
         if (Pingpp::$apiVersion) {
@@ -308,7 +308,7 @@ class Pingpp_ApiRequestor
             $msg = "Could not connect to Pingpp ($apiBase).  Please check your "
                 . "internet connection and try again.  If this problem persists, "
                 . "you should check Pingpp's service status at "
-                . "https://pingplusplus.com, or";
+                . "https://pingxx.com, or";
             break;
         case CURLE_SSL_CACERT:
         case CURLE_SSL_PEER_CERTIFICATE:
@@ -321,7 +321,7 @@ class Pingpp_ApiRequestor
             $msg = "Unexpected error communicating with Pingpp.  "
                 . "If this problem persists,";
         }
-        $msg .= " let us know at support@pingplusplus.com.";
+        $msg .= " let us know at support@pingxx.com.";
 
         $msg .= "\n\n(Network error [errno $errno]: $message)";
         throw new Pingpp_ApiConnectionError($msg);
@@ -369,7 +369,7 @@ class Pingpp_ApiRequestor
                 'Could not connect to Pingpp ($apiBase).  Please check your '.
                 'internet connection and try again.  If this problem persists, '.
                 'you should check Pingpp\'s service status at '.
-                'https://pingplusplus.com. Reason was: '.$errstr
+                'https://pingxx.com. Reason was: '.$errstr
             );
         }
 
@@ -384,7 +384,7 @@ class Pingpp_ApiRequestor
                 'Invalid server certificate. You tried to connect to a server '.
                 'that has a revoked SSL certificate, which means we cannot '.
                 'securely send data to that server.  Please email '.
-                'support@pingplusplus.com if you need help connecting to the '.
+                'support@pingxx.com if you need help connecting to the '.
                 'correct API server.'
             );
         }
