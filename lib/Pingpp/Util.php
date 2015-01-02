@@ -110,7 +110,6 @@ abstract class Pingpp_Util
         if (function_exists('getallheaders')) {
             return getallheaders();
         }
-        error_log("getRequestHeader");
         $headers = '';
         foreach ($_SERVER as $name => $value) {
             if (substr($name, 0, 5) == 'HTTP_') {

@@ -184,7 +184,7 @@ class Pingpp_ApiRequestor
         );
         $headers = array(
             'X-Pingpp-Client-User-Agent: ' . json_encode($ua),
-            'User-Agent: Pingplusplus/v1 PhpBindings/' . Pingpp::VERSION,
+            'User-Agent: Pingpp/v1 PhpBindings/' . Pingpp::VERSION,
             'Authorization: Bearer ' . $myApiKey
         );
         if (Pingpp::$apiVersion) {
