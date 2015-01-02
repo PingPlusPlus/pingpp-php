@@ -193,6 +193,13 @@ class Pingpp_ApiRequestor
         if ($method == 'post') {
             $headers[] = 'Content-type: application/json;charset=UTF-8';
         }
+        $requestHeaders = Pingpp_Util::getRequestHeaders();
+        if (isset($requestHeaders['Pingpp-Sdk-Version'])) {
+            $headers[] = 'Pingpp-Sdk-Version: ' . $requestHeaders['Pingpp-Sdk-Version'];
+        }
+        if (isset($requestHeaders['Pingpp-One-Version'])) {
+            $headers[] = 'Pingpp-One-Version: ' . $requestHeaders['Pingpp-One-Version'];
+        }
         list($rbody, $rcode) = $this->_curlRequest(
             $method,
             $absUrl,
