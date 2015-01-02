@@ -166,7 +166,7 @@ class Pingpp_ApiRequestor
         if (!$myApiKey) {
             $msg = 'No API key provided.  (HINT: set your API key using '
                 . '"Pingpp::setApiKey(<API-KEY>)".  You can generate API keys from '
-                . 'the Pingpp web interface.  See https://pingxx.com/api for '
+                . 'the Pingpp web interface.  See https://pingxx.com/document/api for '
                 . 'details, or email support@pingxx.com if you have any questions.';
             throw new Pingpp_AuthenticationError($msg);
         }
