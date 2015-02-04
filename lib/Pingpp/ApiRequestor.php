@@ -12,8 +12,6 @@ class Pingpp_ApiRequestor
     private static function blacklistedCerts()
     {
         return array(
-            '05c0b3643694470a888c6e7feb5c9e24e823dc53',
-            '5b7dc7fbc98d78bf76d4d4fa6f597a0c901fad5c',
         );
     }
 
@@ -261,9 +259,6 @@ class Pingpp_ApiRequestor
         $opts[CURLOPT_TIMEOUT] = 80;
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_HTTPHEADER] = $headers;
-        if (defined(CURL_SSLVERSION_TLSv1)) {
-            $opts[CURLOPT_SSLVERSION] = CURL_SSLVERSION_TLSv1;
-        }
         if (!Pingpp::$verifySslCerts)
             $opts[CURLOPT_SSL_VERIFYPEER] = false;
 
