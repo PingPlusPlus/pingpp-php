@@ -31,18 +31,22 @@ switch ($channel) {
 }
 
 Pingpp::setApiKey("YOUR-KEY");
-$ch = Pingpp_Charge::create(
-    array(
-        "subject"   => "Your Subject",
-        "body"      => "Your Body",
-        "amount"    => $amount,
-        "order_no"  => $orderNo,
-        "currency"  => "cny",
-        "extra"     => $extra,
-        "channel"   => $channel,
-        "client_ip" => $_SERVER["REMOTE_ADDR"],
-        "app"       => array("id" => "YOUR-APP-ID")
-    )
-);
-
-echo $ch;
+try {
+    $ch = Pingpp_Charge::create(
+        array(
+            "subject"   => "Your Subject",
+            "body"      => "Your Body",
+            "amount"    => $amount,
+            "order_no"  => $orderNo,
+            "currency"  => "cny",
+            "extra"     => $extra,
+            "channel"   => $channel,
+            "client_ip" => $_SERVER["REMOTE_ADDR"],
+            "app"       => array("id" => "YOUR-APP-ID")
+        )
+    );
+    echo $ch;
+} catch (Pingpp_Error $e) {
+    header('Status: ' . $e->getHttpStatus());
+    echo($e->getHttpBody());
+}
