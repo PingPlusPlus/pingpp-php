@@ -1,5 +1,6 @@
 <?php
 
+namespace Pingpp;
 
 /**
  * 用于微信公众号OAuth2.0鉴权，用户授权后获取授权用户唯一标识openid
@@ -44,7 +45,7 @@ class WxpubOAuth
      *                        TRUE 弹出授权页面,这个可以通过 openid 拿到昵称、性别、所在地，
      * @return string 用于获取授权code的URL地址
      */
-    public static function createOauthUrlForCode($app_id, $redirect_url, $more_info=FALSE)
+    public static function createOauthUrlForCode($app_id, $redirect_url, $more_info = false)
     {
         $urlObj["appid"] = $app_id;
         $urlObj["redirect_uri"] = "$redirect_url";

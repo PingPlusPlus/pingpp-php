@@ -1,6 +1,11 @@
 <?php
 
-abstract class Pingpp_Util
+namespace Pingpp\Util;
+
+use Pingpp\Object;
+use stdClass;
+
+abstract class Util
 {
     /**
      * Whether the provided array (or other) is a list rather than a dictionary.
@@ -36,7 +41,7 @@ abstract class Pingpp_Util
             if ($k[0] == '_') {
                 continue;
             }
-            if ($v instanceof Pingpp_Object) {
+            if ($v instanceof Object) {
                 $results[$k] = $keep_object ? $v->__toStdObject(true) : $v->__toArray(true);
             } else if (is_array($v)) {
                 $results[$k] = self::convertPingppObjectToArray($v, $keep_object);
@@ -61,7 +66,7 @@ abstract class Pingpp_Util
             if ($k[0] == '_') {
                 continue;
             }
-            if ($v instanceof Pingpp_Object) {
+            if ($v instanceof Object) {
                 $results->$k = $v->__toStdObject(true);
             } else if (is_array($v)) {
                 $results->$k = self::convertPingppObjectToArray($v, true);
@@ -76,20 +81,20 @@ abstract class Pingpp_Util
      * Converts a response from the Pingpp API to the corresponding PHP object.
      *
      * @param stdObject $resp The response from the Pingpp API.
-     * @param string $apiKey
-     * @return Pingpp_Object|array
+     * @param array $opts
+     * @return Object|array
      */
-    public static function convertToPingppObject($resp, $apiKey)
+    public static function convertToPingppObject($resp, $opts)
     {
         $types = array(
-            'charge' => 'Pingpp_Charge',
-            'list' => 'Pingpp_List',
-            'refund' => 'Pingpp_Refund'
+            'charge' => 'Pingpp\\Charge',
+            'list' => 'Pingpp\\Collection',
+            'refund' => 'Pingpp\\Refund'
         );
         if (self::isList($resp)) {
             $mapped = array();
             foreach ($resp as $i)
-                array_push($mapped, self::convertToPingppObject($i, $apiKey));
+                array_push($mapped, self::convertToPingppObject($i, $opts));
             return $mapped;
         } else if (is_object($resp)) {
             if (isset($resp->object) 
@@ -97,9 +102,9 @@ abstract class Pingpp_Util
                 && isset($types[$resp->object])) {
                     $class = $types[$resp->object];
                 } else {
-                    $class = 'Pingpp_Object';
+                    $class = 'Pingpp\\Object';
                 }
-            return Pingpp_Object::scopedConstructFrom($class, $resp, $apiKey);
+            return $class::constructFrom($resp, $opts);
         } else {
             return $resp;
         }
