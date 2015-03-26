@@ -42,7 +42,7 @@ class Charge extends ApiResource
      *
      * @return Charge The saved charge.
      */
-    public function save()
+    public function save($options = null)
     {
         return $this->_save($options);
     }

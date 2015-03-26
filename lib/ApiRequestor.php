@@ -70,18 +70,21 @@ class ApiRequestor
      */
     public static function encode($arr, $prefix = null)
     {
-        if (!is_array($arr))
+        if (!is_array($arr)) {
             return $arr;
+        }
 
         $r = array();
         foreach ($arr as $k => $v) {
-            if (is_null($v))
+            if (is_null($v)) {
                 continue;
+            }
 
-            if ($prefix && $k && !is_int($k))
+            if ($prefix && $k && !is_int($k)) {
                 $k = $prefix."[".$k."]";
-            else if ($prefix)
+            } else if ($prefix) {
                 $k = $prefix."[]";
+            }
 
             if (is_array($v)) {
                 $r[] = self::encode($v, $k, true);
@@ -271,8 +274,9 @@ class ApiRequestor
         $opts[CURLOPT_TIMEOUT] = 80;
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_HTTPHEADER] = $headers;
-        if (!Pingpp::$verifySslCerts)
+        if (!Pingpp::$verifySslCerts) {
             $opts[CURLOPT_SSL_VERIFYPEER] = false;
+        }
 
         curl_setopt_array($curl, $opts);
         $rbody = curl_exec($curl);
