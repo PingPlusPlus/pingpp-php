@@ -26,7 +26,9 @@ composer install
 require_once('vendor/autoload.php');
 ```
 ### 手动引入
+``` php
 require_once('/path/to/pingpp-php/init.php');
+```
 
 ## 接入方法
 ### 初始化
