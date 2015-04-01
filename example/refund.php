@@ -9,7 +9,7 @@
 require_once(dirname(__FILE__) . '/../init.php');
 
 \Pingpp\Pingpp::setApiKey('YOUR-KEY');
-$ch = \Pingpp\Charge::retrieve('{CHARGE_ID}');
+$ch = \Pingpp\Charge::retrieve('CHARGE_ID');
 $ch->refunds->create(
     array(
         'amount' => 10,

@@ -16,29 +16,29 @@ $channel = strtolower($input_data['channel']);
 $amount = $input_data['amount'];
 $orderNo = substr(md5(time()), 0, 12);
 //extra
-$extra = array('nick_name'=>'Nick Name','send_name'=>'Send Name');
+$extra = array('nick_name' => 'Nick Name', 'send_name' => 'Send Name');
 
 /*
  * To set your key
  * key:the livekey or testkey from your app message from pingpp on the dashboard
  */
-\Pingpp\Pingpp::setApiKey('sk_test_1yP0S05izPi9anzfTOjrn9q5');
+\Pingpp\Pingpp::setApiKey('YOUR-KEY');
 try {
     /*
      * To Create RedEnvelope
      */
     $ch = \Pingpp\RedEnvelope::create(
         array(
-            "subject"   => "Your Subject",
-            "body"      => "Your Body",
-            "amount"    => $amount,
-            "order_no"  => $orderNo,
-            "currency"  => "cny",
-            "extra"     => $extra,
-            "recipient" => $open_id,
-            "channel"   => $channel,
-            "app"       => array("id" => "app_nHGe5SDO0yPSrbL0"),
-            "description"=>"Your Description"
+            'subject'     => 'Your Subject',
+            'body'        => 'Your Body',
+            'amount'      => $amount,
+            'order_no'    => $orderNo,
+            'currency'    => 'cny',
+            'extra'       => $extra,
+            'recipient'   => 'Openid',
+            'channel'     => $channel,
+            'app'         => array('id' => 'YOUR-APP-ID'),
+            'description' => 'Your Description'
         )
     );
     echo $ch;
