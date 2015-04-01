@@ -2,13 +2,24 @@
 
 namespace Pingpp;
 
-class Charge extends ApiResource
+class RedEnvelope extends ApiResource
 {
     /**
-     * @param string $id The ID of the charge to retrieve.
+     * This is a special case because the red envelope endpoint has an
+     *    underscore in it. The parent `className` function strips underscores.
+     *
+     * @return string The name of the class.
+     */
+    public static function className()
+    {
+        return 'red_envelopes';
+    }
+
+    /**
+     * @param string $id The ID of the redEnvelope to retrieve.
      * @param array|string|null $options
      *
-     * @return Charge
+     * @return RedEnvelope
      */
     public static function retrieve($id, $options = null)
     {
@@ -19,7 +30,7 @@ class Charge extends ApiResource
      * @param array|null $params
      * @param array|string|null $options
      *
-     * @return array An array of Charges.
+     * @return array An array of RedEnvelope.
      */
     public static function all($params = null, $options = null)
     {
@@ -30,7 +41,7 @@ class Charge extends ApiResource
      * @param array|null $params
      * @param array|string|null $options
      *
-     * @return Charge The created charge.
+     * @return RedEnvelope The created redEnvelope.
      */
     public static function create($params = null, $options = null)
     {
@@ -40,7 +51,7 @@ class Charge extends ApiResource
     /**
      * @param array|string|null $options
      *
-     * @return Charge The saved charge.
+     * @return RedEnvelope The saved redEnvelope.
      */
     public function save($options = null)
     {

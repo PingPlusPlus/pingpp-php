@@ -29,6 +29,26 @@ switch ($channel) {
             'result_url' => 'http://www.yourdomain.com/result?code='
         );
         break;
+    case 'bfb_wap':
+        $extra = array(
+            'result_url' => 'http://www.yourdomain.com/result?code='
+        );
+        break;
+    case 'upacp_wap':
+        $extra = array(
+            'result_url' => 'http://www.yourdomain.com/result?code='
+        );
+        break;
+    case 'wx_pub':
+        $extra = array(
+            'open_id' => 'Openid'
+        );
+        break;
+    case 'wx_pub_qr':
+        $extra = array(
+            'product_id' => 'Productid'
+        );
+        break;
 }
 
 \Pingpp\Pingpp::setApiKey('YOUR-KEY');

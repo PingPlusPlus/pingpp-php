@@ -7,12 +7,12 @@
  */
 
 $input_data = json_decode(file_get_contents("php://input"), true);
-if($input_data['object'] == 'charge')
+if($input_data['object'] == 'charge'&& $input_data['paid']==true)
 {
     //TODO update database
     echo 'success';
 }
-else if($input_data['object'] == 'refund')
+else if($input_data['object'] == 'refund'&& $input_data['succeed']==true)
 {
     //TODO update database
     echo 'success';

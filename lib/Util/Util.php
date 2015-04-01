@@ -87,6 +87,7 @@ abstract class Util
     public static function convertToPingppObject($resp, $opts)
     {
         $types = array(
+            'red_envelope'=>'Pingpp\\RedEnvelope',
             'charge' => 'Pingpp\\Charge',
             'list' => 'Pingpp\\Collection',
             'refund' => 'Pingpp\\Refund'
