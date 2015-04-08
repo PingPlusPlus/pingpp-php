@@ -27,7 +27,7 @@ try {
     /*
      * To Create RedEnvelope
      */
-    $ch = \Pingpp\RedEnvelope::create(
+    $red = \Pingpp\RedEnvelope::create(
         array(
             'subject'     => 'Your Subject',
             'body'        => 'Your Body',
@@ -41,7 +41,7 @@ try {
             'description' => 'Your Description'
         )
     );
-    echo $ch;
+    echo $red;
 } catch (\Pingpp\Error\Base $e) {
     header('Status: ' . $e->getHttpStatus());
     echo($e->getHttpBody());
