@@ -15,8 +15,6 @@ if (empty($input_data['channel']) || empty($input_data['amount'])) {
 $channel = strtolower($input_data['channel']);
 $amount = $input_data['amount'];
 $orderNo = substr(md5(time()), 0, 12);
-//extra
-$extra = array('nick_name' => 'Nick Name', 'send_name' => 'Send Name');
 
 /*
  * To set your key
@@ -34,7 +32,10 @@ try {
             'amount'      => $amount,
             'order_no'    => $orderNo,
             'currency'    => 'cny',
-            'extra'       => $extra,
+            'extra'       => array(
+                'nick_name' => 'Nick Name',
+                'send_name' => 'Send Name'
+            ),
             'recipient'   => 'Openid',
             'channel'     => $channel,
             'app'         => array('id' => 'YOUR-APP-ID'),

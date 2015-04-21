@@ -19,18 +19,8 @@ class WxpubOAuth
     public static function getOpenid($app_id, $app_secret, $code)
     {
         $url = WxpubOAuth::_createOauthUrlForOpenid($app_id, $app_secret, $code);
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        $res = curl_exec($ch);
-        curl_close($ch);
-
-        $data = json_decode($res,true);
+        $res = self::_getRequest($url);
+        $data = json_decode($res, true);
 
         return $data['openid'];
     }
@@ -47,14 +37,15 @@ class WxpubOAuth
      */
     public static function createOauthUrlForCode($app_id, $redirect_url, $more_info = false)
     {
-        $urlObj["appid"] = $app_id;
-        $urlObj["redirect_uri"] = "$redirect_url";
-        $urlObj["response_type"] = "code";
-        $urlObj["scope"] = $more_info ? "snsapi_userinfo" : "snsapi_base";
-        $urlObj["state"] = "STATE"."#wechat_redirect";
+        $urlObj = array();
+        $urlObj['appid'] = $app_id;
+        $urlObj['redirect_uri'] = $redirect_url;
+        $urlObj['response_type'] = 'code';
+        $urlObj['scope'] = $more_info ? 'snsapi_userinfo' : 'snsapi_base';
+        $urlObj['state'] = 'STATE' . '#wechat_redirect';
         $queryStr = http_build_query($urlObj);
 
-        return "https://open.weixin.qq.com/connect/oauth2/authorize?".$queryStr;
+        return 'https://open.weixin.qq.com/connect/oauth2/authorize?' . $queryStr;
     }
 
     /**
@@ -66,12 +57,81 @@ class WxpubOAuth
      */
     private static function _createOauthUrlForOpenid($app_id, $app_secret, $code)
     {
-        $urlObj["appid"] = $app_id;
-        $urlObj["secret"] = $app_secret;
-        $urlObj["code"] = $code;
-        $urlObj["grant_type"] = "authorization_code";
+        $urlObj = array();
+        $urlObj['appid'] = $app_id;
+        $urlObj['secret'] = $app_secret;
+        $urlObj['code'] = $code;
+        $urlObj['grant_type'] = 'authorization_code';
         $queryStr = http_build_query($urlObj);
 
-        return "https://api.weixin.qq.com/sns/oauth2/access_token?".$queryStr;
+        return 'https://api.weixin.qq.com/sns/oauth2/access_token?' . $queryStr;
+    }
+
+    /**
+     * GET 请求
+     */
+    private static function _getRequest($url) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        $res = curl_exec($ch);
+        curl_close($ch);
+
+        return $res;
+    }
+
+    /**
+     * 获取微信公众号 jsapi_ticket
+     * @param $app_id 微信公众号应用唯一标识
+     * @param $app_secret 微信公众号应用密钥（注意保密）
+     * @return array 包含 jsapi_ticket 的数组或者错误信息
+     */
+    public static function getJsapiTicket($app_id, $app_secret) {
+        $urlObj = array();
+        $urlObj['appid'] = $app_id;
+        $urlObj['secret'] = $app_secret;
+        $urlObj['grant_type'] = 'client_credential';
+        $queryStr = http_build_query($urlObj);
+        $access_token_url = 'https://api.weixin.qq.com/cgi-bin/token?' . $queryStr;
+        $resp = self::_getRequest($access_token_url);
+        $resp = json_decode($resp, true);
+        if (!is_array($resp) || isset($resp['errcode'])) {
+            return $resp;
+        }
+
+        $urlObj = array();
+        $urlObj['access_token'] = $resp['access_token'];
+        $urlObj['type'] = 'jsapi';
+        $queryStr = http_build_query($urlObj);
+        $jsapiTicketUrl = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?' . $queryStr;
+        $resp = self::_getRequest($jsapiTicketUrl);
+
+        return json_decode($resp, true);
+    }
+
+    /**
+     * 生成微信公众号 js sdk signature
+     * @param $charge charge
+     * @param $jsapi_ticket
+     * @return string signature 字符串
+     */
+    public static function getSignature($charge, $jsapi_ticket) {
+        if (!isset($charge['credential']) || !isset($charge['credential']['wx_pub'])) {
+            return null;
+        }
+        $credential = $charge['credential']['wx_pub'];
+        $array_to_sign = array();
+        $array_to_sign[] = 'jsapi_ticket=' . $jsapi_ticket;
+        $array_to_sign[] = 'noncestr=' . $credential['nonceStr'];
+        $array_to_sign[] = 'timestamp=' . $credential['timeStamp'];
+        $request_uri = explode('#', $_SERVER['REQUEST_URI']);
+        $array_to_sign[] = 'url=' . $_SERVER['REQUEST_SCHEME'] . '://'
+                         . $_SERVER['HTTP_HOST']
+                         . $request_uri[0];
+        return sha1(implode('&', $array_to_sign));
     }
 }
