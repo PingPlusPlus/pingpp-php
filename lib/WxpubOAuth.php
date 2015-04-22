@@ -96,8 +96,8 @@ class WxpubOAuth
         $urlObj['secret'] = $app_secret;
         $urlObj['grant_type'] = 'client_credential';
         $queryStr = http_build_query($urlObj);
-        $access_token_url = 'https://api.weixin.qq.com/cgi-bin/token?' . $queryStr;
-        $resp = self::_getRequest($access_token_url);
+        $accessTokenUrl = 'https://api.weixin.qq.com/cgi-bin/token?' . $queryStr;
+        $resp = self::_getRequest($accessTokenUrl);
         $resp = json_decode($resp, true);
         if (!is_array($resp) || isset($resp['errcode'])) {
             return $resp;
@@ -124,14 +124,14 @@ class WxpubOAuth
             return null;
         }
         $credential = $charge['credential']['wx_pub'];
-        $array_to_sign = array();
-        $array_to_sign[] = 'jsapi_ticket=' . $jsapi_ticket;
-        $array_to_sign[] = 'noncestr=' . $credential['nonceStr'];
-        $array_to_sign[] = 'timestamp=' . $credential['timeStamp'];
-        $request_uri = explode('#', $_SERVER['REQUEST_URI']);
-        $array_to_sign[] = 'url=' . $_SERVER['REQUEST_SCHEME'] . '://'
+        $arrayToSign = array();
+        $arrayToSign[] = 'jsapi_ticket=' . $jsapi_ticket;
+        $arrayToSign[] = 'noncestr=' . $credential['nonceStr'];
+        $arrayToSign[] = 'timestamp=' . $credential['timeStamp'];
+        $requestUri = explode('#', $_SERVER['REQUEST_URI']);
+        $arrayToSign[] = 'url=' . $_SERVER['REQUEST_SCHEME'] . '://'
                          . $_SERVER['HTTP_HOST']
-                         . $request_uri[0];
-        return sha1(implode('&', $array_to_sign));
+                         . $requestUri[0];
+        return sha1(implode('&', $arrayToSign));
     }
 }
