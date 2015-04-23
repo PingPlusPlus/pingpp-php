@@ -12,7 +12,7 @@ class RedEnvelope extends ApiResource
      */
     public static function className()
     {
-        return 'red_envelopes';
+        return 'red_envelope';
     }
 
     /**
