@@ -116,8 +116,10 @@ $jsapi_ticket_arr = \Pingpp\WxpubOAuth::getJsapiTicket($wx_app_id, $wx_app_secre
 $ticket = $jsapi_ticket_arr['ticket'];
 ```
 **正常情况下，`jsapi_ticket` 的有效期为 7200 秒。由于获取 `jsapi_ticket` 的 api 调用次数非常有限，频繁刷新 `jsapi_ticket` 会导致 api 调用受限，影响自身业务，开发者必须在自己的服务器全局缓存 `jsapi_ticket`。**
+
+_下面方法中 `$url` 是当前网页的 URL，不包含 `#` 及其后面部分_
 ```php
-$signature = \Pingpp\WxpubOauth::getSignature($charge, $ticket);
+$signature = \Pingpp\WxpubOauth::getSignature($charge, $ticket, $url);
 ```
 然后在 HTML5 SDK 里调用
 ```js

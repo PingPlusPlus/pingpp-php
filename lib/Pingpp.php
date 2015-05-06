@@ -21,7 +21,7 @@ class Pingpp
      */
     public static $verifySslCerts = true;
 
-    const VERSION = '2.0.3';
+    const VERSION = '2.0.4';
 
     /**
      * @return string The API key used for requests.

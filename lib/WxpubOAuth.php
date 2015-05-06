@@ -117,9 +117,10 @@ class WxpubOAuth
      * 生成微信公众号 js sdk signature
      * @param $charge charge
      * @param $jsapi_ticket
+     * @param $url    是当前网页的 URL，不包含 # 及其后面部分
      * @return string signature 字符串
      */
-    public static function getSignature($charge, $jsapi_ticket) {
+    public static function getSignature($charge, $jsapi_ticket, $url = NULL) {
         if (!isset($charge['credential']) || !isset($charge['credential']['wx_pub'])) {
             return null;
         }
@@ -128,10 +129,15 @@ class WxpubOAuth
         $arrayToSign[] = 'jsapi_ticket=' . $jsapi_ticket;
         $arrayToSign[] = 'noncestr=' . $credential['nonceStr'];
         $arrayToSign[] = 'timestamp=' . $credential['timeStamp'];
-        $requestUri = explode('#', $_SERVER['REQUEST_URI']);
-        $arrayToSign[] = 'url=' . $_SERVER['REQUEST_SCHEME'] . '://'
-                         . $_SERVER['HTTP_HOST']
-                         . $requestUri[0];
+        if (!$url) {
+            $requestUri = explode('#', $_SERVER['REQUEST_URI']);
+            $scheme = isset($_SERVER['REQUEST_SCHEME'])
+                      ? $_SERVER['REQUEST_SCHEME']
+                      : (isset($_SERVER['HTTPS'])
+                         && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http');
+            $url = $scheme . '://' . $_SERVER['HTTP_HOST'] . $requestUri[0];
+        }
+        $arrayToSign[] = 'url=' . $url;
         return sha1(implode('&', $arrayToSign));
     }
 }
