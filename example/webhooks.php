@@ -7,17 +7,16 @@
  */
 
 $input_data = json_decode(file_get_contents("php://input"), true);
-if($input_data['object'] == 'charge'&& $input_data['paid']==true)
+if($input_data['type'] == 'charge.succeeded'&& $input_data['data']['object']['paid'] == true)
 {
     //TODO update database
-    echo 'success';
+    http_response_code(200);// PHP 5.4 or greater
+
 }
-else if($input_data['object'] == 'refund'&& $input_data['succeed']==true)
+
+else if($input_data['type'] == 'refund.succeeded'&& $input_data['data']['object']['succeed'] == true)
 {
     //TODO update database
-    echo 'success';
+    http_response_code(200);// PHP 5.4 or greater
 }
-else
-{
-    echo 'fail';
-}
+

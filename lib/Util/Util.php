@@ -90,7 +90,8 @@ abstract class Util
             'red_envelope'=>'Pingpp\\RedEnvelope',
             'charge' => 'Pingpp\\Charge',
             'list' => 'Pingpp\\Collection',
-            'refund' => 'Pingpp\\Refund'
+            'refund' => 'Pingpp\\Refund',
+            'event' => 'Pingpp\\Event'
         );
         if (self::isList($resp)) {
             $mapped = array();

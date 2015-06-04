@@ -38,6 +38,8 @@ require(dirname(__FILE__) . '/lib/Collection.php');
 require(dirname(__FILE__) . '/lib/Charge.php');
 require(dirname(__FILE__) . '/lib/Refund.php');
 require(dirname(__FILE__) . '/lib/RedEnvelope.php');
+require(dirname(__FILE__) . '/lib/Event.php');
+
 
 // wx_pub OAuth 2.0 method
 require(dirname(__FILE__) . '/lib/WxpubOAuth.php');
