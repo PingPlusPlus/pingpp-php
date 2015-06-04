@@ -126,4 +126,15 @@ $signature = \Pingpp\WxpubOauth::getSignature($charge, $ticket, $url);
 pingpp.createPayment(charge, callback, signature, false);
 ```
 
+
+### event 查询
+
+```php
+\Pingpp\Event::retrieve('EVT_ID');
+```
+
+### event 列表查询
+```php
+\Pingpp\Event::all(array('type' => 'charge.succeeded'));
+```
 **详细信息请参考 [API 文档](https://pingxx.com/document/api?php)。**
