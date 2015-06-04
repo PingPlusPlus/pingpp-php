@@ -15,7 +15,7 @@ class Pingpp
     /**
      * @var string|null The version of the Pingpp API to use for requests.
      */
-    public static $apiVersion = "2015-04-01";
+    public static $apiVersion = "2015-06-03";
     /**
      * @var boolean Defaults to true.
      */
