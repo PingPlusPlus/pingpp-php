@@ -74,6 +74,7 @@ $ch = \Pingpp\Charge::retrieve('CHARGE_ID');
 $ch->refunds->retrieve('REFUND_ID');
 ```
 
+
 ```php
 $ch = \Pingpp\Charge::retrieve('CHARGE_ID');
 $ch->refunds->all(array('limit' => 5));
@@ -100,11 +101,12 @@ $ch->refunds->all(array('limit' => 5));
 );
 ```
 
-### 查询
+### 查询指定微信红包
 ```php
 \Pingpp\RedEnvelope::retrieve('RED_ID');
 ```
 
+### 查询微信红包列表
 ```php
 \Pingpp\RedEnvelope::all(array('limit' => 5));
 ```
@@ -138,3 +140,31 @@ pingpp.createPayment(charge, callback, signature, false);
 \Pingpp\Event::all(array('type' => 'charge.succeeded'));
 ```
 **详细信息请参考 [API 文档](https://pingxx.com/document/api?php)。**
+
+
+### 微信企业付款
+```php
+\Pingpp\Transfer::create(
+    array(
+           'amount'   => 100,
+           'order_no'  => '123456d7890',
+           'currency'  => 'cny',
+           'channel'   => 'wx_pub',
+           'app'       => array('id' => 'YOUR-APP-ID'),
+           'type'      => 'b2c',
+           'recipient' => 'o9zpMs9jIaLynQY9N6yxcZ',
+           'description'=>'testing',
+           'extra'=>array('user_name'=>'User Name', 'force_check'=>true)
+
+       )
+);
+```
+
+### 查询指定 transfer
+```php
+\Pingpp\Transfer::retrieve('TR_ID');
+```
+### 查询 transfer 列表
+```php
+\Pingpp\Transfer::all(array('limit' => 5));
+```
