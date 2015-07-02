@@ -91,7 +91,8 @@ abstract class Util
             'charge' => 'Pingpp\\Charge',
             'list' => 'Pingpp\\Collection',
             'refund' => 'Pingpp\\Refund',
-            'event' => 'Pingpp\\Event'
+            'event' => 'Pingpp\\Event',
+            'transfer' => 'Pingpp\\Transfer'
         );
         if (self::isList($resp)) {
             $mapped = array();

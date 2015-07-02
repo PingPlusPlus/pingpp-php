@@ -272,7 +272,6 @@ class ApiRequestor
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_CONNECTTIMEOUT] = 30;
         $opts[CURLOPT_TIMEOUT] = 80;
-        $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_HTTPHEADER] = $headers;
         if (!Pingpp::$verifySslCerts) {
             $opts[CURLOPT_SSL_VERIFYPEER] = false;

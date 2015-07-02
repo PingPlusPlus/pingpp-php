@@ -7,14 +7,6 @@
 */
 
 require_once(dirname(__FILE__) . '/../init.php');
-$input_data = json_decode(file_get_contents('php://input'), true);
-if (empty($input_data['channel']) || empty($input_data['amount'])) {
-    exit();
-}
-
-$channel = strtolower($input_data['channel']);
-$amount = $input_data['amount'];
-$orderNo = substr(md5(time()), 0, 12);
 
 /*
  * To set your key
@@ -29,15 +21,15 @@ try {
         array(
             'subject'     => 'Your Subject',
             'body'        => 'Your Body',
-            'amount'      => $amount,
-            'order_no'    => $orderNo,
+            'amount'      => 100,
+            'order_no'    => '1234567890',
             'currency'    => 'cny',
             'extra'       => array(
                 'nick_name' => 'Nick Name',
                 'send_name' => 'Send Name'
             ),
             'recipient'   => 'Openid',
-            'channel'     => $channel,
+            'channel'     => 'wx_pub',
             'app'         => array('id' => 'YOUR-APP-ID'),
             'description' => 'Your Description'
         )

@@ -6,17 +6,22 @@
  * 该代码仅供学习和研究 Ping++ SDK 使用，只是提供一个参考。
  */
 
-$input_data = json_decode(file_get_contents("php://input"), true);
-if($input_data['type'] == 'charge.succeeded'&& $input_data['data']['object']['paid'] == true)
+$input_data = json_decode(file_get_contents('php://input'), true);
+if($input_data['type'] == 'charge.succeeded')
 {
     //TODO update database
     http_response_code(200);// PHP 5.4 or greater
 
 }
 
-else if($input_data['type'] == 'refund.succeeded'&& $input_data['data']['object']['succeed'] == true)
+else if($input_data['type'] == 'refund.succeeded')
 {
     //TODO update database
     http_response_code(200);// PHP 5.4 or greater
+}
+else
+{
+    //TODO update database
+    http_response_code(500);// PHP 5.4 or greater
 }
 

@@ -13,6 +13,6 @@ $ch = \Pingpp\Charge::retrieve('CHARGE_ID');
 $ch->refunds->create(
     array(
         'amount' => 10,
-        'description' => 'apple'
+        'description' => 'Your Descripton'
     )
 );
