@@ -1,3 +1,7 @@
+# 2.0.7
+* 修改：<br>
+补充 channel_error 错误类型
+
 # 2.0.6
 * 增加：<br>
 微信企业付款 transfer

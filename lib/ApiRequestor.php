@@ -143,20 +143,24 @@ class ApiRequestor
         $code = isset($error->code) ? $error->code : null;
 
         switch ($rcode) {
-        case 400:
-            if ($code == 'rate_limit') {
-                throw new Error\RateLimit(
+            case 400:
+                if ($code == 'rate_limit') {
+                    throw new Error\RateLimit(
+                        $msg, $param, $rcode, $rbody, $resp
+                    );
+                }
+            case 404:
+                throw new Error\InvalidRequest(
                     $msg, $param, $rcode, $rbody, $resp
                 );
-            }
-        case 404:
-            throw new Error\InvalidRequest(
-                $msg, $param, $rcode, $rbody, $resp
-            );
-        case 401:
-            throw new Error\Authentication($msg, $rcode, $rbody, $resp);
-        default:
-            throw new Error\Api($msg, $rcode, $rbody, $resp);
+            case 401:
+                throw new Error\Authentication($msg, $rcode, $rbody, $resp);
+            case 402:
+                throw new Error\Channel(
+                    $msg, $code, $param, $rcode, $rbody, $resp
+                );
+            default:
+                throw new Error\Api($msg, $rcode, $rbody, $resp);
         }
     }
 

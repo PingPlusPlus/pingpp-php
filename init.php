@@ -25,6 +25,7 @@ require(dirname(__FILE__) . '/lib/Error/ApiConnection.php');
 require(dirname(__FILE__) . '/lib/Error/Authentication.php');
 require(dirname(__FILE__) . '/lib/Error/InvalidRequest.php');
 require(dirname(__FILE__) . '/lib/Error/RateLimit.php');
+require(dirname(__FILE__) . '/lib/Error/Channel.php');
 
 // Plumbing
 require(dirname(__FILE__) . '/lib/Object.php');
