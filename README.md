@@ -9,7 +9,7 @@ PHP 版本 5.3 及以上
 
 ## 安装
 ### 使用 Composer
-在 `composer.json` 中添加以下代码
+在你自己的 `composer.json` 中添加以下代码
 ```
 {
   "require": {
