@@ -8,7 +8,7 @@
 
 require_once(dirname(__FILE__) . '/../init.php');
 
-\Pingpp\Pingpp::setApiKey('YOUR-KEY');
+\Pingpp\Pingpp::setApiKey('sk_test_ibbTe5jLGCi5rzfH4OqPW9KC');
 $ch = \Pingpp\Charge::retrieve('CHARGE_ID');
 $ch->refunds->create(
     array(

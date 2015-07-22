@@ -8,7 +8,7 @@
 
 require_once(dirname(__FILE__) . '/../init.php');
 
-\Pingpp\Pingpp::setApiKey('YOUR-KEY');
+\Pingpp\Pingpp::setApiKey('sk_test_ibbTe5jLGCi5rzfH4OqPW9KC');
 try {
     $tr = \Pingpp\Transfer::create(
         array(
@@ -16,7 +16,7 @@ try {
             'order_no'  => '123456d7890',
             'currency'  => 'cny',
             'channel'   => 'wx_pub',
-            'app'       => array('id' => 'YOUR-APP-ID'),
+            'app'       => array('id' => 'app_1Gqj58ynP0mHeX1q'),
             'type'      => 'b2c',
             'recipient' => 'o9zpMs9jIaLynQY9N6yxcZ',
             'description'=>'testing',

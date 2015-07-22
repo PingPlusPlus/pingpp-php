@@ -9,6 +9,7 @@
 require_once(dirname(__FILE__) . '/../init.php');
 $input_data = json_decode(file_get_contents('php://input'), true);
 if (empty($input_data['channel']) || empty($input_data['amount'])) {
+    echo 'channel or amount is empty';
     exit();
 }
 $channel = strtolower($input_data['channel']);
@@ -37,7 +38,7 @@ switch ($channel) {
         break;
     case 'upacp_wap':
         $extra = array(
-            'result_url' => 'http://www.yourdomain.com/result?code='
+            'result_url' => 'http://www.yourdomain.com/result'
         );
         break;
     case 'wx_pub':
@@ -50,9 +51,27 @@ switch ($channel) {
             'product_id' => 'Productid'
         );
         break;
+    case 'yeepay_wap':
+        $extra = array(
+            'product_category' => '1',
+            'identity_id'=> 'your identity_id',
+            'identity_type' => 1,
+            'terminal_type' => 1,
+            'terminal_id'=>'your terminal_id',
+            'user_ua'=>"your user_ua",
+            'result_url'=>'http://www.yourdomain.com/result'
+        );
+        break;
+    case 'jdpay_wap':
+        $extra = array(
+            'success_url' => 'http://www.yourdomain.com',
+            'fail_url'=> 'http://www.yourdomain.com',
+            'token' => 'dsafadsfasdfadsjuyhfnhujkijunhaf'
+        );
+        break;
 }
 
-\Pingpp\Pingpp::setApiKey('YOUR-KEY');
+\Pingpp\Pingpp::setApiKey('sk_test_ibbTe5jLGCi5rzfH4OqPW9KC');
 try {
     $ch = \Pingpp\Charge::create(
         array(
@@ -64,7 +83,7 @@ try {
             'extra'     => $extra,
             'channel'   => $channel,
             'client_ip' => $_SERVER['REMOTE_ADDR'],
-            'app'       => array('id' => 'YOUR-APP-ID')
+            'app'       => array('id' => 'app_1Gqj58ynP0mHeX1q')
         )
     );
     echo $ch;

@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/../init.php');
  * To set your key
  * key:the livekey or testkey from your app message from pingpp on the dashboard
  */
-\Pingpp\Pingpp::setApiKey('YOUR-KEY');
+\Pingpp\Pingpp::setApiKey('sk_test_ibbTe5jLGCi5rzfH4OqPW9KC');
 try {
     /*
      * To Create RedEnvelope
@@ -30,7 +30,7 @@ try {
             ),
             'recipient'   => 'Openid',
             'channel'     => 'wx_pub',
-            'app'         => array('id' => 'YOUR-APP-ID'),
+            'app'         => array('id' => 'app_1Gqj58ynP0mHeX1q'),
             'description' => 'Your Description'
         )
     );
