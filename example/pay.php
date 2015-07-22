@@ -58,7 +58,7 @@ switch ($channel) {
             'identity_type' => 1,
             'terminal_type' => 1,
             'terminal_id'=>'your terminal_id',
-            'user_ua'=>"your user_ua",
+            'user_ua'=>'your user_ua',
             'result_url'=>'http://www.yourdomain.com/result'
         );
         break;
