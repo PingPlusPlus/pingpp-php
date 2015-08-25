@@ -28,26 +28,10 @@ class ApiRequestor
         $this->_apiBase = $apiBase;
     }
 
-    /**
-     * @param string|mixed $value A string to UTF8-encode.
-     *
-     * @returns string|mixed The UTF8-encoded string, or the object passed in if
-     *    it wasn't a string.
-     */
-    public static function utf8($value)
-    {
-        if (is_string($value)
-            && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8") {
-                return utf8_encode($value);
-            } else {
-                return $value;
-            }
-    }
-
     private static function _encodeObjects($d, $is_post = false)
     {
         if ($d instanceof ApiResource) {
-            return self::utf8($d->id);
+            return Util\Util::utf8($d->id);
         } else if ($d === true && !$is_post) {
             return 'true';
         } else if ($d === false && !$is_post) {
@@ -58,7 +42,7 @@ class ApiRequestor
                 $res[$k] = self::_encodeObjects($v, $is_post);
             return $res;
         } else {
-            return self::utf8($d);
+            return Util\Util::utf8($d);
         }
     }
 
@@ -271,7 +255,7 @@ class ApiRequestor
             throw new Error\Api("Unrecognized method $method");
         }
 
-        $absUrl = self::utf8($absUrl);
+        $absUrl = Util\Util::utf8($absUrl);
         $opts[CURLOPT_URL] = $absUrl;
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_CONNECTTIMEOUT] = 30;

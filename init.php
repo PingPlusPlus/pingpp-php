@@ -41,7 +41,9 @@ require(dirname(__FILE__) . '/lib/Refund.php');
 require(dirname(__FILE__) . '/lib/RedEnvelope.php');
 require(dirname(__FILE__) . '/lib/Event.php');
 require(dirname(__FILE__) . '/lib/Transfer.php');
-
+require(dirname(__FILE__) . '/lib/Customer.php');
+require(dirname(__FILE__) . '/lib/Source.php');
+require(dirname(__FILE__) . '/lib/Card.php');
 
 // wx_pub OAuth 2.0 method
 require(dirname(__FILE__) . '/lib/WxpubOAuth.php');
