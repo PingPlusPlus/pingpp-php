@@ -41,7 +41,7 @@ require_once('/path/to/pingpp-php/init.php');
 $ch = \Pingpp\Charge::create(
     array(
         'order_no'  => '123456789',
-        'app'       => array('id' => 'YOUR-APP-ID'),
+        'app'       => array('id' => 'APP_ID'),
         'channel'   => 'alipay',
         'amount'    => 100,
         'client_ip' => '127.0.0.1',
@@ -53,7 +53,7 @@ $ch = \Pingpp\Charge::create(
 );
 ```
 
-### 查询
+### charge 查询
 ```php
 \Pingpp\Charge::retrieve('CHARGE_ID');
 ```
@@ -85,7 +85,7 @@ $ch->refunds->all(array('limit' => 5));
 \Pingpp\RedEnvelope::create(
     array(
         'order_no'  => '123456789',
-        'app'       => array('id' => 'YOUR-APP-ID'),
+        'app'       => array('id' => 'APP_ID'),
         'channel'   => 'wx_pub',
         'amount'    => 100,
         'currency'  => 'cny',
@@ -146,17 +146,16 @@ pingpp.createPayment(charge, callback, signature, false);
 ```php
 \Pingpp\Transfer::create(
     array(
-           'amount'   => 100,
-           'order_no'  => '123456d7890',
-           'currency'  => 'cny',
-           'channel'   => 'wx_pub',
-           'app'       => array('id' => 'YOUR-APP-ID'),
-           'type'      => 'b2c',
-           'recipient' => 'o9zpMs9jIaLynQY9N6yxcZ',
-           'description'=>'testing',
-           'extra'=>array('user_name'=>'User Name', 'force_check'=>true)
-
-       )
+        'amount' => 100,
+        'order_no' => '123456d7890',
+        'currency' => 'cny',
+        'channel' => 'wx_pub',
+        'app' => array('id' => 'APP_ID'),
+        'type' => 'b2c',
+        'recipient' => 'o9zpMs9jIaLynQY9N6yxcZ',
+        'description' => 'testing',
+        'extra' => array('user_name' => 'User Name', 'force_check' => true)
+    )
 );
 ```
 
@@ -164,7 +163,62 @@ pingpp.createPayment(charge, callback, signature, false);
 ```php
 \Pingpp\Transfer::retrieve('TR_ID');
 ```
+
 ### 查询 transfer 列表
 ```php
 \Pingpp\Transfer::all(array('limit' => 5));
+```
+
+### 查询卡片信息
+```php
+\Pingpp\CardInfo::query(array(
+    'app' => 'APP_ID',
+    'card_number' => 'ENCRYPTED_CARD_NUMBER'
+));
+```
+
+### 创建 customer
+```php
+\Pingpp\Customer::create(array(
+    'app' => 'APP_ID',
+    'source' => 'TOKEN_ID'
+));
+```
+
+### 查询 customer
+```php
+\Pingpp\Customer::retrieve('CUS_ID');
+```
+
+### 更新 customer
+```php
+$cus = \Pingpp\Customer::retrieve('CUS_ID');
+$cus['description'] = 'Customer Desscription';
+$cus->save();
+```
+
+### 删除 customer
+```php
+$cus = \Pingpp\Customer::retrieve('CUS_ID');
+$cus->delete();
+```
+
+### 创建 card
+```php
+$cus = \Pingpp\Customer::retrieve('CUS_ID');
+$cus->sources->create(array(
+    'source' => 'TOKEN_ID'
+));
+```
+
+### 查询 card
+```php
+$cus = \Pingpp\Customer::retrieve('CUS_ID');
+$card = $cus->sources->retrieve('CARD_ID');
+```
+
+### 删除 card
+```php
+$cus = \Pingpp\Customer::retrieve('CUS_ID');
+$cus->sources->retrieve('CARD_ID')->delete();
 ```
