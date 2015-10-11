@@ -95,6 +95,9 @@ abstract class Util
             'transfer' => 'Pingpp\\Transfer',
             'customer' => 'Pingpp\\Customer',
             'card' => 'Pingpp\\Card',
+            'sms_code' => 'Pingpp\\SmsCode',
+            'card_info' => 'Pingpp\\CardInfo',
+            'token' => 'Pingpp\\Token'
         );
         if (self::isList($resp)) {
             $mapped = array();
