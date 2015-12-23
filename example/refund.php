@@ -6,7 +6,7 @@
  * 该代码仅供学习和研究 Ping++ SDK 使用，只是提供一个参考。
  */
 
-require_once(dirname(__FILE__) . '/../init.php');
+require dirname(__FILE__) . '/../init.php';
 
 \Pingpp\Pingpp::setApiKey('sk_test_ibbTe5jLGCi5rzfH4OqPW9KC');
 $ch = \Pingpp\Charge::retrieve('CHARGE_ID');

@@ -11,14 +11,6 @@ class ApiRequestor
 
     private $_apiBase;
 
-    private static $_preFlight = array();
-
-    private static function blacklistedCerts()
-    {
-        return array(
-        );
-    }
-
     public function __construct($apiKey = null, $apiBase = null)
     {
         $this->_apiKey = $apiKey;
@@ -150,11 +142,6 @@ class ApiRequestor
 
     private function _requestRaw($method, $url, $params, $headers)
     {
-        if (!array_key_exists($this->_apiBase, self::$_preFlight) ||
-            !self::$_preFlight[$this->_apiBase]) {
-            self::$_preFlight[$this->_apiBase] = $this->checkSslCert($this->_apiBase);
-        }
-
         $myApiKey = $this->_apiKey;
         if (!$myApiKey) {
             $myApiKey = Pingpp::$apiKey;
@@ -164,7 +151,7 @@ class ApiRequestor
             $msg = 'No API key provided.  (HINT: set your API key using '
                 . '"Pingpp::setApiKey(<API-KEY>)".  You can generate API keys from '
                 . 'the Pingpp web interface.  See https://pingxx.com/document/api for '
-                . 'details, or email support@pingxx.com if you have any questions.';
+                . 'details.';
             throw new Error\Authentication($msg);
         }
 
@@ -187,8 +174,11 @@ class ApiRequestor
         if (Pingpp::$apiVersion) {
             $defaultHeaders['Pingplusplus-Version'] = Pingpp::$apiVersion;
         }
-        if ($method == 'post') {
+        if ($method == 'post' || $method == 'put') {
             $defaultHeaders['Content-type'] = 'application/json;charset=UTF-8';
+        }
+        if ($method == 'put') {
+            $defaultHeaders['X-HTTP-Method-Override'] = 'PUT';
         }
         $requestHeaders = Util\Util::getRequestHeaders();
         if (isset($requestHeaders['Pingpp-Sdk-Version'])) {
@@ -242,10 +232,13 @@ class ApiRequestor
                 $encoded = self::encode($params);
                 $absUrl = "$absUrl?$encoded";
             }
-        } else if ($method == 'post') {
+        } elseif ($method == 'post') {
             $opts[CURLOPT_POST] = 1;
             $opts[CURLOPT_POSTFIELDS] = json_encode($params);
-        } else if ($method == 'delete') {
+        } elseif ($method == 'put') {
+            $opts[CURLOPT_CUSTOMREQUEST] = 'PUT';
+            $opts[CURLOPT_POSTFIELDS] = json_encode($params);
+        } elseif ($method == 'delete') {
             $opts[CURLOPT_CUSTOMREQUEST] = 'DELETE';
             if (count($params) > 0) {
                 $encoded = self::encode($params);
@@ -313,7 +306,7 @@ class ApiRequestor
             $msg = "Could not connect to Pingpp ($apiBase).  Please check your "
                 . "internet connection and try again.  If this problem persists, "
                 . "you should check Pingpp's service status at "
-                . "https://pingxx.com, or";
+                . "https://pingxx.com/status, or";
             break;
         case CURLE_SSL_CACERT:
         case CURLE_SSL_PEER_CERTIFICATE:
@@ -330,87 +323,6 @@ class ApiRequestor
 
         $msg .= "\n\n(Network error [errno $errno]: $message)";
         throw new Error\ApiConnection($msg);
-    }
-
-    private function checkSslCert($url)
-    {
-        /* Preflight the SSL certificate presented by the backend. This isn't 100%
-         * bulletproof, in that we're not actually validating the transport used to
-         * communicate with Pingpp, merely that the first attempt to does not use a
-         * revoked certificate.
-
-         * Unfortunately the interface to OpenSSL doesn't make it easy to check the
-         * certificate before sending potentially sensitive data on the wire. This
-         * approach raises the bar for an attacker significantly.
-         */
-
-        if (!function_exists('stream_context_get_params') ||
-            !function_exists('stream_socket_enable_crypto')) {
-            error_log(
-                'Warning: This version of PHP is too old to check SSL certificates '.
-                'correctly. Pingpp cannot guarantee that the server has a '.
-                'certificate which is not blacklisted'
-            );
-            return true;
-        }
-
-        $url = parse_url($url);
-        $port = isset($url["port"]) ? $url["port"] : 443;
-        $url = "ssl://{$url["host"]}:{$port}";
-
-        $sslContext = stream_context_create(
-            array('ssl' => array(
-                'capture_peer_cert' => true,
-                'verify_peer'   => true,
-                'cafile'        => $this->caBundle(),
-            ))
-        );
-        $result = stream_socket_client(
-            $url, $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $sslContext
-        );
-        if ($errno !== 0) {
-            $apiBase = Pingpp::$apiBase;
-            throw new Error\ApiConnection(
-                'Could not connect to Pingpp ($apiBase).  Please check your '.
-                'internet connection and try again.  If this problem persists, '.
-                'you should check Pingpp\'s service status at '.
-                'https://pingxx.com. Reason was: '.$errstr
-            );
-        }
-
-        $params = stream_context_get_params($result);
-
-        $cert = $params['options']['ssl']['peer_certificate'];
-
-        openssl_x509_export($cert, $pem_cert);
-
-        if (self::isBlackListed($pem_cert)) {
-            throw new Error\ApiConnection(
-                'Invalid server certificate. You tried to connect to a server '.
-                'that has a revoked SSL certificate, which means we cannot '.
-                'securely send data to that server.  Please email '.
-                'support@pingxx.com if you need help connecting to the '.
-                'correct API server.'
-            );
-        }
-
-        return true;
-    }
-
-    /* Checks if a valid PEM encoded certificate is blacklisted
-     * @return boolean
-     */
-    public static function isBlackListed($certificate)
-    {
-        $certificate = trim($certificate);
-        $lines = explode("\n", $certificate);
-
-        // Kludgily remove the PEM padding
-        array_shift($lines); array_pop($lines);
-
-        $der_cert = base64_decode(implode("", $lines));
-        $fingerprint = sha1($der_cert);
-        return in_array($fingerprint, self::blacklistedCerts());
     }
 
     private function caBundle()

@@ -6,17 +6,14 @@
  * 该代码仅供学习和研究 Ping++ SDK 使用，只是提供一个参考。
 */
 
-require_once(dirname(__FILE__) . '/../init.php');
+require dirname(__FILE__) . '/../init.php';
 
-/*
- * To set your key
- * key:the livekey or testkey from your app message from pingpp on the dashboard
- */
-\Pingpp\Pingpp::setApiKey('sk_test_ibbTe5jLGCi5rzfH4OqPW9KC');
+// api_key、app_id 请从 [Dashboard](https://dashboard.pingxx.com) 获取
+$api_key = 'sk_test_ibbTe5jLGCi5rzfH4OqPW9KC';
+$app_id = 'app_1Gqj58ynP0mHeX1q';
+
+\Pingpp\Pingpp::setApiKey($api_key);
 try {
-    /*
-     * To Create RedEnvelope
-     */
     $red = \Pingpp\RedEnvelope::create(
         array(
             'subject'     => 'Your Subject',
@@ -30,7 +27,7 @@ try {
             ),
             'recipient'   => 'Openid',
             'channel'     => 'wx_pub',
-            'app'         => array('id' => 'app_1Gqj58ynP0mHeX1q'),
+            'app'         => array('id' => $app_id),
             'description' => 'Your Description'
         )
     );

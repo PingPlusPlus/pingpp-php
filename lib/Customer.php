@@ -57,6 +57,4 @@ class Customer extends ApiResource
     {
         return $this->_delete($params, $opts);
     }
-
-    
 }

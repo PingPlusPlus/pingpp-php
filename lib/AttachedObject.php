@@ -3,7 +3,7 @@
 namespace Pingpp;
 
 // e.g. metadata on Pingpp objects.
-class AttachedObject extends Object
+class AttachedObject extends PingppObject
 {
     /**
      * Updates this object.

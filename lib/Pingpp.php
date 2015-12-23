@@ -11,7 +11,7 @@ class Pingpp
     /**
      * @var string The base URL for the Pingpp API.
      */
-    public static $apiBase = 'https://api.pingxx.com/';
+    public static $apiBase = 'https://api.pingxx.com';
     /**
      * @var string|null The version of the Pingpp API to use for requests.
      */
@@ -21,7 +21,7 @@ class Pingpp
      */
     public static $verifySslCerts = true;
 
-    const VERSION = '2.1.0';
+    const VERSION = '2.1.1';
 
     /**
      * @return string The API key used for requests.

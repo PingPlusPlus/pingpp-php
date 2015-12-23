@@ -2,7 +2,7 @@
 
 namespace Pingpp;
 
-abstract class ApiResource extends Object
+abstract class ApiResource extends PingppObject
 {
     private static $HEADERS_TO_PERSIST = array('Pingpp-Version' => true);
 
@@ -140,7 +140,7 @@ abstract class ApiResource extends Object
         $params = $this->serializeParameters();
         if (count($params) > 0) {
             $url = $this->instanceUrl();
-            list($response, $opts) = $this->_request('post', $url, $params, $options);
+            list($response, $opts) = $this->_request('put', $url, $params, $options);
             $this->refreshFrom($response, $opts);
         }
         return $this;

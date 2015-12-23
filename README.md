@@ -193,7 +193,7 @@ pingpp.createPayment(charge, callback, signature, false);
 ### 更新 customer
 ```php
 $cus = \Pingpp\Customer::retrieve('CUS_ID');
-$cus['description'] = 'Customer Desscription';
+$cus['description'] = 'Customer Description';
 $cus->save();
 ```
 

@@ -2,7 +2,7 @@
 
 namespace Pingpp\Util;
 
-use Pingpp\Object;
+use Pingpp\PingppObject;
 use stdClass;
 
 abstract class Util
@@ -41,7 +41,7 @@ abstract class Util
             if ($k[0] == '_') {
                 continue;
             }
-            if ($v instanceof Object) {
+            if ($v instanceof PingppObject) {
                 $results[$k] = $keep_object ? $v->__toStdObject(true) : $v->__toArray(true);
             } else if (is_array($v)) {
                 $results[$k] = self::convertPingppObjectToArray($v, $keep_object);
@@ -66,7 +66,7 @@ abstract class Util
             if ($k[0] == '_') {
                 continue;
             }
-            if ($v instanceof Object) {
+            if ($v instanceof PingppObject) {
                 $results->$k = $v->__toStdObject(true);
             } else if (is_array($v)) {
                 $results->$k = self::convertPingppObjectToArray($v, true);
@@ -82,7 +82,7 @@ abstract class Util
      *
      * @param stdObject $resp The response from the Pingpp API.
      * @param array $opts
-     * @return Object|array
+     * @return PingppObject|array
      */
     public static function convertToPingppObject($resp, $opts)
     {
@@ -110,7 +110,7 @@ abstract class Util
                 && isset($types[$resp->object])) {
                     $class = $types[$resp->object];
                 } else {
-                    $class = 'Pingpp\\Object';
+                    $class = 'Pingpp\\PingppObject';
                 }
             return $class::constructFrom($resp, $opts);
         } else {

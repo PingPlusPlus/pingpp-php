@@ -6,9 +6,7 @@
  * Time: 17:30
  */
 
-require_once(dirname(__FILE__) . '/../init.php');
-
-
+require dirname(__FILE__) . '/../init.php';
 
 \Pingpp\Pingpp::setApiKey('sk_test_ibbTe5jLGCi5rzfH4OqPW9KC');
 

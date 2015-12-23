@@ -28,7 +28,8 @@ require(dirname(__FILE__) . '/lib/Error/RateLimit.php');
 require(dirname(__FILE__) . '/lib/Error/Channel.php');
 
 // Plumbing
-require(dirname(__FILE__) . '/lib/Object.php');
+require(dirname(__FILE__) . '/lib/JsonSerializable.php');
+require(dirname(__FILE__) . '/lib/PingppObject.php');
 require(dirname(__FILE__) . '/lib/ApiRequestor.php');
 require(dirname(__FILE__) . '/lib/ApiResource.php');
 require(dirname(__FILE__) . '/lib/SingletonApiResource.php');

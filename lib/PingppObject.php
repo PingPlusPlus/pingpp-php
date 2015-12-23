@@ -5,7 +5,7 @@ namespace Pingpp;
 use ArrayAccess;
 use InvalidArgumentException;
 
-class Object implements ArrayAccess
+class PingppObject implements ArrayAccess, JsonSerializable
 {
     /**
      * @var array Attributes that should not be sent to the API because they're
@@ -133,7 +133,7 @@ class Object implements ArrayAccess
      * @param stdObject $values
      * @param array $opts
      *
-     * @return Object The object constructed from the given values.
+     * @return PingppObject The object constructed from the given values.
      */
     public static function constructFrom($values, $opts)
     {
@@ -200,11 +200,16 @@ class Object implements ArrayAccess
 
         // Get nested updates.
         foreach (self::$nestedUpdatableAttributes->toArray() as $property) {
-            if (isset($this->$property) && $this->$property instanceOf Object) {
+            if (isset($this->$property) && $this->$property instanceOf PingppObject) {
                 $params[$property] = $this->$property->serializeParameters();
             }
         }
         return $params;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->__toStdObject();
     }
 
     public function __toJSON()
@@ -235,4 +240,4 @@ class Object implements ArrayAccess
 }
 
 
-Object::init();
+PingppObject::init();
