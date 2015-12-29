@@ -22,6 +22,11 @@ $channel = strtolower($input_data['channel']);
 $amount = $input_data['amount'];
 $orderNo = substr(md5(time()), 0, 12);
 
+// 设置请求签名密钥，密钥对需要你自己用 openssl 工具生成，把公钥填写到 https://dashboard.pingxx.com
+\Pingpp\Pingpp::setPrivateKeyPath(__DIR__ . '/your_rsa_private_key.pem');
+// 也可以设置私钥内容
+// \Pingpp\Pingpp::setPrivateKey(file_get_contents(__DIR__ . '/your_rsa_private_key.pem'));
+
 /**
  * $extra 在使用某些渠道的时候，需要填入相应的参数，其它渠道则是 array()。
  * 以下 channel 仅为部分示例，未列出的 channel 请查看文档 https://pingxx.com/document/api#api-c-new

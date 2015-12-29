@@ -226,18 +226,27 @@ class ApiRequestor
         $curl = curl_init();
         $method = strtolower($method);
         $opts = array();
+        $requestSignature = NULL;
         if ($method == 'get') {
             $opts[CURLOPT_HTTPGET] = 1;
             if (count($params) > 0) {
                 $encoded = self::encode($params);
                 $absUrl = "$absUrl?$encoded";
             }
-        } elseif ($method == 'post') {
-            $opts[CURLOPT_POST] = 1;
-            $opts[CURLOPT_POSTFIELDS] = json_encode($params);
-        } elseif ($method == 'put') {
-            $opts[CURLOPT_CUSTOMREQUEST] = 'PUT';
-            $opts[CURLOPT_POSTFIELDS] = json_encode($params);
+        } elseif ($method == 'post' || $method == 'put') {
+            if ($method == 'post') {
+                $opts[CURLOPT_POST] = 1;
+            } else {
+                $opts[CURLOPT_CUSTOMREQUEST] = 'PUT';
+            }
+            $rawRequestBody = json_encode($params);
+            $opts[CURLOPT_POSTFIELDS] = $rawRequestBody;
+            if ($this->privateKey()) {
+                $signResult = openssl_sign($rawRequestBody, $requestSignature, $this->privateKey(), 'sha256');
+                if (!$signResult) {
+                    throw new Error\Api("Generate signature failed");
+                }
+            }
         } elseif ($method == 'delete') {
             $opts[CURLOPT_CUSTOMREQUEST] = 'DELETE';
             if (count($params) > 0) {
@@ -246,6 +255,10 @@ class ApiRequestor
             }
         } else {
             throw new Error\Api("Unrecognized method $method");
+        }
+
+        if ($requestSignature) {
+            $headers[] = 'Pingplusplus-Signature: ' . base64_encode($requestSignature);
         }
 
         $absUrl = Util\Util::utf8($absUrl);
@@ -328,5 +341,19 @@ class ApiRequestor
     private function caBundle()
     {
         return dirname(__FILE__) . '/../data/ca-certificates.crt';
+    }
+
+    private function privateKey()
+    {
+        if (!Pingpp::$privateKey) {
+            if (!Pingpp::$privateKeyPath) {
+                return NULL;
+            }
+            if (!file_exists(Pingpp::$privateKeyPath)) {
+                throw new Error\Api('Private key file not found at: ' . Pingpp::$privateKeyPath);
+            }
+            Pingpp::$privateKey = file_get_contents(Pingpp::$privateKeyPath);
+        }
+        return Pingpp::$privateKey;
     }
 }

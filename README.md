@@ -1,7 +1,7 @@
 Pingpp PHP SDK
 =================
 ## 简介
-lib 文件夹下是 PHP SDK 文件，<br>
+lib 文件夹下是 PHP SDK 文件，  
 example 文件夹里面是简单的接入示例，该示例仅供参考。
 
 ## 版本要求
@@ -34,6 +34,12 @@ require_once('/path/to/pingpp-php/init.php');
 ### 初始化
 ```php
 \Pingpp\Pingpp::setApiKey('YOUR-KEY');
+```
+
+### 设置请求签名密钥
+密钥需要你自己生成，公钥请填写到 [Ping++ Dashboard](https://dashboard.pingxx.com)
+```php
+\Pingpp\Pingpp::setPrivateKeyPath('/path/to/your_rsa_private_key.pem');
 ```
 
 ### 支付
@@ -128,7 +134,6 @@ $signature = \Pingpp\WxpubOauth::getSignature($charge, $ticket, $url);
 pingpp.createPayment(charge, callback, signature, false);
 ```
 
-
 ### event 查询
 
 ```php
@@ -140,7 +145,6 @@ pingpp.createPayment(charge, callback, signature, false);
 \Pingpp\Event::all(array('type' => 'charge.succeeded'));
 ```
 **详细信息请参考 [API 文档](https://pingxx.com/document/api?php)。**
-
 
 ### 微信企业付款
 ```php

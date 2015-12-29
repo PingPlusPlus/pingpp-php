@@ -24,6 +24,16 @@ class Pingpp
     const VERSION = '2.1.1';
 
     /**
+     * @var string The private key path to be used for signing requests.
+     */
+    public static $privateKeyPath;
+
+    /**
+     * @var string The PEM formatted private key to be used for signing requests.
+     */
+    public static $privateKey;
+
+    /**
      * @return string The API key used for requests.
      */
     public static function getApiKey()
@@ -72,5 +82,38 @@ class Pingpp
     public static function setVerifySslCerts($verify)
     {
         self::$verifySslCerts = $verify;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getPrivateKeyPath()
+    {
+        return self::$privateKeyPath;
+    }
+
+    /**
+     * @param string $path
+     */
+    public static function setPrivateKeyPath($path)
+    {
+        self::$privateKeyPath = $path;
+    }
+
+
+    /**
+     * @return string
+     */
+    public static function getPrivateKey()
+    {
+        return self::$privateKey;
+    }
+
+    /**
+     * @param string $key
+     */
+    public static function setPrivateKey($key)
+    {
+        self::$privateKey = $key;
     }
 }

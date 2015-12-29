@@ -214,10 +214,14 @@ class PingppObject implements ArrayAccess, JsonSerializable
 
     public function __toJSON()
     {
-        if (defined('JSON_PRETTY_PRINT'))
+        if (defined('JSON_PRETTY_PRINT')) {
+            if (defined('JSON_UNESCAPED_UNICODE')) {
+                return json_encode($this->__toStdObject(), JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+            }
             return json_encode($this->__toStdObject(), JSON_PRETTY_PRINT);
-        else
+        } else {
             return json_encode($this->__toStdObject());
+        }
     }
 
     public function __toString()
