@@ -9,10 +9,11 @@
 require dirname(__FILE__) . '/../init.php';
 
 \Pingpp\Pingpp::setApiKey('sk_test_ibbTe5jLGCi5rzfH4OqPW9KC');
-$ch = \Pingpp\Charge::retrieve('CHARGE_ID');
-$ch->refunds->create(
+$ch = \Pingpp\Charge::retrieve('ch_a9CmfHTGGaz1urHiL8m5OiX1');
+$re = $ch->refunds->create(
     array(
-        'amount' => 10,
+        'amount' => 1,
         'description' => 'Your Descripton'
     )
 );
+echo $re;

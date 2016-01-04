@@ -19,7 +19,7 @@ try {
             'subject'     => 'Your Subject',
             'body'        => 'Your Body',
             'amount'      => 100,
-            'order_no'    => '1234567890',
+            'order_no'    => date('YmdHis') . (microtime(true) % 1) * 1000 . mt_rand(0, 9999),
             'currency'    => 'cny',
             'extra'       => array(
                 'nick_name' => 'Nick Name',

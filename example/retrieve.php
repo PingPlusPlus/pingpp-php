@@ -9,4 +9,5 @@
 require dirname(__FILE__) . '/../init.php';
 
 \Pingpp\Pingpp::setApiKey('sk_test_ibbTe5jLGCi5rzfH4OqPW9KC');
-$ch = \Pingpp\Charge::retrieve('ch_ejbLGCCaDWjT0ijzDSybL0mT');
+$ch = \Pingpp\Charge::retrieve('ch_a9CmfHTGGaz1urHiL8m5OiX1');
+echo $ch;

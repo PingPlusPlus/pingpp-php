@@ -17,13 +17,13 @@ try {
     $tr = \Pingpp\Transfer::create(
         array(
             'amount'    => 100,
-            'order_no'  => '123456d7890',
+            'order_no'  => date('YmdHis') . (microtime(true) % 1) * 1000 . mt_rand(0, 9999),
             'currency'  => 'cny',
             'channel'   => 'wx_pub',
             'app'       => array('id' => $app_id),
             'type'      => 'b2c',
             'recipient' => 'o9zpMs9jIaLynQY9N6yxcZ',
-            'description' =>'testing',
+            'description' => 'testing',
             'extra' => array('user_name' => 'User Name', 'force_check' => false)
         )
     );
