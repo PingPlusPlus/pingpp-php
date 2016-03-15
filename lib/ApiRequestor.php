@@ -325,10 +325,10 @@ class ApiRequestor
         case CURLE_SSL_PEER_CERTIFICATE:
             $msg = "Could not verify Ping++'s SSL certificate.  Please make sure "
                 . "that your network is not intercepting certificates.  "
-                . "(Try going to $apiBase in your browser.) "
+                . "(Try going to $apiBase in your browser.)";
             break;
         default:
-            $msg = "Unexpected error communicating with Ping++. "
+            $msg = "Unexpected error communicating with Ping++.";
         }
 
         $msg .= "\n\n(Network error [errno $errno]: $message)";

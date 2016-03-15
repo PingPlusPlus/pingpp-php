@@ -98,7 +98,11 @@ try {
     );
     echo $ch;
 } catch (\Pingpp\Error\Base $e) {
-    header('Status: ' . $e->getHttpStatus());
     // 捕获报错信息
-    echo $e->getHttpBody();
+    if ($e->getHttpStatus() != NULL) {
+        header('Status: ' . $e->getHttpStatus());
+        echo $e->getHttpBody();
+    } else {
+        echo $e->getMessage();
+    }
 }
