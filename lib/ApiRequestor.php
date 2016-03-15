@@ -316,23 +316,20 @@ class ApiRequestor
         case CURLE_COULDNT_CONNECT:
         case CURLE_COULDNT_RESOLVE_HOST:
         case CURLE_OPERATION_TIMEOUTED:
-            $msg = "Could not connect to Pingpp ($apiBase).  Please check your "
+            $msg = "Could not connect to Ping++ ($apiBase).  Please check your "
                 . "internet connection and try again.  If this problem persists, "
                 . "you should check Pingpp's service status at "
-                . "https://pingxx.com/status, or";
+                . "https://pingxx.com/status.";
             break;
         case CURLE_SSL_CACERT:
         case CURLE_SSL_PEER_CERTIFICATE:
-            $msg = "Could not verify Pingpp's SSL certificate.  Please make sure "
+            $msg = "Could not verify Ping++'s SSL certificate.  Please make sure "
                 . "that your network is not intercepting certificates.  "
-                . "(Try going to $apiBase in your browser.)  "
-                . "If this problem persists,";
+                . "(Try going to $apiBase in your browser.) "
             break;
         default:
-            $msg = "Unexpected error communicating with Pingpp.  "
-                . "If this problem persists,";
+            $msg = "Unexpected error communicating with Ping++. "
         }
-        $msg .= " let us know at support@pingxx.com.";
 
         $msg .= "\n\n(Network error [errno $errno]: $message)";
         throw new Error\ApiConnection($msg);
