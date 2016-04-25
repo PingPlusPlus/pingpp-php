@@ -5,7 +5,11 @@ lib 文件夹下是 PHP SDK 文件，
 example 文件夹里面是简单的接入示例，该示例仅供参考。
 
 ## 版本要求
-PHP 版本 5.3 及以上
+PHP 版本 5.3 及以上  
+你可以执行目录下的环境检测脚本，来进行一些基本检测
+``` bash
+php PingppEnvInspect.php
+```
 
 ## 安装
 ### 使用 Composer
