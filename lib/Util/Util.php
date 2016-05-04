@@ -105,7 +105,7 @@ abstract class Util
                 array_push($mapped, self::convertToPingppObject($i, $opts));
             return $mapped;
         } else if (is_object($resp)) {
-            if (isset($resp->object) 
+            if (isset($resp->object)
                 && is_string($resp->object)
                 && isset($types[$resp->object])) {
                     $class = $types[$resp->object];
@@ -121,7 +121,11 @@ abstract class Util
     public static function getRequestHeaders()
     {
         if (function_exists('getallheaders')) {
-            return getallheaders();
+            $headers = array();
+            foreach (getallheaders() as $name => $value) {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('-', ' ', $name))))] = $value;
+            }
+            return $headers;
         }
         $headers = array();
         foreach ($_SERVER as $name => $value) {
