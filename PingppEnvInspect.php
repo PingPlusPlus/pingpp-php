@@ -11,7 +11,8 @@ class PingppEnvInspect
 {
     public static function start()
     {
-        static::$apiHost = parse_url(\Pingpp\Pingpp::$apiBase)['host'];
+        $apiBaseArr = parse_url(\Pingpp\Pingpp::$apiBase);
+        static::$apiHost = $apiBaseArr['host'];
         static::versionCheck();
         foreach (static::$extFunc as $funcName => $msg)
         {

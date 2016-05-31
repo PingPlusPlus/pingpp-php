@@ -63,6 +63,9 @@ $ch = \Pingpp\Charge::create(
 );
 ```
 
+> 由于 PHP 5.3 不支持 `JsonSerializable` JSON 序列化接口，当你需要将其放入其他数组或者对象时，
+> 建议先将其转成数组，例：`$arr = array('charge' => json_decode($ch, true))`。
+
 ### charge 查询
 ```php
 \Pingpp\Charge::retrieve('CHARGE_ID');
