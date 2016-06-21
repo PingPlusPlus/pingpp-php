@@ -20,7 +20,7 @@ try {
         array(
             'subject'     => 'Your Subject',
             'body'        => 'Your Body',
-            'amount'      => 100,// 订单总金额, 人民币单位：分（如订单总金额为 1 元，此处请填 100，wx_pub 限制在 100 ~ 20000 之间，即 1 ~ 200 元）
+            'amount'      => 100,// 订单总金额, 人民币单位：分（如订单总金额为 1 元，此处请填 100，金额限制在 100 ~ 20000 之间，即 1 ~ 200 元）
             'order_no'    => date('YmdHis') . (microtime(true) % 1) * 1000 . mt_rand(0, 9999),// 红包使用的商户订单号。wx(新渠道)、wx_pub 规定为 1 ~ 28 位不能重复的数字
             'currency'    => 'cny',
             'extra'       => array(

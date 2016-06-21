@@ -18,7 +18,7 @@ $app_id = 'app_1Gqj58ynP0mHeX1q';
 try {
     $tr = \Pingpp\Transfer::create(
         array(
-            'amount'    => 100,// 订单总金额, 人民币单位：分（如订单总金额为 1 元，此处请填 100，wx_pub 限制在 100 ~ 20000 之间，即 1 ~ 200 元）
+            'amount'    => 100,// 订单总金额, 人民币单位：分（如订单总金额为 1 元，此处请填 100,企业付款最小发送金额为 1 元）
             'order_no'  => date('YmdHis') . (microtime(true) % 1) * 1000 . mt_rand(0, 9999),// 企业转账使用的商户内部订单号。wx(新渠道)、wx_pub 规定为 1 ~ 50 位不能重复的数字字母组合
             'currency'  => 'cny',
             'channel'   => 'wx_pub',// 目前支持 wx(新渠道)、 wx_pub
