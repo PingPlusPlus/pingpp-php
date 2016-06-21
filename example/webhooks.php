@@ -2,13 +2,20 @@
 /* *
  * Ping++ Server SDK
  * 说明：
- * 以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写, 并非一定要使用该代码。
- * 该代码仅供学习和研究 Ping++ SDK 使用，只是提供一个参考。
+ * 以下代码只是为了方便商户测试而提供的样例代码，商户可根据自己网站需求按照技术文档编写, 并非一定要使用该代码。
+ * 接入 webhooks 流程参考开发者中心：https://www.pingxx.com/docs/webhooks/webhooks
+ * 该代码仅供学习和研究 Ping++ SDK 使用，仅供参考。
  */
 
 require dirname(__FILE__) . '/../init.php';
 
-// 验证 webhooks 签名方法
+/* *
+ * 验证 webhooks 签名方法：
+ * raw_data：Ping++ 请求 body 的原始数据即 event ，不能格式化；
+ * signature：Ping++ 请求 header 中的 x-pingplusplus-signature 对应的 value 值；
+ * pub_key_path：读取你保存的 Ping++ 公钥的路径；
+ * pub_key_contents：Ping++ 公钥，获取路径：登录 [Dashboard](https://dashboard.pingxx.com)->点击管理平台右上角公司名称->开发信息-> Ping++ 公钥
+ */
 function verify_signature($raw_data, $signature, $pub_key_path) {
     $pub_key_contents = file_get_contents($pub_key_path);
     // php 5.4.8 以上，第四个参数可用常量 OPENSSL_ALGO_SHA256
@@ -25,7 +32,7 @@ $signature = isset($headers['X-Pingplusplus-Signature']) ? $headers['X-Pingplusp
 // 示例
 // $signature = 'BX5sToHUzPSJvAfXqhtJicsuPjt3yvq804PguzLnMruCSvZ4C7xYS4trdg1blJPh26eeK/P2QfCCHpWKedsRS3bPKkjAvugnMKs+3Zs1k+PshAiZsET4sWPGNnf1E89Kh7/2XMa1mgbXtHt7zPNC4kamTqUL/QmEVI8LJNq7C9P3LR03kK2szJDhPzkWPgRyY2YpD2eq1aCJm0bkX9mBWTZdSYFhKt3vuM1Qjp5PWXk0tN5h9dNFqpisihK7XboB81poER2SmnZ8PIslzWu2iULM7VWxmEDA70JKBJFweqLCFBHRszA8Nt3AXF0z5qe61oH1oSUmtPwNhdQQ2G5X3g==';
 
-// 请从 https://dashboard.pingxx.com 获取「Ping++ 公钥」
+// Ping++ 公钥，获取路径：登录 [Dashboard](https://dashboard.pingxx.com)->点击管理平台右上角公司名称->开发信息-> Ping++ 公钥
 $pub_key_path = __DIR__ . "/pingpp_rsa_public_key.pem";
 
 $result = verify_signature($raw_data, $signature, $pub_key_path);
