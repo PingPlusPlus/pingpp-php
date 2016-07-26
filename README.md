@@ -233,3 +233,29 @@ $card = $cus->sources->retrieve('CARD_ID');
 $cus = \Pingpp\Customer::retrieve('CUS_ID');
 $cus->sources->retrieve('CARD_ID')->delete();
 ```
+
+### 身份证认证
+``` php
+\Pingpp\Identification::identify(array(
+    'type' => 'id_card',
+    'app' => $app_id,
+    'data' => array(
+        'id_name' => '张三', // 姓名
+        'id_number' => '310181198910107641' // 身份证号
+    )
+));
+```
+
+### 银行卡认证
+``` php
+\Pingpp\Identification::identify(array(
+    'type' => 'bank_card',
+    'app' => $app_id,
+    'data' => array(
+        'id_name' => '张三', // 姓名
+        'id_number' => '310181198910107641', // 身份证号,
+        'card_number' => '6201111122223333', // 银行卡号
+        'phone_number' => '18623234545' // 银行预留手机号，不支持 178 号段
+    )
+));
+```
