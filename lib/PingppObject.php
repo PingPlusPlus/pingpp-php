@@ -21,7 +21,7 @@ class PingppObject implements ArrayAccess, JsonSerializable
     public static function init()
     {
         self::$permanentAttributes = new Util\Set(array('_opts', 'id'));
-        self::$nestedUpdatableAttributes = new Util\Set(array('metadata'));
+        self::$nestedUpdatableAttributes = new Util\Set(array());
     }
 
     protected $_opts;

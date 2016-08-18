@@ -15,6 +15,8 @@ $api_key = 'sk_test_ibbTe5jLGCi5rzfH4OqPW9KC';
 $app_id = 'app_1Gqj58ynP0mHeX1q';
 
 \Pingpp\Pingpp::setApiKey($api_key);
+
+// 创建 Transfer
 try {
     $tr = \Pingpp\Transfer::create(
         array(
@@ -37,3 +39,10 @@ try {
     header('Status: ' . $e->getHttpStatus());
     echo($e->getHttpBody());
 }
+
+// 查询 Transfer
+$tr = \Pingpp\Transfer::retrieve('TRANSFER_ID');
+
+// 取消 Transfer
+$tr['status'] = 'canceled';
+$tr->save();
