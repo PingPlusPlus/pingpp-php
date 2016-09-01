@@ -13,22 +13,16 @@ php PingppEnvInspect.php
 
 ## 安装
 ### 使用 Composer
-在你自己的 `composer.json` 中添加以下代码
+执行
 ```
-{
-  "require": {
-    "pingplusplus/pingpp-php": "dev-master"
-  }
-}
+composer require pingplusplus/pingpp-php
 ```
-然后执行
-```
-composer install
-```
+
 使用 Composer 的 autoload 引入
 ```php
 require_once('vendor/autoload.php');
 ```
+
 ### 手动引入
 ``` php
 require_once('/path/to/pingpp-php/init.php');
