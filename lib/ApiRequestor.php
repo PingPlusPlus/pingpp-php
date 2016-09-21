@@ -11,13 +11,16 @@ class ApiRequestor
 
     private $_apiBase;
 
-    public function __construct($apiKey = null, $apiBase = null)
+    private $_signOpts;
+
+    public function __construct($apiKey = null, $apiBase = null, $signOpts = null)
     {
         $this->_apiKey = $apiKey;
         if (!$apiBase) {
             $apiBase = Pingpp::$apiBase;
         }
         $this->_apiBase = $apiBase;
+        $this->_signOpts = $signOpts;
     }
 
     private static function _encodeObjects($d, $is_post = false)
@@ -156,7 +159,7 @@ class ApiRequestor
         }
 
         $absUrl = $this->_apiBase . $url;
-        $params = self::_encodeObjects($params, $method == 'post');
+        $params = self::_encodeObjects($params, $method == 'post' || $method == 'put');
         $langVersion = phpversion();
         $uname = php_uname();
         $ua = array(
@@ -226,38 +229,51 @@ class ApiRequestor
         $curl = curl_init();
         $method = strtolower($method);
         $opts = array();
-        $requestSignature = NULL;
-        if ($method == 'get') {
-            $opts[CURLOPT_HTTPGET] = 1;
+        $dataToBeSign = '';
+        $requestTime = null;
+        if ($method === 'get' || $method === 'delete') {
+            if ($method === 'get') {
+                $opts[CURLOPT_HTTPGET] = 1;
+            } else {
+                $opts[CURLOPT_CUSTOMREQUEST] = 'DELETE';
+            }
+            $dataToBeSign .= parse_url($absUrl, PHP_URL_PATH);
             if (count($params) > 0) {
                 $encoded = self::encode($params);
                 $absUrl = "$absUrl?$encoded";
+                $dataToBeSign .= '?' . $encoded;
             }
-        } elseif ($method == 'post' || $method == 'put') {
-            if ($method == 'post') {
+            $requestTime = time();
+        } elseif ($method === 'post' || $method === 'put') {
+            if ($method === 'post') {
                 $opts[CURLOPT_POST] = 1;
             } else {
                 $opts[CURLOPT_CUSTOMREQUEST] = 'PUT';
             }
             $rawRequestBody = json_encode($params);
             $opts[CURLOPT_POSTFIELDS] = $rawRequestBody;
-            if ($this->privateKey()) {
-                $signResult = openssl_sign($rawRequestBody, $requestSignature, $this->privateKey(), 'sha256');
-                if (!$signResult) {
-                    throw new Error\Api("Generate signature failed");
+            $dataToBeSign .= $rawRequestBody;
+            if ($this->_signOpts !== null) {
+                if (isset($this->_signOpts['uri']) && $this->_signOpts['uri']) {
+                    $dataToBeSign .= parse_url($absUrl, PHP_URL_PATH);
                 }
-            }
-        } elseif ($method == 'delete') {
-            $opts[CURLOPT_CUSTOMREQUEST] = 'DELETE';
-            if (count($params) > 0) {
-                $encoded = self::encode($params);
-                $absUrl = "$absUrl?$encoded";
+                if (isset($this->_signOpts['time']) && $this->_signOpts['time']) {
+                    $requestTime = time();
+                }
             }
         } else {
             throw new Error\Api("Unrecognized method $method");
         }
 
-        if ($requestSignature) {
+        if ($this->privateKey()) {
+            if ($requestTime !== null) {
+                $dataToBeSign .= $requestTime;
+                $headers[] = 'Pingplusplus-Request-Timestamp: ' . $requestTime;
+            }
+            $signResult = openssl_sign($dataToBeSign, $requestSignature, $this->privateKey(), 'sha256');
+            if (!$signResult) {
+                throw new Error\Api("Generate signature failed");
+            }
             $headers[] = 'Pingplusplus-Signature: ' . base64_encode($requestSignature);
         }
 

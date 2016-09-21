@@ -15,13 +15,13 @@ class Pingpp
     /**
      * @var string|null The version of the Pingpp API to use for requests.
      */
-    public static $apiVersion = "2016-07-20";
+    public static $apiVersion = "2016-09-20";
     /**
      * @var boolean Defaults to true.
      */
     public static $verifySslCerts = true;
 
-    const VERSION = '2.1.5';
+    const VERSION = '2.1.6';
 
     /**
      * @var string The private key path to be used for signing requests.

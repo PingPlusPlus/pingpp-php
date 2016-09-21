@@ -97,7 +97,9 @@ abstract class Util
             'card' => 'Pingpp\\Card',
             'sms_code' => 'Pingpp\\SmsCode',
             'card_info' => 'Pingpp\\CardInfo',
-            'token' => 'Pingpp\\Token'
+            'token' => 'Pingpp\\Token',
+            'order' => 'Pingpp\\Order',
+            'order_refund' => 'Pingpp\\OrderRefund'
         );
         if (self::isList($resp)) {
             $mapped = array();
@@ -118,6 +120,10 @@ abstract class Util
         }
     }
 
+    /**
+     * Get the request headers
+     * @return array An hash map of request headers.
+     */
     public static function getRequestHeaders()
     {
         if (function_exists('getallheaders')) {
@@ -139,7 +145,7 @@ abstract class Util
     /**
      * @param string|mixed $value A string to UTF8-encode.
      *
-     * @returns string|mixed The UTF8-encoded string, or the object passed in if
+     * @return string|mixed The UTF8-encoded string, or the object passed in if
      *    it wasn't a string.
      */
     public static function utf8($value)
@@ -150,5 +156,26 @@ abstract class Util
             } else {
                 return $value;
             }
+    }
+
+    /**
+     * @param array $opts The custom options
+     * @param array $signOpts The sign options
+     * @return array The merged options
+     */
+    public static function mergeSignOpts($opts, $signOpts)
+    {
+        if ($opts === null) {
+            $opts = array();
+        }
+        if ($signOpts !== null) {
+            if (isset($opts['sign_opts'])) {
+                $opts['sign_opts'] = array_merge($opts['sign_opts'], $signOpts);
+            } else {
+                $opts['sign_opts'] = $signOpts;
+            }
+        }
+
+        return $opts;
     }
 }

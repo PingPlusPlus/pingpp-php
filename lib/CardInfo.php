@@ -32,6 +32,7 @@ class CardInfo extends ApiResource
      */
     public static function query($params = null, $options = null)
     {
-        return self::_create($params, $options);
+        $opts = Util\Util::mergeSignOpts($options, ['uri' => false]);
+        return self::_create($params, $opts);
     }
 }

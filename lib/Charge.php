@@ -34,16 +34,7 @@ class Charge extends ApiResource
      */
     public static function create($params = null, $options = null)
     {
-        return self::_create($params, $options);
-    }
-
-    /**
-     * @param array|string|null $options
-     *
-     * @return Charge The saved charge.
-     */
-    public function save($options = null)
-    {
-        return $this->_save($options);
+        $opts = Util\Util::mergeSignOpts($options, ['uri' => false]);
+        return self::_create($params, $opts);
     }
 }

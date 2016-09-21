@@ -6,6 +6,10 @@ abstract class ApiResource extends PingppObject
 {
     private static $HEADERS_TO_PERSIST = array('Pingpp-Version' => true);
 
+    protected static $signOpts = array(
+        'uri' => true, 'time' => true
+    );
+
     public static function baseUrl()
     {
         return Pingpp::$apiBase;
@@ -80,6 +84,23 @@ abstract class ApiResource extends PingppObject
         return "$base/$extn";
     }
 
+    /**
+     * @return string The full API URL for this API resource.
+     */
+    public static function instanceUrlWithId($id)
+    {
+        $class = get_called_class();
+        if ($id === null) {
+            $message = "Could not determine which URL to request: "
+                . "$class instance has invalid ID: $id";
+            throw new Error\InvalidRequest($message, null);
+        }
+        $id = Util\Util::utf8($id);
+        $base = static::classUrl();
+        $extn = urlencode($id);
+        return "$base/$extn";
+    }
+
     private static function _validateParams($params = null)
     {
         if ($params && !is_array($params)) {
@@ -97,8 +118,16 @@ abstract class ApiResource extends PingppObject
 
     protected static function _staticRequest($method, $url, $params, $options)
     {
+        if ($options === null) {
+            $options = array();
+        }
+        if (!isset($options['sign_opts'])) {
+            $options['sign_opts'] = static::$signOpts;
+        } else {
+            $options['sign_opts'] = array_merge(static::$signOpts, $options['sign_opts']);
+        }
         $opts = Util\RequestOptions::parse($options);
-        $requestor = new ApiRequestor($opts->apiKey, static::baseUrl());
+        $requestor = new ApiRequestor($opts->apiKey, static::baseUrl(), $opts->signOpts);
         list($response, $opts->apiKey) = $requestor->request($method, $url, $params, $opts->headers);
         foreach ($opts->headers as $k => $v) {
             if (!array_key_exists($k, self::$HEADERS_TO_PERSIST)) {
@@ -153,5 +182,13 @@ abstract class ApiResource extends PingppObject
         list($response, $opts) = $this->_request('delete', $url, $params, $options);
         $this->refreshFrom($response, $opts);
         return $this;
+    }
+
+    protected static function _directRequest($method, $url, $params = null, $options = null)
+    {
+        self::_validateParams($params);
+
+        list($response, $opts) = static::_staticRequest($method, $url, $params, $options);
+        return Util\Util::convertToPingppObject($response, $opts);
     }
 }

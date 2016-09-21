@@ -34,6 +34,7 @@ class Transfer extends ApiResource
      */
     public static function create($params = null, $options = null)
     {
+        $options = Util\Util::mergeSignOpts($options, ['uri' => false]);
         return self::_create($params, $options);
     }
 
@@ -44,6 +45,7 @@ class Transfer extends ApiResource
      */
     public function save($options = null)
     {
+        $options = Util\Util::mergeSignOpts($options, ['uri' => false]);
         return $this->_save($options);
     }
 }

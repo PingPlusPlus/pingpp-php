@@ -8,11 +8,13 @@ class RequestOptions
 {
     public $headers;
     public $apiKey;
+    public $signOpts;
 
-    public function __construct($key = null, $headers = array())
+    public function __construct($key = null, $headers = array(), $signOpts = array())
     {
         $this->apiKey = $key;
         $this->headers = $headers;
+        $this->signOpts = $signOpts;
     }
 
     /**
@@ -55,13 +57,17 @@ class RequestOptions
         if (is_array($options)) {
             $headers = array();
             $key = null;
+            $signOpts = array();
             if (array_key_exists('api_key', $options)) {
                 $key = $options['api_key'];
             }
             if (array_key_exists('pingpp_version', $options)) {
                 $headers['Pingpp-Version'] = $options['pingpp_version'];
             }
-            return new RequestOptions($key, $headers);
+            if (array_key_exists('sign_opts', $options)) {
+                $signOpts = $options['sign_opts'];
+            }
+            return new RequestOptions($key, $headers, $signOpts);
         }
 
         $message = 'The second argument to Pingpp API method calls is an '
