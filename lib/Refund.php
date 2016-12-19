@@ -34,7 +34,6 @@ class Refund extends ApiResource
      */
     public function save($opts = null)
     {
-        $opts = Util\Util::mergeSignOpts($opts, ['uri' => false]);
         return $this->_save($opts);
     }
 }

@@ -2,13 +2,13 @@
 
 namespace Pingpp;
 
-class Charge extends ApiResource
+class Custom extends ApiResource
 {
     /**
-     * @param string $id The ID of the charge to retrieve.
+     * @param string $id The ID of the customs to retrieve.
      * @param array|string|null $options
      *
-     * @return Charge
+     * @return Custom
      */
     public static function retrieve($id, $options = null)
     {
@@ -19,18 +19,7 @@ class Charge extends ApiResource
      * @param array|null $params
      * @param array|string|null $options
      *
-     * @return array An array of Charges.
-     */
-    public static function all($params = null, $options = null)
-    {
-        return self::_all($params, $options);
-    }
-
-    /**
-     * @param array|null $params
-     * @param array|string|null $options
-     *
-     * @return Charge The created charge.
+     * @return Custom The created customs.
      */
     public static function create($params = null, $options = null)
     {

@@ -33,34 +33,34 @@ class OrderRefund extends ApiResource
         return "$base/$orderExtn/refunds/$extn";
     }
 
-    public static function classUrlWithOrderId($or_id)
+    public static function classUrlWithOrderId($orId)
     {
-        return Order::instanceUrlWithId($or_id) . '/refunds';
+        return Order::instanceUrlWithId($orId) . '/refunds';
     }
 
-    public static function instanceUrlWithOrderRefundId($or_id, $or_re_id)
+    public static function instanceUrlWithOrderRefundId($orId, $orReId)
     {
-        $or_re_id = Util\Util::utf8($or_re_id);
-        $base = static::classUrlWithOrderId($or_id);
-        $extn = urlencode($or_re_id);
+        $orReId = Util\Util::utf8($orReId);
+        $base = static::classUrlWithOrderId($orId);
+        $extn = urlencode($orReId);
         return  $base . '/' . $extn;
     }
 
-    public static function all($or_id, $params = null, $opts = null)
+    public static function all($orId, $params = null, $opts = null)
     {
-        $url = static::classUrlWithOrderId($or_id);
+        $url = static::classUrlWithOrderId($orId);
         return static::_directRequest('get', $url, $params, $opts);
     }
 
-    public static function create($or_id, $params = null, $opts = null)
+    public static function create($orId, $params = null, $opts = null)
     {
-        $url = static::classUrlWithOrderId($or_id);
+        $url = static::classUrlWithOrderId($orId);
         return static::_directRequest('post', $url, $params, $opts);
     }
 
-    public static function retrieve($or_id, $or_re_id, $opts = null)
+    public static function retrieve($orId, $orReId, $opts = null)
     {
-        $url = static::instanceUrlWithOrderRefundId($or_id, $or_re_id);
+        $url = static::instanceUrlWithOrderRefundId($orId, $orReId);
         return static::_directRequest('get', $url, array(), $opts);
     }
 }

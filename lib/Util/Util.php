@@ -98,8 +98,9 @@ abstract class Util
             'sms_code' => 'Pingpp\\SmsCode',
             'card_info' => 'Pingpp\\CardInfo',
             'token' => 'Pingpp\\Token',
-            'order' => 'Pingpp\\Order',
-            'order_refund' => 'Pingpp\\OrderRefund'
+            'customs' => 'Pingpp\\Customs',
+            'batch_refund' => 'Pingpp\\BatchRefund',
+            'batch_transfer' => 'Pingpp\\BatchTransfer',
         );
         if (self::isList($resp)) {
             $mapped = array();
@@ -156,26 +157,5 @@ abstract class Util
             } else {
                 return $value;
             }
-    }
-
-    /**
-     * @param array $opts The custom options
-     * @param array $signOpts The sign options
-     * @return array The merged options
-     */
-    public static function mergeSignOpts($opts, $signOpts)
-    {
-        if ($opts === null) {
-            $opts = array();
-        }
-        if ($signOpts !== null) {
-            if (isset($opts['sign_opts'])) {
-                $opts['sign_opts'] = array_merge($opts['sign_opts'], $signOpts);
-            } else {
-                $opts['sign_opts'] = $signOpts;
-            }
-        }
-
-        return $opts;
     }
 }

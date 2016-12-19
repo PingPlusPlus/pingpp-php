@@ -76,4 +76,26 @@ class RequestOptions
            . 'a global apiKey by "Pingpp::setApiKey(<apiKey>)")';
         throw new Error\Api($message);
     }
+
+    /**
+     * @param array $opts The custom options
+     * @param array $signOpts The sign options
+     * @return array The merged options
+     */
+    public static function parseWithSignOpts($opts, $signOpts)
+    {
+        $options = self::parse($opts);
+        $options->signOpts = array_merge($options->signOpts, $signOpts);
+        return $options;
+    }
+
+    /**
+     * @param array $signOpts The sign options
+     * @return array The merged options
+     */
+    public function mergeSignOpts($signOpts)
+    {
+        $this->signOpts = array_merge($this->signOpts, $signOpts);
+        return $this;
+    }
 }

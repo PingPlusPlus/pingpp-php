@@ -23,7 +23,6 @@ class Token extends ApiResource
      */
     public static function create($params = null, $opts = null)
     {
-        $opts = Util\Util::mergeSignOpts($opts, ['uri' => false]);
         return self::_create($params, $opts);
     }
 }

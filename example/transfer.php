@@ -8,13 +8,10 @@
 */
 
 require dirname(__FILE__) . '/../init.php';
-
-// api_key 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击管理平台右上角公司名称->开发信息-> Secret Key
-$api_key = 'sk_test_ibbTe5jLGCi5rzfH4OqPW9KC';
-// app_id 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击你创建的应用->应用首页->应用 ID(App ID)
-$app_id = 'app_1Gqj58ynP0mHeX1q';
-
-\Pingpp\Pingpp::setApiKey($api_key);
+// 示例配置文件，测试请根据文件注释修改其配置
+require 'config.php';
+// 设置 API Key
+\Pingpp\Pingpp::setApiKey(APP_KEY);
 
 // 创建 Transfer
 try {
@@ -24,7 +21,7 @@ try {
             'order_no'  => date('mdHis') . mt_rand(1, 9999),// 企业转账使用的商户内部订单号。wx(新渠道)、wx_pub 规定为 1 ~ 50 位不能重复的数字字母组合、unionpay 为不 1~16 位数字
             'currency'  => 'cny',
             'channel'   => 'unionpay',// 目前支持 wx(新渠道)、 wx_pub、unionpay
-            'app'       => array('id' => $app_id),
+            'app'       => array('id' => APP_ID),
             'type'      => 'b2c',// 付款类型，当前仅支持 b2c 企业付款。
             'recipient' => 'o9zpMs9jIaLynQY9N6yxcZ',// 接收者 id， 为用户在 wx(新渠道)、wx_pub 下的 open_id
             'description' => 'testing',

@@ -12,7 +12,6 @@ class Identification extends ApiResource
      */
     public static function identify($params = null, $options = null)
     {
-        $options = Util\Util::mergeSignOpts($options, ['uri' => false]);
         return self::_create($params, $options);
     }
 

@@ -7,6 +7,7 @@ abstract class SingletonApiResource extends ApiResource
     protected static function _singletonRetrieve($options = null)
     {
         $opts = Util\RequestOptions::parse($options);
+        $opts->mergeSignOpts(static::$signOpts);
         $instance = new static(null, $opts);
         $instance->refresh();
         return $instance;

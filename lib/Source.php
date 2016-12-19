@@ -49,7 +49,6 @@ class Source extends ApiResource
      */
     public function save($opts = null)
     {
-        $options = Util\Util::mergeSignOpts($options, ['uri' => false]);
         return $this->_save($opts);
     }
 }

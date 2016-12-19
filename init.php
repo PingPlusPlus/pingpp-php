@@ -49,6 +49,11 @@ require(dirname(__FILE__) . '/lib/Token.php');
 require(dirname(__FILE__) . '/lib/CardInfo.php');
 require(dirname(__FILE__) . '/lib/SmsCode.php');
 require(dirname(__FILE__) . '/lib/Identification.php');
+require(dirname(__FILE__) . '/lib/Custom.php');
+require(dirname(__FILE__) . '/lib/BatchRefund.php');
+require(dirname(__FILE__) . '/lib/BatchTransfer.php');
 
 // wx_pub OAuth 2.0 method
 require(dirname(__FILE__) . '/lib/WxpubOAuth.php');
+
+

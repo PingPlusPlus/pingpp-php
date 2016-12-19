@@ -8,13 +8,11 @@
 */
 
 require dirname(__FILE__) . '/../init.php';
+// 示例配置文件，测试请根据文件注释修改其配置
+require 'config.php';
+// 设置 API Key
+\Pingpp\Pingpp::setApiKey(APP_KEY);
 
-// api_key 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击管理平台右上角公司名称->开发信息-> Secret Key
-$api_key = 'sk_test_ibbTe5jLGCi5rzfH4OqPW9KC';
-// app_id 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击你创建的应用->应用首页->应用 ID(App ID)
-$app_id = 'app_1Gqj58ynP0mHeX1q';
-
-\Pingpp\Pingpp::setApiKey($api_key);
 try {
     $red = \Pingpp\RedEnvelope::create(
         array(
@@ -28,7 +26,7 @@ try {
             ),
             'recipient'   => 'Openid',// 接收者 id， 为用户在 wx(新渠道)、wx_pub 下的 open_id
             'channel'     => 'wx_pub',// 目前支持 wx(新渠道)、 wx_pub
-            'app'         => array('id' => $app_id),
+            'app'         => array('id' => APP_ID),
             'description' => 'Your Description'
         )
     );

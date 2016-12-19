@@ -21,7 +21,7 @@ class PingppObject implements ArrayAccess, JsonSerializable
     public static function init()
     {
         self::$permanentAttributes = new Util\Set(array('_opts', 'id'));
-        self::$nestedUpdatableAttributes = new Util\Set(array());
+        self::$nestedUpdatableAttributes = new Util\Set(array('metadata'));
     }
 
     protected $_opts;
@@ -182,28 +182,33 @@ class PingppObject implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * @param boolean $include_all Include all property or not.
      * @return array A recursive mapping of attributes to values for this object,
      *    including the proper value for deleted attributes.
      */
-    public function serializeParameters()
+    public function serializeParameters($include_all = false)
     {
         $params = array();
         if ($this->_unsavedValues) {
             foreach ($this->_unsavedValues->toArray() as $k) {
                 $v = $this->$k;
-                if ($v === NULL) {
-                    $v = '';
-                }
                 $params[$k] = $v;
             }
+        }
+        if (!empty($params) && $include_all) {
+            $params = $this->_values;
         }
 
         // Get nested updates.
         foreach (self::$nestedUpdatableAttributes->toArray() as $property) {
             if (isset($this->$property) && $this->$property instanceOf PingppObject) {
-                $params[$property] = $this->$property->serializeParameters();
+                $serializedParameters = $this->$property->serializeParameters(true);
+                if ($this->_unsavedValues->includes($property) || !empty($serializedParameters)) {
+                    $params[$property] = $serializedParameters;
+                }
             }
         }
+
         return $params;
     }
 

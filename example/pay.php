@@ -8,11 +8,8 @@
  */
 
 require dirname(__FILE__) . '/../init.php';
-
-// api_key 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击管理平台右上角公司名称->开发信息-> Secret Key
-$api_key = 'sk_test_ibbTe5jLGCi5rzfH4OqPW9KC';
-// app_id 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击你创建的应用->应用首页->应用 ID(App ID)
-$app_id = 'app_1Gqj58ynP0mHeX1q';
+// 示例配置文件，测试请根据文件注释修改其配置
+require 'config.php';
 
 // 此处为 Content-Type 是 application/json 时获取 POST 参数的示例
 $input_data = json_decode(file_get_contents('php://input'), true);
@@ -31,8 +28,8 @@ $orderNo = substr(md5(time()), 0, 12);
  * 将你的公钥复制粘贴进去并且保存->先启用 Test 模式进行测试->测试通过后启用 Live 模式
  */
 
-// 设置私钥内容方式1
-\Pingpp\Pingpp::setPrivateKeyPath(__DIR__ . '/your_rsa_private_key.pem');
+\Pingpp\Pingpp::setApiKey(APP_KEY);                                         // 设置 API Key
+\Pingpp\Pingpp::setPrivateKeyPath(__DIR__ . '/your_rsa_private_key.pem');   // 设置私钥
 
 // 设置私钥内容方式2
 // \Pingpp\Pingpp::setPrivateKey(file_get_contents(__DIR__ . '/your_rsa_private_key.pem'));
@@ -97,7 +94,6 @@ switch ($channel) {
 }
 
 
-\Pingpp\Pingpp::setApiKey($api_key);// 设置 API Key
 try {
     $ch = \Pingpp\Charge::create(
         array(
@@ -110,13 +106,46 @@ try {
             'extra'     => $extra,
             'channel'   => $channel,// 支付使用的第三方支付渠道取值，请参考：https://www.pingxx.com/api#api-c-new
             'client_ip' => $_SERVER['REMOTE_ADDR'],// 发起支付请求客户端的 IP 地址，格式为 IPV4，如: 127.0.0.1
-            'app'       => array('id' => $app_id)
+            'app'       => array('id' => APP_ID)
         )
     );
     echo $ch;// 输出 Ping++ 返回的支付凭据 Charge
 } catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
     if ($e->getHttpStatus() != NULL) {
+        header('Status: ' . $e->getHttpStatus());
+        echo $e->getHttpBody();
+    } else {
+        echo $e->getMessage();
+    }
+}
+exit;
+
+// 查询 charge 对象
+$charge_id = 'ch_L8qn10mLmr1GS8e5OODmHaL4';
+try {
+    $charge = \Pingpp\Charge::retrieve($charge_id);
+    echo $charge;
+} catch (\Pingpp\Error\Base $e) {
+    if ($e->getHttpStatus() != null) {
+        header('Status: ' . $e->getHttpStatus());
+        echo $e->getHttpBody();
+    } else {
+        echo $e->getMessage();
+    }
+}
+exit;
+
+
+// 查询 charge 对象列表
+$search_params = [
+    'app'   => array('id' => APP_ID)            // 此参数必填
+];
+try {
+    $charge_all = \Pingpp\Charge::all($search_params);
+    echo $charge_all;                                                     // 输出 Ping++ 返回的 charge 对象列表
+} catch (\Pingpp\Error\Base $e) {
+    if ($e->getHttpStatus() != null) {
         header('Status: ' . $e->getHttpStatus());
         echo $e->getHttpBody();
     } else {

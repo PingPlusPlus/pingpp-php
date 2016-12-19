@@ -250,7 +250,7 @@ class ApiRequestor
             } else {
                 $opts[CURLOPT_CUSTOMREQUEST] = 'PUT';
             }
-            $rawRequestBody = json_encode($params);
+            $rawRequestBody = $params !== null ? json_encode($params) : '';
             $opts[CURLOPT_POSTFIELDS] = $rawRequestBody;
             $dataToBeSign .= $rawRequestBody;
             if ($this->_signOpts !== null) {

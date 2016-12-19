@@ -20,7 +20,7 @@ abstract class ApiResource extends PingppObject
      */
     public function refresh()
     {
-        $requestor = new ApiRequestor($this->_opts->apiKey, static::baseUrl());
+        $requestor = new ApiRequestor($this->_opts->apiKey, static::baseUrl(), $this->_opts->signOpts);
         $url = $this->instanceUrl();
 
         list($response, $this->_opts->apiKey) = $requestor->request(
@@ -118,15 +118,8 @@ abstract class ApiResource extends PingppObject
 
     protected static function _staticRequest($method, $url, $params, $options)
     {
-        if ($options === null) {
-            $options = array();
-        }
-        if (!isset($options['sign_opts'])) {
-            $options['sign_opts'] = static::$signOpts;
-        } else {
-            $options['sign_opts'] = array_merge(static::$signOpts, $options['sign_opts']);
-        }
         $opts = Util\RequestOptions::parse($options);
+        $opts->mergeSignOpts(static::$signOpts);
         $requestor = new ApiRequestor($opts->apiKey, static::baseUrl(), $opts->signOpts);
         list($response, $opts->apiKey) = $requestor->request($method, $url, $params, $opts->headers);
         foreach ($opts->headers as $k => $v) {
@@ -140,6 +133,7 @@ abstract class ApiResource extends PingppObject
     protected static function _retrieve($id, $options = null)
     {
         $opts = Util\RequestOptions::parse($options);
+        $opts->mergeSignOpts(static::$signOpts);
         $instance = new static($id, $opts);
         $instance->refresh();
         return $instance;

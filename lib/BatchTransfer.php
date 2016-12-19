@@ -2,13 +2,24 @@
 
 namespace Pingpp;
 
-class Charge extends ApiResource
+class BatchTransfer extends ApiResource
 {
     /**
-     * @param string $id The ID of the charge to retrieve.
+     * This is a special case because the batch transfers endpoint has an
+     *    underscore in it. The parent `className` function strips underscores.
+     *
+     * @return string The name of the class.
+     */
+    public static function className()
+    {
+        return 'batch_transfer';
+    }
+
+    /**
+     * @param string $id The ID of the batchTransfers to retrieve.
      * @param array|string|null $options
      *
-     * @return Charge
+     * @return BatchTransfer
      */
     public static function retrieve($id, $options = null)
     {
@@ -19,7 +30,7 @@ class Charge extends ApiResource
      * @param array|null $params
      * @param array|string|null $options
      *
-     * @return array An array of Charges.
+     * @return array An array of BatchTransfer.
      */
     public static function all($params = null, $options = null)
     {
@@ -30,10 +41,11 @@ class Charge extends ApiResource
      * @param array|null $params
      * @param array|string|null $options
      *
-     * @return Charge The created charge.
+     * @return BatchTransfer The created batchTransfer.
      */
     public static function create($params = null, $options = null)
     {
         return self::_create($params, $options);
     }
+
 }

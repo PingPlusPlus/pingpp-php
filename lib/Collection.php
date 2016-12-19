@@ -15,7 +15,6 @@ class Collection extends ApiResource
     public function create($params = null, $opts = null)
     {
         list($url, $params) = $this->extractPathAndUpdateParams($params);
-        $opts = Util\Util::mergeSignOpts($opts, ['uri' => false]);
 
         list($response, $opts) = $this->_request('post', $url, $params, $opts);
         return Util\Util::convertToPingppObject($response, $opts);

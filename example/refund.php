@@ -8,9 +8,10 @@
  */
 
 require dirname(__FILE__) . '/../init.php';
-
-// api_key 获取方式：登录 [Dashboard](https://dashboard.pingxx.com)->点击管理平台右上角公司名称->开发信息-> Secret Key
-\Pingpp\Pingpp::setApiKey('sk_test_ibbTe5jLGCi5rzfH4OqPW9KC');
+// 示例配置文件，测试请根据文件注释修改其配置
+require 'config.php';
+// 设置 API Key
+\Pingpp\Pingpp::setApiKey(APP_KEY);
 
 // 通过发起一次退款请求创建一个新的 refund 对象，只能对已经发生交易并且没有全额退款的 charge 对象发起退款
 $ch = \Pingpp\Charge::retrieve('ch_a9CmfHTGGaz1urHiL8m5OiX1');// Charge 对象的 id

@@ -14,15 +14,5 @@ class Event extends ApiResource
     {
         return self::_retrieve($id, $options);
     }
-
-    /**
-     * @param array|null $params
-     * @param array|string|null $options
-     *
-     * @return array An array of Events.
-     */
-    public static function all($params = null, $options = null)
-    {
-        return self::_all($params, $options);
-    }
+    
 }

@@ -1,3 +1,9 @@
+# 2.2.0
+* 新增：  
+batch_transfers 接口
+batch_refunds 接口
+custom 接口
+
 # 2.1.5
 * 新增：  
 transfer 更新接口

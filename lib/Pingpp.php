@@ -9,19 +9,23 @@ class Pingpp
      */
     public static $apiKey;
     /**
+     * @var string The Pingpp app ID to be used for users/coupons/balances/...
+     */
+    public static $appId = null;
+    /**
      * @var string The base URL for the Pingpp API.
      */
     public static $apiBase = 'https://api.pingxx.com';
     /**
      * @var string|null The version of the Pingpp API to use for requests.
      */
-    public static $apiVersion = "2016-09-20";
+    public static $apiVersion = "2016-11-17";
     /**
      * @var boolean Defaults to true.
      */
     public static $verifySslCerts = true;
 
-    const VERSION = '2.1.6';
+    const VERSION = '2.2.0';
 
     /**
      * @var string The private key path to be used for signing requests.
@@ -49,6 +53,24 @@ class Pingpp
     public static function setApiKey($apiKey)
     {
         self::$apiKey = $apiKey;
+    }
+
+    /**
+     * @return string The app ID used for requests.
+     */
+    public static function getAppId()
+    {
+        return self::$appId;
+    }
+
+    /**
+     * Sets the app ID to be used for requests.
+     *
+     * @param string $apiKey
+     */
+    public static function setAppId($appId)
+    {
+        self::$appId = $appId;
     }
 
     /**

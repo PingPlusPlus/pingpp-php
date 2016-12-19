@@ -66,7 +66,7 @@ $ch = \Pingpp\Charge::create(
 ```
 
 ```php
-\Pingpp\Charge::all(array('limit' => 5));
+\Pingpp\Charge::all(array('limit' => 5, 'app' => array('id' => 'APP_ID')));
 ```
 
 ### 退款
@@ -182,51 +182,7 @@ pingpp.createPayment(charge, callback, signature, false);
 ));
 ```
 
-### 创建 customer
-```php
-\Pingpp\Customer::create(array(
-    'app' => 'APP_ID',
-    'source' => 'TOKEN_ID'
-));
-```
 
-### 查询 customer
-```php
-\Pingpp\Customer::retrieve('CUS_ID');
-```
-
-### 更新 customer
-```php
-$cus = \Pingpp\Customer::retrieve('CUS_ID');
-$cus['description'] = 'Customer Description';
-$cus->save();
-```
-
-### 删除 customer
-```php
-$cus = \Pingpp\Customer::retrieve('CUS_ID');
-$cus->delete();
-```
-
-### 创建 card
-```php
-$cus = \Pingpp\Customer::retrieve('CUS_ID');
-$cus->sources->create(array(
-    'source' => 'TOKEN_ID'
-));
-```
-
-### 查询 card
-```php
-$cus = \Pingpp\Customer::retrieve('CUS_ID');
-$card = $cus->sources->retrieve('CARD_ID');
-```
-
-### 删除 card
-```php
-$cus = \Pingpp\Customer::retrieve('CUS_ID');
-$cus->sources->retrieve('CARD_ID')->delete();
-```
 
 ### 身份证认证
 ``` php
@@ -253,3 +209,95 @@ $cus->sources->retrieve('CARD_ID')->delete();
     )
 ));
 ```
+
+### 批量转账
+``` php
+\Pingpp\BatchTransfer::create(
+    [
+        'amount'      => 8000,
+        'app'         => APP_ID,
+        'batch_no'    => 'Your batch no',       //批量退款批次号，3-24位，允许字母和英文
+        'channel'     => 'alipay',
+        'description' => 'Your Description',    //批量退款详情，最多 255 个 Unicode 字符
+        'recipients'  => [                      //需要退款的  charge id 列表，一次最多 100 个
+            [
+                'account' => 'account01@alipay.com',
+                'amount'  => 5000,
+                'name'    => '张三'
+            ],
+            [
+                'account' => 'account02@alipay.com',
+                'amount'  => 3000,
+                'name'    => '李四'
+            ]
+        ],
+        'type'      => 'b2c'
+    ]
+);
+```
+
+### 查询指定批量转账
+``` php
+\Pingpp\BatchTransfer::retrieve('181611151506412852');        //批量转账对象id ，由 Ping++ 生成
+```
+
+### 查询批量转账列表
+``` php
+\Pingpp\BatchTransfer::all(['page'=>1]);
+```
+
+### 批量退款
+``` php
+\Pingpp\BatchRefund::create(
+    [
+        'app'         => APP_ID,
+        'batch_no'    => 'Your batch no',       //批量退款批次号，3-24位，允许字母和英文
+        'description' => 'Your Description',    //批量退款详情，最多 255 个 Unicode 字符
+        'charges'     => [                      //需要退款的  charge id 列表，一次最多 100 个
+            'ch_qn5G8GH1SOCCvnv10S8mXTqP',
+            'ch_SijjXL8Ki1u1arL1S49q5ifL'
+        ]
+    ]
+);
+```
+
+### 查询指定批量退款
+``` php
+\Pingpp\BatchRefund::retrieve('151611141520583238');        //批量退款对象id ，由 Ping++ 生成
+```
+
+### 查询批量退款列表
+``` php
+\Pingpp\BatchRefund::all(['page'=>1]);
+```
+
+### 报关
+``` php
+\Pingpp\Custom::create(
+    [
+        'app'               => APP_ID,
+        'charge'            => 'ch_L8qn10mLmr1GS8e5OODmHaL4',
+        'channel'           => 'alipay',
+        'trade_no'          => '12332132131',         // 商户报关订单号,8~20位
+        'customs_code'      => 'GUANGZHOU',
+        'amount'            => 8000,
+        'transport_amount'  => 10,
+        'is_split'          => true,
+        'sub_order_no'      => '123456',
+        'extra'  => [
+            'pay_account'   => '1234567890',
+            'certif_type'   => '02',
+            'customer_name' => 'A Name',
+            'certif_id'     => 'ID Card No',
+            'tax_amount'    => '10',
+        ]
+    ]
+);
+```
+
+### 查询指定报关
+``` php
+\Pingpp\Custom::retrieve('14201609281040220109');           // 报关对象id ，由 Ping++ 生成
+```
+
+
