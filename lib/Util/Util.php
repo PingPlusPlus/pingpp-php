@@ -94,10 +94,6 @@ abstract class Util
             'event' => 'Pingpp\\Event',
             'transfer' => 'Pingpp\\Transfer',
             'customer' => 'Pingpp\\Customer',
-            'card' => 'Pingpp\\Card',
-            'sms_code' => 'Pingpp\\SmsCode',
-            'card_info' => 'Pingpp\\CardInfo',
-            'token' => 'Pingpp\\Token',
             'customs' => 'Pingpp\\Customs',
             'batch_refund' => 'Pingpp\\BatchRefund',
             'batch_transfer' => 'Pingpp\\BatchTransfer',
@@ -112,9 +108,9 @@ abstract class Util
                 && is_string($resp->object)
                 && isset($types[$resp->object])) {
                     $class = $types[$resp->object];
-                } else {
-                    $class = 'Pingpp\\PingppObject';
-                }
+            } else {
+                $class = 'Pingpp\\PingppObject';
+            }
             return $class::constructFrom($resp, $opts);
         } else {
             return $resp;
@@ -152,10 +148,11 @@ abstract class Util
     public static function utf8($value)
     {
         if (is_string($value)
-            && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8") {
-                return utf8_encode($value);
-            } else {
-                return $value;
-            }
+            && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8"
+        ) {
+            return utf8_encode($value);
+        } else {
+            return $value;
+        }
     }
 }

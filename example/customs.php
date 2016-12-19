@@ -12,9 +12,9 @@ require 'config.php';
 \Pingpp\Pingpp::setAppId(APP_ID);                                           // 设置 APP ID
 \Pingpp\Pingpp::setPrivateKeyPath(__DIR__ . '/your_rsa_private_key.pem');   // 设置私钥
 
-//创建 custom 对象
+//创建 customs 对象
 try {
-    $cus = \Pingpp\Custom::create(
+    $cus = \Pingpp\Customs::create(
         [
             'app'               => APP_ID,
             'charge'            => 'ch_L8qn10mLmr1GS8e5OODmHaL4',
@@ -46,9 +46,9 @@ try {
 exit;
 
 
-//查询 custom 对象
+//查询 customs 对象
 try {
-    $cus = \Pingpp\Custom::retrieve('14201609281040220109');           // 报关对象id ，由 Ping++ 生成
+    $cus = \Pingpp\Customs::retrieve('14201609281040220109');           // 报关对象id ，由 Ping++ 生成
     echo $cus;                                                         // 输出 Ping++ 返回的 custom 对象信息
 } catch (\Pingpp\Error\Base $e) {
     if ($e->getHttpStatus() != null) {

@@ -21,8 +21,8 @@ try {
             'batch_no'    => uniqid('bre'),         //批量退款批次号，3-24位，允许字母和英文
             'description' => 'Your Description',    //批量退款详情，最多 255 个 Unicode 字符
             'charges'     => [                      //需要退款的  charge id 列表，一次最多 100 个
-                'ch_qn5G8GH1SOCCvnv10S8mXTqP',
-                'ch_SijjXL8Ki1u1arL1S49q5ifL'
+                'ch_Dq5ibDrLurrPO808q1bP4iT8',
+                'ch_TanbTO9OmjP4TGW5a1j1mPiL'
             ]
         ]
     );
@@ -35,7 +35,6 @@ try {
         echo $e->getMessage();
     }
 }
-
 
 exit;
 

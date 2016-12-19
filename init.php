@@ -1,13 +1,13 @@
 <?php
 
 if (!function_exists('curl_init')) {
-  throw new Exception('Pingpp needs the CURL PHP extension.');
+    throw new Exception('Pingpp needs the CURL PHP extension.');
 }
 if (!function_exists('json_decode')) {
-  throw new Exception('Pingpp needs the JSON PHP extension.');
+    throw new Exception('Pingpp needs the JSON PHP extension.');
 }
 if (!function_exists('mb_detect_encoding')) {
-  throw new Exception('Pingpp needs the Multibyte String PHP extension.');
+    throw new Exception('Pingpp needs the Multibyte String PHP extension.');
 }
 
 // Pingpp singleton
@@ -42,18 +42,10 @@ require(dirname(__FILE__) . '/lib/Refund.php');
 require(dirname(__FILE__) . '/lib/RedEnvelope.php');
 require(dirname(__FILE__) . '/lib/Event.php');
 require(dirname(__FILE__) . '/lib/Transfer.php');
-require(dirname(__FILE__) . '/lib/Customer.php');
-require(dirname(__FILE__) . '/lib/Source.php');
-require(dirname(__FILE__) . '/lib/Card.php');
-require(dirname(__FILE__) . '/lib/Token.php');
-require(dirname(__FILE__) . '/lib/CardInfo.php');
-require(dirname(__FILE__) . '/lib/SmsCode.php');
 require(dirname(__FILE__) . '/lib/Identification.php');
-require(dirname(__FILE__) . '/lib/Custom.php');
+require(dirname(__FILE__) . '/lib/Customs.php');
 require(dirname(__FILE__) . '/lib/BatchRefund.php');
 require(dirname(__FILE__) . '/lib/BatchTransfer.php');
 
 // wx_pub OAuth 2.0 method
 require(dirname(__FILE__) . '/lib/WxpubOAuth.php');
-
-
