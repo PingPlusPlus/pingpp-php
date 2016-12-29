@@ -1,5 +1,10 @@
 # ChangeLog
 
+# 2.2.1
+2016-12-29
+#### 新增
+- batch_transfer 接口支持 cancel 操作（unionpay适用）
+
 ## 2.2.0
 2016-12-16
 #### 新增

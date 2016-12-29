@@ -81,3 +81,18 @@ try {
         echo $e->getMessage();
     }
 }
+
+// 取消付款 (仅unionpay渠道支持)
+// unionpay 渠道在 batch transfer 对象请求成功后，延时5分钟发送转账，5分钟内订单处于scheduled的准备发送状态，且可调用该接口通过 batch transfer 对象的 id 更新一个已创建的 batch transfer 对象，即取消该笔转账
+try {
+    $batch_tr = \Pingpp\BatchTransfer::cancel('181611151506412852');        // 批量转账对象id ，由 Ping++ 生成（必须是unionpay渠道）
+    echo $batch_tr;                                                         // 输出 Ping++ 返回的 batch transfer 对象
+} catch (\Pingpp\Error\Base $e) {
+    if ($e->getHttpStatus() != null) {
+        header('Status: ' . $e->getHttpStatus());
+        echo $e->getHttpBody();
+    } else {
+        echo $e->getMessage();
+    }
+}
+exit;
