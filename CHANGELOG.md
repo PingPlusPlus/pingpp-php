@@ -1,5 +1,11 @@
 # ChangeLog
 
+# 2.2.3
+2017-06-15
+#### 修改
+- 新增线下渠道 isv_scan、isv_qr、isv_wap
+- 新增 charge reverse 接口
+
 # 2.2.2
 2017-04-25
 #### 修改
