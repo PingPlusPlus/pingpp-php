@@ -26,12 +26,14 @@
 
 ---
 ## 2.2.0
+2016-12-16
 #### 新增
-- coupons 接口
-- coupon_templates 接口
-- batch_transfers 接口
-- batch_withdrawals 接口
-- transaction_statistics 接口
+- batch_transfer 接口
+- batch_refund 接口
+- customs 接口
+
+#### 修改
+- 删除 Customer、Card、CardInfo、Source、Token、SmsCode
 
 ---
 ## 2.1.5
