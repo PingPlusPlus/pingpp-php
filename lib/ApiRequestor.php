@@ -93,6 +93,10 @@ class ApiRequestor
             $headers = array();
         }
         list($rbody, $rcode, $myApiKey) = $this->_requestRaw($method, $url, $params, $headers);
+        // response code 502 retry
+        if ($rcode == 502) {
+            list($rbody, $rcode, $myApiKey) = $this->_requestRaw($method, $url, $params, $headers);
+        }
         $resp = $this->_interpretResponse($rbody, $rcode);
         return array($resp, $myApiKey);
     }

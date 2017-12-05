@@ -2,24 +2,25 @@
 
 namespace Pingpp;
 
-class Customer extends ApiResource
+class User extends AppBase
 {
     /**
-     * @param string $id The ID of the customer to retrieve.
+     * @param string $id The ID of the user to retrieve.
      * @param array|string|null $options
      *
-     * @return Customer
+     * @return User
      */
     public static function retrieve($id, $options = null)
     {
-        return self::_retrieve($id, $options);
+        $url = static::classUrl().'/'.$id;
+        return static::_directRequest('get', $url, null, $options);
     }
 
     /**
      * @param array|null $params
      * @param array|string|null $options
      *
-     * @return array An array of Customers.
+     * @return array An array of Users.
      */
     public static function all($params = null, $options = null)
     {
@@ -30,31 +31,26 @@ class Customer extends ApiResource
      * @param array|null $params
      * @param array|string|null $options
      *
-     * @return Customer The created customer.
+     * @return User The created user.
      */
     public static function create($params = null, $options = null)
     {
-        return self::_create($params, $opts);
+        return self::_create($params, $options);
     }
 
     /**
      * @param array|string|null $options
      *
-     * @return Customer The saved customer.
+     * @return User The saved user.
      */
     public function save($options = null)
     {
-        return $this->_save($opts);
+        return $this->_save($options);
     }
 
-    /**
-     * @param array|null $params
-     * @param array|string|null $opts
-     *
-     * @return Customer The deleted customer.
-     */
-    public function delete($params = null, $opts = null)
+    public static function update($user_id, $params, $options = null)
     {
-        return $this->_delete($params, $opts);
+        $url = self::instanceUrlWithId($user_id);
+        return static::_directRequest('put', $url, $params, $options);
     }
 }

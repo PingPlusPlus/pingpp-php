@@ -8,9 +8,6 @@
 require dirname(__FILE__) . '/../init.php';
 // 示例配置文件，测试请根据文件注释修改其配置
 require 'config.php';
-\Pingpp\Pingpp::setApiKey(APP_KEY);                                         // 设置 API Key
-\Pingpp\Pingpp::setAppId(APP_ID);                                           // 设置 APP ID
-\Pingpp\Pingpp::setPrivateKeyPath(__DIR__ . '/your_rsa_private_key.pem');   // 设置私钥
 
 //创建 customs 对象
 try {

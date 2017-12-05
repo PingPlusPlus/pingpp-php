@@ -10,7 +10,7 @@ require dirname(__FILE__) . '/../../init.php';
 // 示例配置文件，测试请根据文件注释修改其配置
 require dirname(__FILE__) . '/../config.php';
 
-// 渠道。支付宝：alipay，银联：unionpay，微信公众号：wx_pub，通联：allinpay，京东：jdpay
+// 渠道。支付宝：alipay，银联：unionpay，微信公众号：wx_pub，通联：allinpay，京东：jdpay，余额：balance
 $channel = 'wx_pub';
 
 // 不同渠道 extra 有差别
@@ -29,7 +29,7 @@ try {
             // 三位 ISO 货币代码，目前仅支持人民币: cny 。
             'currency'    => 'cny',
 
-            // 目前支持 支付宝：alipay，银联：unionpay，微信公众号：wx_pub，通联：allinpay，京东：jdpay
+            // 渠道
             'channel'     => $channel,
 
             // 转账使用的 app 对象的 id

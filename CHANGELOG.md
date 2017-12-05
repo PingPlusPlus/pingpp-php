@@ -1,31 +1,66 @@
 # ChangeLog
 
-# 2.2.3
-2017-06-15
+## 2.4.1
 #### 修改
+- api http 请求返回 502 请求重试一次
+
+---
+## 2.4.0
+#### 新增
+- recharge 充值接口
+- royalty_templates 分润模板接口
+- balance_transfers 余额转账接口
+- balance_bonus 余额赠送接口
+- order_refunds 订单退款接口
+- charges/refunds 创建/查询订单charge和退款接口
+
+#### 修改
+- 分润结算新增预览参数
+- 提现创建接口新增settle_account 参数, channel,extra 参数由必填修改为选填.
+- order退款列表order_refund变更为refund对象,order消费订单支持charge接口退款,
+- 原order退款创建、查询列表返回的order_refund变更为refund对象.
+- order对象新增charge对象列表，actual_amount参数;
+- 订单支付接口支持传商户订单号,此时支付的商户订单号不等于订单的商户订单号
+- 提现创建接口新增settle_account 参数, channel,extra 参数由必填修改为选填.
+- 原/v1/recharge 接口废弃,请使用新用户余额充值接口
+- 原用户余额转账transfers 接口废弃请使用 balance_transfers 接口
+- 原余额提现withdrawals废弃 请使用/v1/apps/APP_ID/withdrawals 接口
+- 原余额收款接口 receipts 废弃,请使用 balance_bonus 接口
+- 原 asset_transactions transaction_statistics接口下线.
+
+---
+## 2.3.1
+#### 修改
+- 修复用户查询接口 查询id为0的用户提示无效的id
 - 新增线下渠道 isv_scan、isv_qr、isv_wap
 - 新增 charge reverse 接口
 
-# 2.2.2
-2017-04-25
-#### 修改
-独立各个渠道文件并单独说明，提高 SDK 接入体验
-
-# 2.2.1
-2016-12-29
+---
+## 2.3.0
 #### 新增
-- batch_transfer 接口支持 cancel 操作（unionpay适用）
+- sub_app接口
+- sub_app 设置渠道参数channel 接口
+- settle_account 接口
+- royaltie 分润对象接口
+- royalty_settlement 接口
+- 分润结算明细对象 接口
 
+#### 修改
+- order创建参数uid修改为可选参数, 返回order对象新增receipt_app,service_app,,available_methods
+- 去除 fee 和 user_fee 字段,新增method、order_no、transaction_no source_url字段,查询列表新增 method order_no transaction_no asset_account 参数
+- Asset Transaction Statistics 新增 user_fee_total user_fee_recharge user_fee_balance_transfer
+- charge refund ,order refund ,coupontemplate refund的更新接口修改为update()
+
+---
 ## 2.2.0
-2016-12-16
 #### 新增
-- batch_transfer 接口
-- batch_refund 接口
-- customs 接口
+- coupons 接口
+- coupon_templates 接口
+- batch_transfers 接口
+- batch_withdrawals 接口
+- transaction_statistics 接口
 
-#### 修改
-- 删除 Customer、Card、CardInfo、Source、Token、SmsCode
-
+---
 ## 2.1.5
 #### 新增
 - transfer 更新接口
