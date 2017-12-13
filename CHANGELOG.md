@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 2.4.2
+2017-12-13
+#### 新增
+- 新增 charge 渠道 alipay_scan、wx_pub_scan、cb_alipay、cb_wx、cb_wx_pub、cb_wx_pub_qr、cb_wx_pub_scan
+
 ## 2.4.1
 2017-12-05
 #### 新增
