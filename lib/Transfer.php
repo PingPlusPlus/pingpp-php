@@ -37,13 +37,4 @@ class Transfer extends ApiResource
         return self::_create($params, $options);
     }
 
-    /** 更新 transfer 对象
-     * @param array|string|null $options
-     *
-     * @return Transfer The created transfer.
-     */
-    public function save($options = null)
-    {
-        return $this->_save($options);
-    }
 }

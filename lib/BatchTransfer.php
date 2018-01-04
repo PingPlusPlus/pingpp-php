@@ -48,16 +48,4 @@ class BatchTransfer extends ApiResource
         return self::_create($params, $options);
     }
 
-    /**
-     * @param $id
-     * @param null $options
-     * @return BatchTransfer The canceled batchTransfer.
-     */
-    public static function cancel($id, $options = null)
-    {
-        $url = static::classUrl().'/'.$id;
-        $params = array('status' => 'canceled');
-        return static::_directRequest('put', $url, $params, $options);
-    }
-
 }

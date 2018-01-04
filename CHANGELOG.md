@@ -6,6 +6,7 @@
 #### 新增
 - 新增 charge 渠道 alipay_scan、wx_pub_scan、cb_alipay、cb_wx、cb_wx_pub、cb_wx_pub_qr、cb_wx_pub_scan
 - 移除 order pay 示例 balance_amount 字段
+- 移除 transfer、batch transfer 的 cancel 接口
 
 2017-12-05
 #### 新增
