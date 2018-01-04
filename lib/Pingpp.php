@@ -25,7 +25,7 @@ class Pingpp
      */
     public static $verifySslCerts = true;
 
-    const VERSION = '2.4.2';
+    const VERSION = '2.4.1';
 
     /**
      * @var string The private key path to be used for signing requests.

@@ -54,7 +54,6 @@ exit;
 $order_id = '2011708070000007521';
 $params = [
     'charge_order_no' => substr(md5(time()), 0, 10),
-    'balance_amount'    => 0,
     'charge_amount'     => 100,
     'channel' => 'alipay_qr',
 ];
