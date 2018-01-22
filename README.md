@@ -5,7 +5,7 @@ lib 文件夹下是 PHP SDK 文件，
 example 文件夹里面是简单的接入示例，该示例仅供参考。
 
 ## 版本要求
-PHP 版本 5.3 及以上  
+PHP 版本 5.6 及以上  
 你可以执行目录下的环境检测脚本，来进行一些基本检测
 ```bash
 php PingppEnvInspect.php
@@ -56,9 +56,6 @@ $ch = \Pingpp\Charge::create(
     )
 );
 ```
-
-> 由于 PHP 5.3 不支持 `JsonSerializable` JSON 序列化接口，当你需要将其放入其他数组或者对象时，
-> 建议先将其转成数组，例：`$arr = array('charge' => json_decode($ch, true))`。
 
 ### charge 查询
 ```php

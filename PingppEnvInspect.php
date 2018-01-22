@@ -33,7 +33,7 @@ class PingppEnvInspect
             "json_decode"        => 'Pingpp needs the JSON PHP extension.',
             "mb_detect_encoding" => 'Pingpp needs the Multibyte String PHP extension.',
         );
-    private static $minPingppVersion = "5.3";
+    private static $minPingppVersion = "5.6";
     private static $apiHost;
     private static $apiKey = 'sk_test_ibbTe5jLGCi5rzfH4OqPW9KC';
     private static $exampleChargeId = 'ch_uT48KOnvf5aDqjfj58XnzzL4';
