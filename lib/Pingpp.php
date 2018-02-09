@@ -25,7 +25,7 @@ class Pingpp
      */
     public static $verifySslCerts = true;
 
-    const VERSION = '2.4.2';
+    const VERSION = '2.4.3';
 
     /**
      * @var string The private key path to be used for signing requests.
@@ -36,6 +36,11 @@ class Pingpp
      * @var string The PEM formatted private key to be used for signing requests.
      */
     public static $privateKey;
+
+    /**
+     * @var string The CA certificate path.
+     */
+    public static $caBundle;
 
     /**
      * @return string The API key used for requests.
