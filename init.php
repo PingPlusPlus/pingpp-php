@@ -66,6 +66,7 @@ require(dirname(__FILE__) . '/lib/SubApp.php');
 require(dirname(__FILE__) . '/lib/Channel.php');
 require(dirname(__FILE__) . '/lib/BalanceTransfer.php');
 require(dirname(__FILE__) . '/lib/BalanceBonus.php');
+require(dirname(__FILE__) . '/lib/BalanceSettlements.php');
 require(dirname(__FILE__) . '/lib/Recharge.php');
 require(dirname(__FILE__) . '/lib/RoyaltyTemplate.php');
 // wx_pub OAuth 2.0 method
