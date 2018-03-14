@@ -14,7 +14,6 @@ if (!function_exists('mb_detect_encoding')) {
 require(dirname(__FILE__) . '/lib/Pingpp.php');
 
 // Utilities
-require(dirname(__FILE__) . '/lib/Util/Helpers.php');
 require(dirname(__FILE__) . '/lib/Util/Util.php');
 require(dirname(__FILE__) . '/lib/Util/Set.php');
 require(dirname(__FILE__) . '/lib/Util/RequestOptions.php');

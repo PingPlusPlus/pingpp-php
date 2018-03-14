@@ -39,11 +39,9 @@ $result = verify_signature($raw_data, $signature, $pub_key_path);
 if ($result === 1) {
     // 验证通过
 } elseif ($result === 0) {
-    http_response_code(400);
     echo 'verification failed';
     exit;
 } else {
-    http_response_code(400);
     echo 'verification error';
     exit;
 }
@@ -52,11 +50,9 @@ $event = json_decode($raw_data, true);
 if ($event['type'] == 'charge.succeeded') {
     $charge = $event['data']['object'];
     // ...
-    http_response_code(200);
 } elseif ($event['type'] == 'refund.succeeded') {
     $refund = $event['data']['object'];
     // ...
-    http_response_code(200);
 } else {
     /**
      * 其它类型 ...
@@ -68,8 +64,4 @@ if ($event['type'] == 'charge.succeeded') {
      * - red_envelope.received
      * ...
      */
-    http_response_code(200);
-
-    // 异常时返回非 2xx 的返回码
-    // http_response_code(400);
 }
