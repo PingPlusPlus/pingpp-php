@@ -4,6 +4,7 @@
 2018-03-09
 #### 新增
 - 新增 balance settlements 对象查询和列表接口
+- 新增 card info 查询接口
 
 ---
 ## 2.4.2
