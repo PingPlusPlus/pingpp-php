@@ -46,7 +46,7 @@ class PingppObject implements ArrayAccess, JsonSerializable
             $id = $id['id'];
         }
 
-        $id != null && $this->id = $id;
+        $id !== null && $this->id = $id;
     }
 
     // Standard accessor magic methods
