@@ -69,5 +69,6 @@ require(dirname(__FILE__) . '/lib/Recharge.php');
 require(dirname(__FILE__) . '/lib/RoyaltyTemplate.php');
 // wx_pub OAuth 2.0 method
 require(dirname(__FILE__) . '/lib/WxpubOAuth.php');
+require(dirname(__FILE__) . '/lib/WxLiteOAuth.php');
 
 
