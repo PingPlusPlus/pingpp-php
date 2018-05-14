@@ -68,6 +68,7 @@ require(dirname(__FILE__) . '/lib/BalanceBonus.php');
 require(dirname(__FILE__) . '/lib/BalanceSettlements.php');
 require(dirname(__FILE__) . '/lib/Recharge.php');
 require(dirname(__FILE__) . '/lib/RoyaltyTemplate.php');
+require(dirname(__FILE__) . '/lib/Agreement.php');
 // wx_pub OAuth 2.0 method
 require(dirname(__FILE__) . '/lib/WxpubOAuth.php');
 require(dirname(__FILE__) . '/lib/WxLiteOAuth.php');
