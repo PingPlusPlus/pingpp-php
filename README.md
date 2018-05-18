@@ -42,7 +42,7 @@ require_once('/path/to/pingpp-php/init.php');
 
 ### 设置自定义 CA 证书路径
 ```php
-\Pingpp\Pingpp::$caBundle = '/path/to/your_rsa_private_key.pem';
+\Pingpp\Pingpp::$caBundle = '/path/to/cacert.pem';
 ```
 
 不设置时，会默认使用 SDK 包含的 CA 证书。
