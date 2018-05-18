@@ -44,7 +44,7 @@ require(dirname(__FILE__) . '/lib/Refund.php');
 require(dirname(__FILE__) . '/lib/RedEnvelope.php');
 require(dirname(__FILE__) . '/lib/Event.php');
 require(dirname(__FILE__) . '/lib/Transfer.php');
-require(dirname(__FILE__) . '/lib/Identification.php');
+require(dirname(__FILE__) . '/lib/CardInfo.php');
 require(dirname(__FILE__) . '/lib/BatchRefund.php');
 require(dirname(__FILE__) . '/lib/BatchTransfer.php');
 require(dirname(__FILE__) . '/lib/Customs.php');
@@ -65,6 +65,7 @@ require(dirname(__FILE__) . '/lib/SubApp.php');
 require(dirname(__FILE__) . '/lib/Channel.php');
 require(dirname(__FILE__) . '/lib/BalanceTransfer.php');
 require(dirname(__FILE__) . '/lib/BalanceBonus.php');
+require(dirname(__FILE__) . '/lib/BalanceSettlements.php');
 require(dirname(__FILE__) . '/lib/Recharge.php');
 require(dirname(__FILE__) . '/lib/RoyaltyTemplate.php');
 // wx_pub OAuth 2.0 method
