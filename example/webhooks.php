@@ -18,7 +18,6 @@ require dirname(__FILE__) . '/../init.php';
  */
 function verify_signature($raw_data, $signature, $pub_key_path) {
     $pub_key_contents = file_get_contents($pub_key_path);
-    // 若 php 版本为 5.4.8 以上，第四个参数可用常量 OPENSSL_ALGO_SHA256 代替
     return openssl_verify($raw_data, base64_decode($signature), $pub_key_contents, 'sha256');
 }
 
