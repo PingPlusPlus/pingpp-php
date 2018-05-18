@@ -112,6 +112,7 @@ abstract class Util
             'royalty_template' => 'Pingpp\\RoyaltyTemplate',
             'recharge' => 'Pingpp\\Recharge',
             'balance_bonus' => 'Pingpp\\BalanceBonus',
+            'balance_settlements' => 'Pingpp\\BalanceSettlements',
             'balance_transfer' => 'Pingpp\\BalanceTransfer',
         );
         if (self::isList($resp)) {
