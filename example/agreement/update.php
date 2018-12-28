@@ -25,3 +25,26 @@ try {
         echo $e->getMessage();
     }
 }
+
+/**
+ * 微信解约示例
+ */
+$agreement_id = 'agr_19EFuCzvtgNZkv';
+$params = [
+    'extra' => [
+        'description' => 'Your description',
+    ],
+];
+
+try {
+    $agreement = \Pingpp\Agreement::cancel($agreement_id, $params);
+    echo $agreement;
+} catch (\Pingpp\Error\Base $e) {
+    if ($e->getHttpStatus() != null) {
+        header('Status: ' . $e->getHttpStatus());
+        echo $e->getHttpBody();
+    } else {
+        echo $e->getMessage();
+    }
+}
+

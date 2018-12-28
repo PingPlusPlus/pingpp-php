@@ -43,10 +43,14 @@ class Agreement extends ApiResource
      *
      * @return Agreement The canceled agreement.
      */
-    public static function cancel($id, $options = null)
+    public static function cancel($id, $params = null, $options = null)
     {
         $url = static::classUrl().'/'.$id;
-        $params = ['status' => 'canceled'];
+        if (empty($params)) {
+            $params = ['status' => 'canceled'];
+        } else {
+            $params = array_merge($params, ['status' => 'canceled']);
+        }
         return static::_directRequest('put', $url, $params, $options);
     }
 }
