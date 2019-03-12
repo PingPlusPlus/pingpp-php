@@ -923,3 +923,99 @@ $royalties = \Pingpp\Royalty::update(array(
 ```php
 \Pingpp\RoyaltyTemplate::all()
 ```
+
+## 添加分账接受方
+```php
+\Pingpp\SplitReceiver::create([
+    'app'       => APP_ID,
+    'type'      => 'MERCHANT_ID',   //分账接收方类型
+    'name'      => '示例商户全称',    //分账接收方全称
+    'account'   => '190001001',     //分账接收方帐号
+    'channel'   => 'wx_pub_qr',     //分账接收方使用的渠道
+]);
+```
+
+## 查询分账接收方
+```php
+\Pingpp\SplitReceiver::retrieve('recv_1fRbIo0jME7yuL');
+```
+
+## 删除分账接收方
+```php
+\Pingpp\SplitReceiver::delete('recv_1fRbIo0jME7yuL');
+```
+
+## 查询分账接收方列表
+```php
+\Pingpp\SplitProfit::all([
+    'app' => APP_ID,
+    'page' => 1,
+    'per_page' => 10,
+]);
+```
+
+## 分账创建
+```php
+\Pingpp\SplitProfit::create([
+    'app' => APP_ID,
+    'charge' => 'ch_aDC44OKyL8yHPG0yX9yzLy5K', //Ping++ 交易成功的 charge ID
+    'order_no' => md5(openssl_random_pseudo_bytes(30)),   //分账单号，由商家自行生成，规则参照微信分账参数规则
+    'recipients' => [
+        [
+            'split_receiver' => 'recv_1fRbIo5YgIM4hl',
+            'amount' => 6,
+            'name' => '示例商户全称', //可选参数,
+            'description' => 'Your Description',
+        ]
+    ],
+    'type' => 'split_normal',   //分账类型: split_normal 为普通分账,split_return 为完结分账,
+    'metadata' => [],   //分账元数据
+]);
+```
+
+## 请求完结分账
+```php
+\Pingpp\SplitProfit::create([
+    'app' => APP_ID,
+    'charge' => 'ch_aDC44OKyL8yHPG0yX9yzLy5K', //Ping++ 交易成功的 charge ID
+    'order_no' => md5(openssl_random_pseudo_bytes(30)),   //分账单号，由商家自行生成，规则参照微信分账参数规则
+    'recipients' => [
+        [
+            'split_receiver' => 'recv_1fRbIo5YgIM4hl',
+            'amount' => 6,
+            'name' => '示例商户全称', //可选参数,
+            'description' => 'Your Description',
+        ]
+    ],
+    'type' => 'split_return',   //分账类型: split_normal 为普通分账,split_return 为完结分账,
+    'metadata' => [],   //分账元数据
+]);
+```
+
+## 查询分账对象
+```php
+\Pingpp\SplitProfit::retrieve('sp_1iXmpPJLe71sf9');
+```
+
+## 查询分账列表
+```php
+\Pingpp\SplitProfit::all([
+    'app' => APP_ID,
+    'page' => 1,
+    'per_page' => 10,
+]);
+```
+
+## 查询分账明细列表
+```php
+\Pingpp\ProfitTransaction::all([
+    'app' => APP_ID,
+    'page' => 1,
+    'per_page' => 10,
+]);
+```
+
+## 查询分账明细
+```php
+\Pingpp\ProfitTransaction::retrieve('ptxn_1m3x7aGbDK2cpl');
+```
