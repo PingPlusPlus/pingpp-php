@@ -10,7 +10,7 @@ require dirname(__FILE__) . '/../../init.php';
 require dirname(__FILE__) . '/../config.php';
 
 // 创建余额转账
-try{
+try {
     $balance_transfer = \Pingpp\BalanceTransfer::create(
         [
             'amount' => 10,             // 用户收到转账的余额，单位：分
@@ -23,9 +23,9 @@ try{
         ]
     );
     echo $balance_transfer;
-}catch (\Pingpp\Error\Base $e){
+} catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -35,12 +35,12 @@ try{
 exit;
 
 //查询余额转账
-try{
+try {
     $balance_transfer = \Pingpp\BalanceTransfer::retrieve('661170807435256330240000');
     echo $balance_transfer;
-}catch (\Pingpp\Error\Base $e){
+} catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -59,7 +59,7 @@ try {
     echo $balance_transfer;
 } catch (\Pingpp\Error\Base $exception) {
 // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {

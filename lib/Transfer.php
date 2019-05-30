@@ -36,5 +36,4 @@ class Transfer extends ApiResource
     {
         return self::_create($params, $options);
     }
-
 }

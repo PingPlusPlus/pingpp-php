@@ -18,9 +18,9 @@ class Identification extends ApiResource
     /**
      * @return string The API URL for this Pingpp identification.
      */
-     public static function classUrl()
-     {
-         $base = static::className();
-         return "/v1/${base}";
-     }
+    public static function classUrl()
+    {
+        $base = static::className();
+        return "/v1/${base}";
+    }
 }

@@ -45,7 +45,7 @@ class Channel extends AppBase
     public static function retrieve($sub_app_id, $channel, $options = null)
     {
         $url = static::instanceUrlWithChannel($sub_app_id, $channel);
-        return static::_directRequest('get', $url, array(), $options);
+        return static::_directRequest('get', $url, [], $options);
     }
 
     /**

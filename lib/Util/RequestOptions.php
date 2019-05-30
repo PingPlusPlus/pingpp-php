@@ -10,7 +10,7 @@ class RequestOptions
     public $apiKey;
     public $signOpts;
 
-    public function __construct($key = null, $headers = array(), $signOpts = array())
+    public function __construct($key = null, $headers = [], $signOpts = [])
     {
         $this->apiKey = $key;
         $this->headers = $headers;
@@ -47,17 +47,17 @@ class RequestOptions
         }
 
         if (is_null($options)) {
-            return new RequestOptions(null, array());
+            return new RequestOptions(null, []);
         }
 
         if (is_string($options)) {
-            return new RequestOptions($options, array());
+            return new RequestOptions($options, []);
         }
 
         if (is_array($options)) {
-            $headers = array();
+            $headers = [];
             $key = null;
-            $signOpts = array();
+            $signOpts = [];
             if (array_key_exists('api_key', $options)) {
                 $key = $options['api_key'];
             }

@@ -20,8 +20,8 @@ class PingppObject implements ArrayAccess, JsonSerializable
 
     public static function init()
     {
-        self::$permanentAttributes = new Util\Set(array('_opts', 'id'));
-        self::$nestedUpdatableAttributes = new Util\Set(array('metadata'));
+        self::$permanentAttributes = new Util\Set(['_opts', 'id']);
+        self::$nestedUpdatableAttributes = new Util\Set(['metadata']);
     }
 
     protected $_opts;
@@ -33,15 +33,16 @@ class PingppObject implements ArrayAccess, JsonSerializable
     public function __construct($id = null, $opts = null)
     {
         $this->_opts = $opts ? $opts : new Util\RequestOptions();
-        $this->_values = array();
+        $this->_values = [];
         $this->_unsavedValues = new Util\Set();
         $this->_transientValues = new Util\Set();
 
-        $this->_retrieveOptions = array();
+        $this->_retrieveOptions = [];
         if (is_array($id)) {
             foreach ($id as $key => $value) {
-                if ($key != 'id')
+                if ($key != 'id') {
                     $this->_retrieveOptions[$key] = $value;
+                }
             }
             $id = $id['id'];
         }
@@ -66,8 +67,9 @@ class PingppObject implements ArrayAccess, JsonSerializable
             // TODO: may want to clear from $_transientValues.  (Won't be user-visible.)
             $this->_values[$k] = $v;
         }
-        if (!self::$permanentAttributes->includes($k))
+        if (!self::$permanentAttributes->includes($k)) {
             $this->_unsavedValues->add($k);
+        }
     }
     public function __isset($k)
     {
@@ -83,7 +85,7 @@ class PingppObject implements ArrayAccess, JsonSerializable
     {
         if (array_key_exists($k, $this->_values)) {
             return $this->_values[$k];
-        } else if ($this->_transientValues->includes($k)) {
+        } elseif ($this->_transientValues->includes($k)) {
             $class = get_class($this);
             $attrs = join(', ', array_keys($this->_values));
             $message = "Pingpp Notice: Undefined property of $class instance: $k. "
@@ -155,25 +157,29 @@ class PingppObject implements ArrayAccess, JsonSerializable
         // Wipe old state before setting new.  This is useful for e.g. updating a
         // customer, where there is no persistent card parameter.  Mark those values
         // which don't persist as transient
-        if ($partial)
+        if ($partial) {
             $removed = new Util\Set();
-        else
+        } else {
             $removed = array_diff(array_keys($this->_values), array_keys(get_object_vars($values)));
+        }
 
         foreach ($removed as $k) {
-            if (self::$permanentAttributes->includes($k))
+            if (self::$permanentAttributes->includes($k)) {
                 continue;
+            }
             unset($this->$k);
         }
 
         foreach ($values as $k => $v) {
-            if (self::$permanentAttributes->includes($k))
+            if (self::$permanentAttributes->includes($k)) {
                 continue;
+            }
 
-            if (self::$nestedUpdatableAttributes->includes($k) && is_object($v))
+            if (self::$nestedUpdatableAttributes->includes($k) && is_object($v)) {
                 $this->_values[$k] = AttachedObject::constructFrom($v, $opts);
-            else
+            } else {
                 $this->_values[$k] = Util\Util::convertToPingppObject($v, $opts);
+            }
 
             $this->_transientValues->discard($k);
             $this->_unsavedValues->discard($k);
@@ -187,7 +193,7 @@ class PingppObject implements ArrayAccess, JsonSerializable
      */
     public function serializeParameters($include_all = false)
     {
-        $params = array();
+        $params = [];
         if ($this->_unsavedValues) {
             foreach ($this->_unsavedValues->toArray() as $k) {
                 $v = $this->$k;
@@ -200,7 +206,7 @@ class PingppObject implements ArrayAccess, JsonSerializable
 
         // Get nested updates.
         foreach (self::$nestedUpdatableAttributes->toArray() as $property) {
-            if (isset($this->$property) && $this->$property instanceOf PingppObject) {
+            if (isset($this->$property) && $this->$property instanceof PingppObject) {
                 $serializedParameters = $this->$property->serializeParameters(true);
                 if ($this->_unsavedValues->includes($property) || !empty($serializedParameters)) {
                     $params[$property] = $serializedParameters;
@@ -232,10 +238,11 @@ class PingppObject implements ArrayAccess, JsonSerializable
 
     public function __toArray($recursive = false)
     {
-        if ($recursive)
+        if ($recursive) {
             return Util\Util::convertPingppObjectToArray($this->_values);
-        else
+        } else {
             return $this->_values;
+        }
     }
 
     public function __toStdObject()
@@ -243,6 +250,5 @@ class PingppObject implements ArrayAccess, JsonSerializable
         return Util\Util::convertPingppObjectToStdObject($this->_values);
     }
 }
-
 
 PingppObject::init();

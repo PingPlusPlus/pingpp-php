@@ -47,5 +47,4 @@ class BatchRefund extends ApiResource
     {
         return self::_create($params, $options);
     }
-
 }

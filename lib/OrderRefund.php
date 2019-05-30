@@ -38,6 +38,6 @@ class OrderRefund extends ApiResource
     public static function retrieve($order_id, $refund_id, $opts = null)
     {
         $url = static::instanceUrlWithOrderRefundId($order_id, $refund_id);
-        return static::_directRequest('get', $url, array(), $opts);
+        return static::_directRequest('get', $url, [], $opts);
     }
 }

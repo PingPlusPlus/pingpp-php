@@ -50,7 +50,6 @@ require(dirname(__FILE__) . '/lib/BatchTransfer.php');
 require(dirname(__FILE__) . '/lib/Customs.php');
 require(dirname(__FILE__) . '/lib/Order.php');
 require(dirname(__FILE__) . '/lib/OrderRefund.php');
-require(dirname(__FILE__) . '/lib/AssetTransaction.php');
 require(dirname(__FILE__) . '/lib/User.php');
 require(dirname(__FILE__) . '/lib/BalanceTransaction.php');
 require(dirname(__FILE__) . '/lib/Withdrawal.php');
@@ -72,6 +71,8 @@ require(dirname(__FILE__) . '/lib/Agreement.php');
 require(dirname(__FILE__) .'/lib/SplitReceiver.php');
 require(dirname(__FILE__) .'/lib/SplitProfit.php');
 require(dirname(__FILE__) .'/lib/ProfitTransaction.php');
+require(dirname(__FILE__) .'/lib/SubBank.php');
+
 // wx_pub OAuth 2.0 method
 require(dirname(__FILE__) . '/lib/WxpubOAuth.php');
 require(dirname(__FILE__) . '/lib/WxLiteOAuth.php');

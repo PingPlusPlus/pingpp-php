@@ -4,11 +4,12 @@ namespace Pingpp;
 
 abstract class ApiResource extends PingppObject
 {
-    private static $HEADERS_TO_PERSIST = array('Pingpp-Version' => true);
+    private static $HEADERS_TO_PERSIST = ['Pingpp-Version' => true];
 
-    protected static $signOpts = array(
-        'uri' => true, 'time' => true
-    );
+    protected static $signOpts = [
+        'uri' => true,
+        'time' => true,
+    ];
 
     public static function baseUrl()
     {
@@ -110,7 +111,7 @@ abstract class ApiResource extends PingppObject
         }
     }
 
-    protected function _request($method, $url, $params = array(), $options = null)
+    protected function _request($method, $url, $params = [], $options = null)
     {
         $opts = $this->_opts->merge($options);
         return static::_staticRequest($method, $url, $params, $opts);
@@ -127,7 +128,7 @@ abstract class ApiResource extends PingppObject
                 unset($opts->headers[$k]);
             }
         }
-        return array($response, $opts);
+        return [$response, $opts];
     }
 
     protected static function _retrieve($id, $options = null)

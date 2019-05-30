@@ -14,5 +14,4 @@ class Event extends ApiResource
     {
         return self::_retrieve($id, $options);
     }
-    
 }

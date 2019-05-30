@@ -37,7 +37,7 @@ class WxpubOAuth
      */
     public static function createOauthUrlForCode($app_id, $redirect_url, $more_info = false)
     {
-        $urlObj = array();
+        $urlObj = [];
         $urlObj['appid'] = $app_id;
         $urlObj['redirect_uri'] = $redirect_url;
         $urlObj['response_type'] = 'code';
@@ -57,7 +57,7 @@ class WxpubOAuth
      */
     private static function _createOauthUrlForOpenid($app_id, $app_secret, $code)
     {
-        $urlObj = array();
+        $urlObj = [];
         $urlObj['appid'] = $app_id;
         $urlObj['secret'] = $app_secret;
         $urlObj['code'] = $code;
@@ -70,14 +70,15 @@ class WxpubOAuth
     /**
      * GET 请求
      */
-    private static function _getRequest($url) {
+    private static function _getRequest($url)
+    {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $res = curl_exec($ch);
         curl_close($ch);
 
@@ -90,8 +91,9 @@ class WxpubOAuth
      * @param $app_secret 微信公众号应用密钥（注意保密）
      * @return array 包含 jsapi_ticket 的数组或者错误信息
      */
-    public static function getJsapiTicket($app_id, $app_secret) {
-        $urlObj = array();
+    public static function getJsapiTicket($app_id, $app_secret)
+    {
+        $urlObj = [];
         $urlObj['appid'] = $app_id;
         $urlObj['secret'] = $app_secret;
         $urlObj['grant_type'] = 'client_credential';
@@ -103,7 +105,7 @@ class WxpubOAuth
             return $resp;
         }
 
-        $urlObj = array();
+        $urlObj = [];
         $urlObj['access_token'] = $resp['access_token'];
         $urlObj['type'] = 'jsapi';
         $queryStr = http_build_query($urlObj);
@@ -120,12 +122,13 @@ class WxpubOAuth
      * @param $url    是当前网页的 URL，不包含 # 及其后面部分
      * @return string signature 字符串
      */
-    public static function getSignature($charge, $jsapi_ticket, $url = NULL) {
+    public static function getSignature($charge, $jsapi_ticket, $url = null)
+    {
         if (!isset($charge['credential']) || !isset($charge['credential']['wx_pub'])) {
             return null;
         }
         $credential = $charge['credential']['wx_pub'];
-        $arrayToSign = array();
+        $arrayToSign = [];
         $arrayToSign[] = 'jsapi_ticket=' . $jsapi_ticket;
         $arrayToSign[] = 'noncestr=' . $credential['nonceStr'];
         $arrayToSign[] = 'timestamp=' . $credential['timeStamp'];

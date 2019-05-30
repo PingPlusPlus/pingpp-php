@@ -14,7 +14,7 @@ require dirname(__FILE__) . '/../config.php';
 $order_no = substr(md5(time()), 0, 10);
 try {
     $or = \Pingpp\Order::create(
-        array(
+        [
             "amount" => 100,
             "app" => APP_ID,
             "merchant_order_no" => "201609{$order_no}",
@@ -39,12 +39,12 @@ try {
             //    'user' => 'user_001',
             //    'user_fee' => 1
             //]
-        )
+        ]
     );
     echo $or;
 } catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -91,7 +91,7 @@ exit;
 
 //查询商品的支付charge对象
 try {
-    $charge_info = \Pingpp\Order::chargeRetrieve('2011708070000007521','ch_eDaTe9OG0qPOz14S4KWH80eP');
+    $charge_info = \Pingpp\Order::chargeRetrieve('2011708070000007521', 'ch_eDaTe9OG0qPOz14S4KWH80eP');
     echo $charge_info;
 } catch (\Pingpp\Error\Base $e) {
     if ($e->getHttpStatus() != null) {
@@ -162,7 +162,8 @@ exit;
  */
 try {
     $order_id = '2011708070000007521';
-    $orre = \Pingpp\OrderRefund::create($order_id,
+    $orre = \Pingpp\OrderRefund::create(
+        $order_id,
         [
             'charge' => 'ch_eDaTe9OG0qPOz14S4KWH80eP', //在该订单中，需要退款的 charge 对象 ID，默认全部退款。
             'charge_amount' => 10,                     //charge 退款金额，默认为全额退款。必须和 charge 参数同时使用。单位：分。

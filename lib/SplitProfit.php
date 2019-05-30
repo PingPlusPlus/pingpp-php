@@ -1,6 +1,7 @@
 <?php
 
 namespace Pingpp;
+
 class SplitProfit extends ApiResource
 {
     public static function className()

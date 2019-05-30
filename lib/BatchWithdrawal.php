@@ -55,6 +55,4 @@ class BatchWithdrawal extends AppBase
     {
         return self::_all($params, $options);
     }
-
-
 }

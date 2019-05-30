@@ -34,7 +34,7 @@ try {
     echo $royalty_template;
 } catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -63,7 +63,7 @@ try {
     echo $royalty_tpl_info;
 } catch (\Pingpp\Error\Base $e) {
 // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -76,7 +76,7 @@ try {
     echo $royalty_tpl_info;
 } catch (\Pingpp\Error\Base $e) {
 // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -89,7 +89,7 @@ try {
     echo $royalty_tpl_info;
 } catch (\Pingpp\Error\Base $e) {
 // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -107,11 +107,10 @@ try {
     echo $royalty_tpl_info;
 } catch (\Pingpp\Error\Base $e) {
 // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
         echo $e->getMessage() . PHP_EOL;
     }
 }
-

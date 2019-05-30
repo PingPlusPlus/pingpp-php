@@ -50,13 +50,13 @@ exit;
 // 更新 user 对象
 $uid = 'uid582d35283f628';
 try {
-    $user = \Pingpp\User::update($uid, array(
+    $user = \Pingpp\User::update($uid, [
         'address' => 'China',
         'name' => strval(mt_rand(1000, 9999)),
-        'metadata' => array(
+        'metadata' => [
             'key' => 'valeu'
-        ),
-    ));
+        ],
+    ]);
     echo $user;
 } catch (\Pingpp\Error\Base $e) {
     if ($e->getHttpStatus() != null) {

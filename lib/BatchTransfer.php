@@ -47,5 +47,4 @@ class BatchTransfer extends ApiResource
     {
         return self::_create($params, $options);
     }
-
 }

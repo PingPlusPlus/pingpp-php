@@ -27,14 +27,15 @@ class ApiRequestor
     {
         if ($d instanceof ApiResource) {
             return Util\Util::utf8($d->id);
-        } else if ($d === true && !$is_post) {
+        } elseif ($d === true && !$is_post) {
             return 'true';
-        } else if ($d === false && !$is_post) {
+        } elseif ($d === false && !$is_post) {
             return 'false';
-        } else if (is_array($d)) {
-            $res = array();
-            foreach ($d as $k => $v)
+        } elseif (is_array($d)) {
+            $res = [];
+            foreach ($d as $k => $v) {
                 $res[$k] = self::_encodeObjects($v, $is_post);
+            }
             return $res;
         } else {
             return Util\Util::utf8($d);
@@ -53,7 +54,7 @@ class ApiRequestor
             return $arr;
         }
 
-        $r = array();
+        $r = [];
         foreach ($arr as $k => $v) {
             if (is_null($v)) {
                 continue;
@@ -61,7 +62,7 @@ class ApiRequestor
 
             if ($prefix && $k && !is_int($k)) {
                 $k = $prefix."[".$k."]";
-            } else if ($prefix) {
+            } elseif ($prefix) {
                 $k = $prefix."[]";
             }
 
@@ -87,10 +88,10 @@ class ApiRequestor
     public function request($method, $url, $params = null, $headers = null)
     {
         if (!$params) {
-            $params = array();
+            $params = [];
         }
         if (!$headers) {
-            $headers = array();
+            $headers = [];
         }
         list($rbody, $rcode, $myApiKey) = $this->_requestRaw($method, $url, $params, $headers);
         // response code 502 retry
@@ -98,7 +99,7 @@ class ApiRequestor
             list($rbody, $rcode, $myApiKey) = $this->_requestRaw($method, $url, $params, $headers);
         }
         $resp = $this->_interpretResponse($rbody, $rcode);
-        return array($resp, $myApiKey);
+        return [$resp, $myApiKey];
     }
 
 
@@ -126,21 +127,33 @@ class ApiRequestor
         $code = isset($error->code) ? $error->code : null;
 
         switch ($rcode) {
+            case 429:
+                throw new Error\RateLimit(
+                    $msg,
+                    $param,
+                    $rcode,
+                    $rbody,
+                    $resp
+                );
             case 400:
-                if ($code == 'rate_limit') {
-                    throw new Error\RateLimit(
-                        $msg, $param, $rcode, $rbody, $resp
-                    );
-                }
             case 404:
                 throw new Error\InvalidRequest(
-                    $msg, $param, $rcode, $rbody, $resp
+                    $msg,
+                    $param,
+                    $rcode,
+                    $rbody,
+                    $resp
                 );
             case 401:
                 throw new Error\Authentication($msg, $rcode, $rbody, $resp);
             case 402:
                 throw new Error\Channel(
-                    $msg, $code, $param, $rcode, $rbody, $resp
+                    $msg,
+                    $code,
+                    $param,
+                    $rcode,
+                    $rbody,
+                    $resp
                 );
             default:
                 throw new Error\Api($msg, $rcode, $rbody, $resp);
@@ -166,18 +179,18 @@ class ApiRequestor
         $params = self::_encodeObjects($params, $method == 'post' || $method == 'put');
         $langVersion = phpversion();
         $uname = php_uname();
-        $ua = array(
+        $ua = [
             'bindings_version' => Pingpp::VERSION,
             'lang' => 'php',
             'lang_version' => $langVersion,
             'publisher' => 'pingplusplus',
-            'uname' => $uname
-        );
-        $defaultHeaders = array(
+            'uname' => $uname,
+        ];
+        $defaultHeaders = [
             'X-Pingpp-Client-User-Agent' => json_encode($ua),
             'User-Agent' => 'Pingpp/v1 PhpBindings/' . Pingpp::VERSION,
-            'Authorization' => 'Bearer ' . $myApiKey
-        );
+            'Authorization' => 'Bearer ' . $myApiKey,
+        ];
         if (Pingpp::$apiVersion) {
             $defaultHeaders['Pingplusplus-Version'] = Pingpp::$apiVersion;
         }
@@ -197,7 +210,7 @@ class ApiRequestor
 
         $combinedHeaders = array_merge($defaultHeaders, $headers);
 
-        $rawHeaders = array();
+        $rawHeaders = [];
 
         foreach ($combinedHeaders as $header => $value) {
             $rawHeaders[] = $header . ': ' . $value;
@@ -209,7 +222,7 @@ class ApiRequestor
             $rawHeaders,
             $params
         );
-        return array($rbody, $rcode, $myApiKey);
+        return [$rbody, $rcode, $myApiKey];
     }
 
     private function _interpretResponse($rbody, $rcode)
@@ -232,7 +245,7 @@ class ApiRequestor
     {
         $curl = curl_init();
         $method = strtolower($method);
-        $opts = array();
+        $opts = [];
         $dataToBeSign = '';
         $requestTime = null;
         if ($method === 'get' || $method === 'delete') {
@@ -310,7 +323,7 @@ class ApiRequestor
                 curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
                 curl_setopt($curl, CURLOPT_CAINFO, $cert);
                 $rbody = curl_exec($curl);
-            }
+        }
 
         if ($rbody === false) {
             $errno = curl_errno($curl);
@@ -321,7 +334,7 @@ class ApiRequestor
 
         $rcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
-        return array($rbody, $rcode);
+        return [$rbody, $rcode];
     }
 
     /**
@@ -333,22 +346,22 @@ class ApiRequestor
     {
         $apiBase = Pingpp::$apiBase;
         switch ($errno) {
-        case CURLE_COULDNT_CONNECT:
-        case CURLE_COULDNT_RESOLVE_HOST:
-        case CURLE_OPERATION_TIMEOUTED:
-            $msg = "Could not connect to Ping++ ($apiBase).  Please check your "
+            case CURLE_COULDNT_CONNECT:
+            case CURLE_COULDNT_RESOLVE_HOST:
+            case CURLE_OPERATION_TIMEOUTED:
+                $msg = "Could not connect to Ping++ ($apiBase).  Please check your "
                 . "internet connection and try again.  If this problem persists, "
                 . "you should check Pingpp's service status at "
                 . "https://pingxx.com/status.";
-            break;
-        case CURLE_SSL_CACERT:
-        case CURLE_SSL_PEER_CERTIFICATE:
-            $msg = "Could not verify Ping++'s SSL certificate.  Please make sure "
+                break;
+            case CURLE_SSL_CACERT:
+            case CURLE_SSL_PEER_CERTIFICATE:
+                $msg = "Could not verify Ping++'s SSL certificate.  Please make sure "
                 . "that your network is not intercepting certificates.  "
                 . "(Try going to $apiBase in your browser.)";
-            break;
-        default:
-            $msg = "Unexpected error communicating with Ping++.";
+                break;
+            default:
+                $msg = "Unexpected error communicating with Ping++.";
         }
 
         $msg .= "\n\n(Network error [errno $errno]: $message)";
@@ -367,7 +380,7 @@ class ApiRequestor
     {
         if (!Pingpp::$privateKey) {
             if (!Pingpp::$privateKeyPath) {
-                return NULL;
+                return null;
             }
             if (!file_exists(Pingpp::$privateKeyPath)) {
                 throw new Error\Api('Private key file not found at: ' . Pingpp::$privateKeyPath);

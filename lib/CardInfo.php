@@ -28,5 +28,4 @@ class CardInfo extends ApiResource
     {
         return self::_create($params, $options);
     }
-
 }

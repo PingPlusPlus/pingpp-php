@@ -23,7 +23,7 @@ $amount = $input_data['amount'];
 $orderNo = substr(md5(time()), 0, 12);
 
 /**
- * $extra 在使用某些渠道的时候，需要填入相应的参数，其它渠道则是 array()。
+ * $extra 在使用某些渠道的时候，需要填入相应的参数，其它渠道则是 []。
  * 以下 channel 仅为部分示例，未列出的 channel 请查看文档 https://pingxx.com/document/api#api-c-new；
  * 或直接查看开发者中心：https://www.pingxx.com/docs/server；包含了所有渠道的 extra 参数的示例；
  */
@@ -32,7 +32,7 @@ $extra = file_exists($channel_extra) ? require_once $channel_extra : [];
 
 try {
     $ch = \Pingpp\Charge::create(
-        array(
+        [
             // 请求参数字段规则，请参考 API 文档：https://www.pingxx.com/api#api-c-new
             'subject'   => 'Your Subject',
             'body'      => 'Your Body',
@@ -42,8 +42,8 @@ try {
             'extra'     => $extra,
             'channel'   => $channel,                // 支付使用的第三方支付渠道取值，请参考：https://www.pingxx.com/api#api-c-new
             'client_ip' => $_SERVER['REMOTE_ADDR'], // 发起支付请求客户端的 IP 地址，格式为 IPV4，如: 127.0.0.1
-            'app'       => array('id' => APP_ID)
-        )
+            'app'       => ['id' => APP_ID],
+        ]
     );
     echo $ch;                                       // 输出 Ping++ 返回的支付凭据 Charge
 } catch (\Pingpp\Error\Base $e) {

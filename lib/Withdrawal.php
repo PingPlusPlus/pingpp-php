@@ -35,7 +35,7 @@ class Withdrawal extends AppBase
     public static function confirm($id, $options = null)
     {
         $url = static::classUrl().'/'.$id;
-        $params = array('status' => 'pending');
+        $params = ['status' => 'pending'];
         return static::_directRequest('put', $url, $params, $options);
     }
 
@@ -48,7 +48,7 @@ class Withdrawal extends AppBase
     public static function cancel($id, $options = null)
     {
         $url = static::classUrl().'/'.$id;
-        $params = array('status' => 'canceled');
+        $params = ['status' => 'canceled'];
         return static::_directRequest('put', $url, $params, $options);
     }
 

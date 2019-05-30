@@ -13,7 +13,8 @@ require dirname(__FILE__) . '/../config.php';
 // 创建退款
 try {
     // 通过发起一次退款请求创建一个新的 refund 对象，只能对已经发生交易并且没有全额退款的 charge 对象发起退款
-    $re = \Pingpp\Refund::create('ch_L8qn10mLmr1GS8e5OODmHaL4',
+    $re = \Pingpp\Refund::create(
+        'ch_L8qn10mLmr1GS8e5OODmHaL4',
         [
             'amount' => 1,// 退款的金额, 单位为对应币种的最小货币单位，例如：人民币为分（如退款金额为 1 元，此处请填 100）。必须小于等于可退款金额，默认为全额退款
             'description' => 'Your Descripton'

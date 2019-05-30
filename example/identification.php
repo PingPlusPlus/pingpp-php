@@ -17,14 +17,14 @@ require 'config.php';
 
 // 调用身份证认证接口
 try {
-    $result = \Pingpp\Identification::identify(array(
+    $result = \Pingpp\Identification::identify([
         'type' => 'id_card',
         'app' => APP_ID,
-        'data' => array(
+        'data' => [
             'id_name' => '张三', // 姓名
-            'id_number' => '310181198910107641' // 身份证号
-        )
-    ));
+            'id_number' => '310181198910107641', // 身份证号
+        ]
+    ]);
     echo $result;
 } catch (\Pingpp\Error\Base $e) {
     echo $e->getMessage();
@@ -32,16 +32,16 @@ try {
 
 // 调用银行卡认证接口
 try {
-    $result = \Pingpp\Identification::identify(array(
+    $result = \Pingpp\Identification::identify([
         'type' => 'bank_card',
         'app' => APP_ID,
-        'data' => array(
+        'data' => [
             'id_name' => '张三', // 姓名
             'id_number' => '310181198910107641', // 身份证号,
             'card_number' => '6201111122223333', // 银行卡号
-            'phone_number' => '18623234545' // 银行预留手机号，不支持 178 号段
-        )
-    ));
+            'phone_number' => '18623234545', // 银行预留手机号，不支持 178 号段
+        ]
+    ]);
     echo $result;
 } catch (\Pingpp\Error\Base $e) {
     echo $e->getMessage();

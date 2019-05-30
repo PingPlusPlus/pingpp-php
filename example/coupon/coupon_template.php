@@ -53,11 +53,11 @@ exit;
 //更新 Coupon template 对象
 $coupon_tmpl_id = '300216111711073000022301';           // ping++返回的优惠券模板 ID
 try {
-    $ct = \Pingpp\CouponTemplate::update($coupon_tmpl_id, array(
-        'metadata' => array(
+    $ct = \Pingpp\CouponTemplate::update($coupon_tmpl_id, [
+        'metadata' => [
             'keys' => 'value',
-        )
-    ));
+        ]
+    ]);
     echo $ret;
 } catch (\Pingpp\Error\Base $e) {
     if ($e->getHttpStatus() != null) {

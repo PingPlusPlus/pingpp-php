@@ -1,95 +1,109 @@
 # Pingpp PHP SDK
 
 ## 简介
+
 lib 文件夹下是 PHP SDK 文件，  
 example 文件夹里面是简单的接入示例，该示例仅供参考。
 
 ## 版本要求
+
 PHP 版本 5.6 及以上  
 你可以执行目录下的环境检测脚本，来进行一些基本检测
+
 ```bash
 php PingppEnvInspect.php
 ```
 
 ## 安装
+
 ### 使用 Composer
+
 执行
+
 ```
 composer require pingplusplus/pingpp-php
 ```
 
 使用 Composer 的 autoload 引入
+
 ```php
 require_once('vendor/autoload.php');
 ```
 
 ### 手动引入
+
 ```php
 require_once('/path/to/pingpp-php/init.php');
 ```
 
 ## 接入方法
+
 ### 初始化
+
 ```php
 \Pingpp\Pingpp::setApiKey('YOUR-KEY');
 ```
 
 ### 设置请求签名密钥
+
 密钥需要你自己生成，公钥请填写到 [Ping++ Dashboard](https://dashboard.pingxx.com)
+
 ```php
 \Pingpp\Pingpp::setPrivateKeyPath('/path/to/your_rsa_private_key.pem');
 ```
 
 ### 设置自定义 CA 证书路径
+
 ```php
 \Pingpp\Pingpp::$caBundle = '/path/to/cacert.pem';
 ```
 
 不设置时，会默认使用 SDK 包含的 CA 证书。
-如果需要手动更新 CA 证书，可从 https://curl.haxx.se/docs/caextract.html 下载，并使用此方法设置证书路径。
+如果需要手动更新 CA 证书，可从 <https://curl.haxx.se/docs/caextract.html> 下载，并使用此方法设置证书路径。
 
 ### 支付
+
 ```php
-$ch = \Pingpp\Charge::create(
-    array(
-        'order_no'  => '123456789',
-        'app'       => array('id' => 'APP_ID'),
-        'channel'   => 'alipay',
-        'amount'    => 100,
-        'client_ip' => '127.0.0.1',
-        'currency'  => 'cny',
-        'subject'   => 'Your Subject',
-        'body'      => 'Your Body',
-        'extra'     => $extra
-    )
-);
+$ch = \Pingpp\Charge::create([
+    'order_no'  => '123456789',
+    'app'       => ['id' => 'APP_ID'],
+    'channel'   => 'alipay',
+    'amount'    => 100,
+    'client_ip' => '127.0.0.1',
+    'currency'  => 'cny',
+    'subject'   => 'Your Subject',
+    'body'      => 'Your Body',
+    'extra'     => $extra,
+]);
 ```
 
 ### charge 查询
+
 ```php
 \Pingpp\Charge::retrieve('CHARGE_ID');
 ```
 
 ```php
-\Pingpp\Charge::all(array('limit' => 5, 'app' => array('id' => 'APP_ID')));
+\Pingpp\Charge::all(['limit' => 5, 'app' => ['id' => 'APP_ID']]);
 ```
 
 ### 退款
+
 ```php
-$re = \Pingpp\Refund::create('ch_a9CmfHTGGaz1urHiL8m5OiX1',
-    array(
-        'amount' => 1,
-        'description' => 'Your Descripton'
-    )
-);
+$re = \Pingpp\Refund::create('ch_a9CmfHTGGaz1urHiL8m5OiX1', [
+    'amount' => 1,
+    'description' => 'Your Descripton',
+]);
 ```
 
 ### 退款查询
+
 ```php
 \Pingpp\Refund::retrieve('CHARGE_ID', 'REFUND_ID');
 ```
 
 ### 退款列表查询
+
 ```php
 \Pingpp\Refund::all('CHARGE_ID',[
     'limit' => 5,
@@ -97,49 +111,56 @@ $re = \Pingpp\Refund::create('ch_a9CmfHTGGaz1urHiL8m5OiX1',
 ```
 
 ### 微信红包
+
 ```php
-\Pingpp\RedEnvelope::create(
-    array(
-        'order_no'  => '123456789',
-        'app'       => array('id' => 'APP_ID'),
-        'channel'   => 'wx_pub',
-        'amount'    => 100,
-        'currency'  => 'cny',
-        'subject'   => 'Your Subject',
-        'body'      => 'Your Body',
-        'extra'     => array(
-            'nick_name' => 'Nick Name',
-            'send_name' => 'Send Name'
-        ),
-        'recipient'   => 'Openid',
-        'description' => 'Your Description'
-    )
-);
+\Pingpp\RedEnvelope::create([
+    'order_no'  => '123456789',
+    'app'       => ['id' => 'APP_ID'],
+    'channel'   => 'wx_pub',
+    'amount'    => 100,
+    'currency'  => 'cny',
+    'subject'   => 'Your Subject',
+    'body'      => 'Your Body',
+    'extra'     => [
+        'nick_name' => 'Nick Name',
+        'send_name' => 'Send Name',
+    ],
+    'recipient'   => 'Openid',
+    'description' => 'Your Description',
+]);
 ```
 
 ### 查询指定微信红包
+
 ```php
 \Pingpp\RedEnvelope::retrieve('RED_ID');
 ```
 
 ### 查询微信红包列表
+
 ```php
-\Pingpp\RedEnvelope::all(array('limit' => 5));
+\Pingpp\RedEnvelope::all(['limit' => 5]);
 ```
 
 ### 微信公众号获取签名
+
 如果使用微信 JS-SDK 来调起支付，需要在创建 `charge` 后，获取签名（`signature`），传给 HTML5 SDK。
+
 ```php
 $jsapi_ticket_arr = \Pingpp\WxpubOAuth::getJsapiTicket($wx_app_id, $wx_app_secret);
 $ticket = $jsapi_ticket_arr['ticket'];
 ```
+
 **正常情况下，`jsapi_ticket` 的有效期为 7200 秒。由于获取 `jsapi_ticket` 的 api 调用次数非常有限，频繁刷新 `jsapi_ticket` 会导致 api 调用受限，影响自身业务，开发者必须在自己的服务器全局缓存 `jsapi_ticket`。**
 
 _下面方法中 `$url` 是当前网页的 URL，不包含 `#` 及其后面部分_
+
 ```php
 $signature = \Pingpp\WxpubOauth::getSignature($charge, $ticket, $url);
 ```
+
 然后在 HTML5 SDK 里调用
+
 ```javascript
 pingpp.createPayment(charge, callback, signature, false);
 ```
@@ -151,74 +172,80 @@ pingpp.createPayment(charge, callback, signature, false);
 ```
 
 ### event 列表查询
+
 ```php
-\Pingpp\Event::all(array('type' => 'charge.succeeded'));
+\Pingpp\Event::all(['type' => 'charge.succeeded']);
 ```
+
 **详细信息请参考 [API 文档](https://pingxx.com/document/api?php)。**
 
 ### 微信企业付款
+
 ```php
-\Pingpp\Transfer::create(
-    array(
-        'amount' => 100,
-        'order_no' => '123456d7890',
-        'currency' => 'cny',
-        'channel' => 'wx_pub',
-        'app' => array('id' => 'APP_ID'),
-        'type' => 'b2c',
-        'recipient' => 'o9zpMs9jIaLynQY9N6yxcZ',
-        'description' => 'testing',
-        'extra' => array('user_name' => 'User Name', 'force_check' => true)
-    )
-);
+\Pingpp\Transfer::create([
+    'amount' => 100,
+    'order_no' => '123456d7890',
+    'currency' => 'cny',
+    'channel' => 'wx_pub',
+    'app' => ['id' => 'APP_ID'],
+    'type' => 'b2c',
+    'recipient' => 'o9zpMs9jIaLynQY9N6yxcZ',
+    'description' => 'testing',
+    'extra' => ['user_name' => 'User Name', 'force_check' => true]
+]);
 ```
 
 ### 查询指定 transfer
+
 ```php
 \Pingpp\Transfer::retrieve('TR_ID');
 ```
 
 ### 查询 transfer 列表
+
 ```php
-\Pingpp\Transfer::all(array('limit' => 5));
+\Pingpp\Transfer::all(['limit' => 5]);
 ```
 
 ### 身份证认证
+
 ```php
-\Pingpp\Identification::identify(array(
+\Pingpp\Identification::identify([
     'type' => 'id_card',
     'app' => $app_id,
-    'data' => array(
+    'data' => [
         'id_name' => '张三', // 姓名
         'id_number' => '310181198910107641' // 身份证号
-    )
-));
+    ]
+]);
 ```
 
 ### 银行卡认证
+
 ```php
-\Pingpp\Identification::identify(array(
+\Pingpp\Identification::identify([
     'type' => 'bank_card',
     'app' => $app_id,
-    'data' => array(
+    'data' => [
         'id_name' => '张三', // 姓名
         'id_number' => '310181198910107641', // 身份证号,
         'card_number' => '6201111122223333', // 银行卡号
         'phone_number' => '18623234545' // 银行预留手机号，不支持 178 号段
-    )
-));
+    ]
+]);
 ```
 
 ### 批量转账
+
 ```php
 \Pingpp\BatchTransfer::create(
     [
         'amount'      => 8000,
         'app'         => APP_ID,
-        'batch_no'    => uniqid('batch'),       // 批量退款批次号，3-24位，允许字母和英文
+        'batch_no'    => uniqid('batch'),    // 批量退款批次号，3-24位，允许字母和英文
         'channel'     => 'alipay',
-        'description' => 'Your Description',    // 批量退款详情，最多 255 个 Unicode 字符
-        'recipients'  => [                      // 需要退款的  charge id 列表，一次最多 100 个
+        'description' => 'Your Description', // 批量退款详情，最多 255 个 Unicode 字符
+        'recipients'  => [ // 需要退款的  charge id 列表，一次最多 100 个
             [
                 'account' => 'account01@alipay.com',
                 'amount'  => 5000,
@@ -236,23 +263,26 @@ pingpp.createPayment(charge, callback, signature, false);
 ```
 
 ### 查询指定批量转账
+
 ```php
 \Pingpp\BatchTransfer::retrieve('181611151506412852'); // 批量转账对象id ，由 Ping++ 生成
 ```
 
 ### 查询批量转账列表
+
 ```php
 \Pingpp\BatchTransfer::all(['page' => 1]);
 ```
 
 ### 批量退款
+
 ```php
 \Pingpp\BatchRefund::create(
     [
         'app'         => APP_ID,
         'batch_no'    => uniqid('batch'),    // 批量退款批次号，3-24位，允许字母和英文
         'description' => 'Your Description', // 批量退款详情，最多 255 个 Unicode 字符
-        'charges'     => [                   // 需要退款的  charge id 列表，一次最多 100 个
+        'charges'     => [ // 需要退款的  charge id 列表，一次最多 100 个
             'ch_qn5G8GH1SOCCvnv10S8mXTqP',
             'ch_SijjXL8Ki1u1arL1S49q5ifL'
         ]
@@ -261,16 +291,19 @@ pingpp.createPayment(charge, callback, signature, false);
 ```
 
 ### 查询指定批量退款
+
 ```php
 \Pingpp\BatchRefund::retrieve('151611141520583238'); // 批量退款对象id ，由 Ping++ 生成
 ```
 
 ### 查询批量退款列表
+
 ```php
 \Pingpp\BatchRefund::all(['page' => 1]);
 ```
 
 ### 报关
+
 ```php
 \Pingpp\Customs::create(
     [
@@ -295,76 +328,82 @@ pingpp.createPayment(charge, callback, signature, false);
 ```
 
 ### 查询指定报关
+
 ```php
 \Pingpp\Customs::retrieve('14201609281040220109'); // 报关对象 ID，由 Ping++ 生成
 ```
 
 ## 创建商品订单
+
 ```php
-\Pingpp\Order::create(
-        array(
-            "amount" => 100,
-            "app" => APP_ID,
-            "merchant_order_no" => "88888888888", //商户订单号
-            "subject" => "subj{$order_no}",
-            "currency" => "cny",
-            "body" => "body{$order_no}",
-            "uid" => "test_user_001",
-            "client_ip" => "192.168.0.101"
-        )
-    );
+\Pingpp\Order::create([
+    "amount" => 100,
+    "app" => APP_ID,
+    "merchant_order_no" => "88888888888", //商户订单号
+    "subject" => "subj{$order_no}",
+    "currency" => "cny",
+    "body" => "body{$order_no}",
+    "uid" => "test_user_001",
+    "client_ip" => "192.168.0.101",
+]);
 ```
 
 ## 商品订单支付
+
 ```php
-\Pingpp\Order::pay('2011611170000003651', array(
+\Pingpp\Order::pay('2011611170000003651', [
     'balance_amount'    => 0,
     'charge_amount'     => 10,
     'channel' => 'alipay',
-    'extra' => array(
-        'key' => 'value'
-    ),
-));
+    'extra' => [
+        'key' => 'value',
+    ],
+]);
 ```
 
 ## 商品订单取消
+
 ```php
-\Pingpp\Order::cancel('2011611170000003651');   //订单对象 ID，由 Ping++ 生成
+\Pingpp\Order::cancel('2011611170000003651'); // 订单对象 ID，由 Ping++ 生成
 ```
 
 ## 商品订单查询接口
+
 ```php
-\Pingpp\Order::retrieve('2011611170000003651'); //订单对象 ID，由 Ping++ 生成
+\Pingpp\Order::retrieve('2011611170000003651'); // 订单对象 ID，由 Ping++ 生成
 ```
 
 ## 商品订单列表
+
 ```php
-$params['app'] = APP_ID;
+$params = ['app' => APP_ID];
 \Pingpp\Order::all($params);
 ```
 
 ## 商品订单退款
+
 ```php
-\Pingpp\OrderRefund::create('2011708070000007521',
-    [
-        'description' => 'Your description',       //退款附加说明。
-        'metadata' => [],
-        'refund_mode' => 'to_source',              //退款模式。原路退回：to_source，退至余额：to_balance。默认为原路返回。
-    ]
-);
+\Pingpp\OrderRefund::create('2011708070000007521', [
+    'description' => 'Your description', //退款附加说明。
+    'metadata' => [],
+    'refund_mode' => 'to_source',        //退款模式。原路退回：to_source，退至余额：to_balance。默认为原路返回。
+]);
 ```
 
 ## 商品订单退款查询
+
 ```php
 \Pingpp\OrderRefund::retrieve('2011611160000343961', 're_OW1CSS8KCS0KvfzDu5jTerrH');
 ```
 
-##  商品订单退款列表查询
+## 商品订单退款列表查询
+
 ```php
 \Pingpp\OrderRefund::all('2011611160000343961');
 ```
 
 ## 用户充值
+
 ```php
 \Pingpp\Recharge::create([
     'user' => 'user_test_01',
@@ -388,11 +427,13 @@ $params['app'] = APP_ID;
 ```
 
 ## 用户充值查询
+
 ```php
 \Pingpp\Recharge::retrieve('221170807730968330240000')
 ```
 
 ## 查询用户充值列表
+
 ```php
 $params = [
     'page' => 1,
@@ -402,6 +443,7 @@ $params = [
 ```
 
 ## 用户充值退款
+
 ```php
 \Pingpp\Recharge::refund('221170807730968330240000', [
     'description' => 'Rechage refund description',
@@ -409,229 +451,257 @@ $params = [
 ```
 
 ## 查询用户充值退款
+
 ```php
 \Pingpp\Recharge::refund_retrieve('221170807730968330240000', 're_iTqLaTe1WTmHvXjrv9i5C8G4')
 ```
 
 ## 查询用户充值退款列表
+
 ```php
 \Pingpp\Recharge::refundList('221170807730968330240000')
 ```
 
-
 ## 创建用户
+
 ```php
- \Pingpp\User::create(array(
-    'id' => uniqid('uid'),          // 用户 ID ，由商户提供
- ));
+ \Pingpp\User::create([
+    'id' => uniqid('uid'), // 用户 ID ，由商户提供
+ ]);
 ```
 
 ## 查询用户
+
 ```php
 \Pingpp\User::retrieve('uid582d35283f628');
 ```
 
 ## 更新用户
+
 ```php
-\Pingpp\User::update($uid, array(
-    'address' => 'China',
-    'name' => strval(mt_rand(1000, 9999)),
-    'metadata' => array(
+\Pingpp\User::update($uid, [
+    'address' => 'Shanghai',
+    'name' => 'User Name',
+    'metadata' => [
         'key' => 'valeu'
-    ),
-));
+    ],
+]);
 ```
 
 ## 查询用户列表
+
 ```php
-$users = \Pingpp\User::all(array(
+$users = \Pingpp\User::all([
     'page' => 1,
     'per_page' => 10,
-));
+]);
 ```
 
 ## 创建优惠券模板
+
 ```php
-\Pingpp\CouponTemplate::create(array(
-    'name'              => '25OFF',                // 优惠券模板名称
-    'type'              => 2,                      // 优惠券模板的类型 1：现金券；2：折扣券
-    'percent_off'       => 25,                     // 折扣百分比, 如 20 表示 8 折, 100 表示免费
-    'amount_available'  => 10000,                  // 订单金额大于等于该值时，优惠券有效（适用于满减）；0 表示无限制
-    'max_circulation'   => 1000,                   // 优惠券最大生成数量，当已生成数量达到最大值时，不能再生成优惠券；默认 null，表示可以无限生成
-    'metadata'          => array(),                // metadata
-    'expiration'        => null                    // 优惠券模板过期策略
-));
+\Pingpp\CouponTemplate::create([
+    'name'             => '25OFF', // 优惠券模板名称
+    'type'             => 2,       // 优惠券模板的类型 1：现金券；2：折扣券
+    'percent_off'      => 25,      // 折扣百分比, 如 20 表示 8 折, 100 表示免费
+    'amount_available' => 10000,   // 订单金额大于等于该值时，优惠券有效（适用于满减）；0 表示无限制
+    'max_circulation'  => 1000,    // 优惠券最大生成数量，当已生成数量达到最大值时，不能再生成优惠券；默认 null，表示可以无限生成
+    'metadata'         => [],      // metadata
+    'expiration'       => null,    // 优惠券模板过期策略
+]);
 ```
 
 ## 查询优惠券模板列表
+
 ```php
-\Pingpp\CouponTemplate::all(array(
+\Pingpp\CouponTemplate::all([
     'page' => 1,
-    'per_page' => 10
-));
+    'per_page' => 10,
+]);
 ```
 
 ## 查询优惠券模板
+
 ```php
 \Pingpp\CouponTemplate::retrieve('300116082415452100000700');
 ```
 
 ## 更新优惠券模板
+
 ```php
-$ct = \Pingpp\CouponTemplate::update('300116082415452100000700', array(
-    'metadata' => array(
+$ct = \Pingpp\CouponTemplate::update('300116082415452100000700', [
+    'metadata' => [
         'keys' => 'value',
-    )
-));
+    ]
+]);
 ```
 
 ## 删除优惠券模板
+
 ```php
 \Pingpp\CouponTemplate::delete('300116082415452100000700');
 ```
 
 ## 批量创建优惠券
+
 ```php
-$coupon_tmpl_id = '300216111711085500022401';                               // ping++返回的优惠券模板 ID
-$params = array(
-    'users' => array(
+$coupon_tmpl_id = '300216111711085500022401'; // Ping++ 返回的优惠券模板 ID
+$params = [
+    'users' => [
         'uid582d1756b1650',
         'uid582d1756b1651',
-    )
-);
+    ],
+];
 \Pingpp\CouponTemplate::batchCreateCoupons($coupon_tmpl_id, $params);
 ```
 
 ## 查询优惠券模板下的优惠券列表
+
 ```php
-\Pingpp\CouponTemplate::couponsList('300216111711085500022401');    //  ping++返回的优惠券模板 ID
+\Pingpp\CouponTemplate::couponsList('300216111711085500022401'); //  Ping++ 返回的优惠券模板 ID
 ```
 
 ## 创建单个优惠券
+
 ```php
-$user_id = 'uid582d1756b1650';                                              // 用户 ID
-$params = array(
-    'coupon_template' => '300216111619300600019101',                        // 优惠券模版 ID
-);
+$user_id = 'uid582d1756b1650'; // 用户 ID
+$params = [
+    'coupon_template' => '300216111619300600019101', // 优惠券模版 ID
+];
 \Pingpp\Coupon::create($user_id, $params);
 ```
 
 ## 查询优惠券
+
 ```php
-$user_id = 'uid582d1756b1650';                                              // 用户 ID
-$coupon_id = '300416111711463500023901';                                    // 优惠券 ID
+$user_id = 'uid582d1756b1650'; // 用户 ID
+$coupon_id = '300416111711463500023901'; // 优惠券 ID
 \Pingpp\Coupon::retrieve($user_id, $coupon_id);
 ```
 
 ## 更新优惠券
+
 ```php
-//更新 Coupon 对象
-$user_id = 'uid582d1756b1650';                                              // 用户 ID
-$coupon_id = '300416111711571500024101';                                    // 优惠券 ID
-$params = array(
-    'metadata' => array(
-        'key' => 'value'
-    )
-);
+// 更新 Coupon 对象
+$user_id = 'uid582d1756b1650'; // 用户 ID
+$coupon_id = '300416111711571500024101'; // 优惠券 ID
+$params = [
+    'metadata' => [
+        'key' => 'value',
+    ],
+];
 \Pingpp\Coupon::update($user_id, $coupon_id, $params);
-```   
+```
 
 ## 删除优惠券
+
 ```php
-$user_id = 'uid582d1756b1650';                                              // 用户 ID
-$coupon_id = '300416111711463500023901';                                    // 优惠券 ID
+$user_id = 'uid582d1756b1650'; // 用户 ID
+$coupon_id = '300416111711463500023901'; // 优惠券 ID
 \Pingpp\Coupon::delete($user_id, $coupon_id);
 ```
 
 ## 查询用户优惠券列表
+
 ```php
-$user_id = 'uid582d1756b1650';                                              // 用户 ID
-$search_params = array(                                                          //搜索条件，此数组可以为空
-    'page'      => 1,                                                       //页码，取值范围：1~1000000000；默认值为"1"
-    'per_page'  => 2                                                        //每页数量，取值范围：1～100；默认值为"20"
-);
+$user_id = 'uid582d1756b1650'; // 用户 ID
+$search_params = [ //搜索条件，此数组可以为空
+    'page' => 1, //页码，取值范围：1~1000000000；默认值为"1"
+    'per_page' => 2, //每页数量，取值范围：1～100；默认值为"20"
+];
 \Pingpp\Coupon::all($user_id, $search_params);
 ```
 
 ## 批量提现确认
+
 ```php
-$params = array(
-    'withdrawals' => array(
+$params = [
+    'withdrawals' => [
         '1701611150302360654',
-        '1701611151015078981'
-    )
-);
+        '1701611151015078981',
+    ]
+];
 \Pingpp\BatchWithdrawal::confirm($params);
 ```
+
 ## 批量提现撤销
+
 ```php
-$params = array(
-    'withdrawals' => array(
+$params = [
+    'withdrawals' => [
         '1701611150302360654',
-        '1701611151015078981'
-    )
-);
+        '1701611151015078981',
+    ]
+];
 \Pingpp\BatchWithdrawal::cancel($params);
 
 ```
 
 ## 批量提现查询
+
 ```php
-\Pingpp\BatchWithdrawal::retrieve('1901611151015122025');   //批量提现对象 ID。
+\Pingpp\BatchWithdrawal::retrieve('1901611151015122025'); //批量提现对象 ID。
 ```
 
 ## 批量提现列表查询
+
 ```php
-$params = array(
+$params = [
     'per_page' => 20,
     'page' => 1
-);
+];
 \Pingpp\BatchWithdrawal::all($params);
 ```
 
 ## 查询用户余额明细列表
+
 ```php
 \Pingpp\BalanceTransaction::all([]);
 ```
 
 ## 查询用户余额明细
+
 ```php
 \Pingpp\BalanceTransaction::retrieve('310216111501260200000601');
 ```
 
 ## 余额提现申请
+
 ```php
-$params = array(
-    "user" => 'u-s.e_r1479281694040',                       // 用户 ID
-    "amount" => 200,                                        // 转账金额
-    "channel" => 'unionpay',                                // 提现使用渠道。银联：unionpay，支付宝：alipay，微信：wx
-    "user_fee" => 10,                                       // 用户需要承担的手续费
+$params = [
+    "user" => 'u-s.e_r1479281694040', // 用户 ID
+    "amount" => 200, // 转账金额
+    "channel" => 'unionpay', // 提现使用渠道。银联：unionpay，支付宝：alipay，微信：wx
+    "user_fee" => 10, // 用户需要承担的手续费
     "description" => "test232description",
-    "order_no" => time() . mt_rand(11111, 99999),           // 提现订单号，为长度不大于 16 的数字
-    "extra" => array(
+    "order_no" => time() . mt_rand(11111, 99999), // 提现订单号，为长度不大于 16 的数字
+    "extra" => [
         "card_number" => "6214888888888888",
         "user_name" => "张三",
         "open_bank_code" => "0102",
         "prov" => "上海",
-        "city" => "上海"
-    )
-);
+        "city" => "上海",
+    ],
+];
 \Pingpp\Withdrawal::create($params);
 ```
 
 ## 余额提现查询
+
 ```php
 \Pingpp\Withdrawal::retrieve('1711611161932569404');
 ```
 
 ## 余额提现列表查询
+
 ```php
-\Pingpp\Withdrawal::all(array(
+\Pingpp\Withdrawal::all([
     'per_page' => 3
-));
+]);
 ```
 
 ## 创建余额赠送
+
 ```php
 \Pingpp\BalanceBonus::create([
     'amount' => 10,
@@ -642,16 +712,19 @@ $params = array(
 ```
 
 ## 查询用户赠送
+
 ```php
 \Pingpp\BalanceBonus::retrieve('651170807590953932800000');
 ```
 
 ## 查询用户余额赠送列表
+
 ```php
 \Pingpp\BalanceBonus::all()
 ```
 
 ## 创建余额转账
+
 ```php
 \Pingpp\BalanceTransfer::create(
     [
@@ -659,7 +732,7 @@ $params = array(
         'user_fee' => 0,
         'user' => 'user_001',
         'recipient' => '0',
-        'order_no' => substr(md5(time()), 0, 10),
+        'order_no' => substr(md5(random_bytes(64)), 0, 10),
         'description' => 'Your description',
         'metadata' => [],
     ]
@@ -667,53 +740,61 @@ $params = array(
 ```
 
 ## 查询用户余额转账
+
 ```php
 \Pingpp\BalanceTransfer::retrieve('661170807435256330240000');
 ```
 
 ## 查询用户余额转账列表
+
 ```php
 \Pingpp\BalanceTransfer::all()
 ```
 
 ## 创建子商户
+
 ```php
-\Pingpp\SubApp::create(array(
+\Pingpp\SubApp::create([
     'display_name' => 'sub_app_display_name',
     'user' => 'user_102',
-    'metadata' => array(
-        'key' => 'value'
-    ),
-));
+    'metadata' => [
+        'key' => 'value',
+    ],
+]);
 ```
 
 ## 查询子商户
+
 ```php
 \Pingpp\SubApp::retrieve('app_1Gqj58ynP0mHeX1q');
 ```
 
 ## 查询子商户列表
+
 ```php
 \Pingpp\SubApp::all();
 ```
 
 ## 更新子商户
+
 ```php
-$sub_app = \Pingpp\SubApp::update('app_1Gqj58ynP0mHeX1q', array(
+$sub_app = \Pingpp\SubApp::update('app_1Gqj58ynP0mHeX1q', [
     'display_name' => 'display_name_2',
-    'metadata' => array(
-        'key' => 'value2'
-    ),
+    'metadata' => [
+        'key' => 'value2',
+    ],
     'description' => 'Your description',
-));
+]);
 ```
 
 ## 删除子商户
+
 ```php
 \Pingpp\SubApp::delete('app_1Gqj58ynP0mHeX1q');
 ```
 
 ## 设置子商户渠道参数
+
 ```php
 \Pingpp\Channel::create('app_1Gqj58ynP0mHeX1q', [
     'channel' => 'alipay',
@@ -749,11 +830,15 @@ YdUIxwgaBBpssNIDGQIDAQAB
     'description' => 'alipay description',
 ]);
 ```
+
 ## 获取子商户渠道参数
+
 ```php
 \Pingpp\Channel::retrieve('app_1Gqj58ynP0mHeX1q', 'alipay');
 ```
+
 ## 更新子商户渠道参数
+
 ```php
 \Pingpp\Channel::update('app_1Gqj58ynP0mHeX1q', 'alipay', [
     'description' => 'new description',
@@ -764,108 +849,125 @@ YdUIxwgaBBpssNIDGQIDAQAB
     ],
 ]);
 ```
+
 ## 删除子商户渠道参数
+
 ```php
 \Pingpp\Channel::delete('app_1Gqj58ynP0mHeX1q', 'alipay');
 ```
 
 ## 创建结算账户对象
+
 ```php
-\Pingpp\SettleAccount::create('user_004', array(
+\Pingpp\SettleAccount::create('user_004', [
     'channel' => 'alipay',
-    'recipient' => array(
+    'recipient' => [
         'type' => 'b2c', //转账类型。b2c：企业向个人付款，b2b：企业向企业付款。
         'account' => 'account01@account.com',
         'name' => '李狗',
-    ),
-));
+    ],
+]);
 ```
 
 ## 查询结算账户对象
+
 ```php
 \Pingpp\SettleAccount::retrieve('user_008', '320217031816231000001001');
 ```
 
 ## 删除结算账户对象
+
 ```php
 $delete_sa = \Pingpp\SettleAccount::delete('user_008', '320217031816231000001001');
 ```
 
 ## 查询结算账户对象列表
+
 ```php
 \Pingpp\SettleAccount::all('user_008');
 ```
+
 ## 批量更新分润对象
+
 ```php
-$royalties = \Pingpp\Royalty::update(array(
-    'ids' => array(
+$royalties = \Pingpp\Royalty::update([
+    'ids' => [
         '170301124238000111',
-        '170301124238000211'
-    ),
+        '170301124238000211',
+    ],
     'method' => 'manual', //手动标记结算: manual 或 取消手动标记结算：null
     'description' => 'Your description',
-));
+]);
 ```
 
 ## 查询分润对象
+
 ```php
 \Pingpp\Royalty::retrieve('411170318160900002');
 ```
 
 ## 查询分润列表
+
 ```php
 \Pingpp\Royalty::all();
 ```
 
 ## 创建分润结算对象
+
 ```php
-\Pingpp\RoyaltySettlement::create(array(
+\Pingpp\RoyaltySettlement::create([
     'payer_app' => APP_ID,
     'method' => 'alipay',   //分润的方式，余额 balance 或渠道名称，例如 alipay
     'recipient_app' => APP_ID,
-    'created' => array(
+    'created' => [
         'gt' => 1489826451,
         'lt' => 1492418451,
-    ),
+    ],
     'source_user' => 'user_002',
     //'source_no' => '',
     'min_amount' => 1,
-    'metadata' => array(
-        'key' => 'value'
-    ),
-));
+    'metadata' => [
+        'key' => 'value',
+    ],
+]);
 ```
 
 ## 查询分润结算对象
+
 ```php
 \Pingpp\RoyaltySettlement::retrieve('431170318144700001');
 ```
 
 ## 更新分润结算对象
+
 ```php
-\Pingpp\RoyaltySettlement::update('431170318144700001', array(
-    'status' => 'pending'  // pending, canceled
-));
+\Pingpp\RoyaltySettlement::update('431170318144700001', [
+    'status' => 'pending' // pending, canceled
+]);
 ```
 
 ## 获取分润结算对象列表
+
 ```php
-\Pingpp\RoyaltySettlement::all(array(
-    'payer_app' => APP_ID
-));
+\Pingpp\RoyaltySettlement::all([
+    'payer_app' => APP_ID,
+]);
 ```
 
 ## 查询分润结算明细对象
+
 ```php
 \Pingpp\RoyaltyTransaction::retrieve('441170318144700002');
 ```
 
 ## 查询分润结算明细对象列表
+
 ```php
 \Pingpp\RoyaltyTransaction::all();
 ```
 
 ## 创建分润模板
+
 ```php
 \Pingpp\RoyaltyTemplate::create(
     [
@@ -887,11 +989,13 @@ $royalties = \Pingpp\Royalty::update(array(
 ```
 
 ## 查询分润模板
+
 ```php
 \Pingpp\RoyaltyTemplate::retrieve('451170807182300001')
 ```
 
 ## 更新分润模板
+
 ```php
 \Pingpp\RoyaltyTemplate::update('451170807182300001', [
     'name' => 'royalty_template_name_new',
@@ -910,42 +1014,49 @@ $royalties = \Pingpp\Royalty::update(array(
 ```
 
 ## 查询分润模板
+
 ```php
 \Pingpp\RoyaltyTemplate::retrieve('451170807182300001')
 ```
 
 ## 删除分润模板
+
 ```php
 \Pingpp\RoyaltyTemplate::delete('451170807182300001')
 ```
 
 ## 查询分润模板列表
+
 ```php
 \Pingpp\RoyaltyTemplate::all()
 ```
 
 ## 添加分账接受方
+
 ```php
 \Pingpp\SplitReceiver::create([
     'app'       => APP_ID,
-    'type'      => 'MERCHANT_ID',   //分账接收方类型
-    'name'      => '示例商户全称',    //分账接收方全称
-    'account'   => '190001001',     //分账接收方帐号
-    'channel'   => 'wx_pub_qr',     //分账接收方使用的渠道
+    'type'      => 'MERCHANT_ID', // 分账接收方类型
+    'name'      => '示例商户全称',  // 分账接收方全称
+    'account'   => '190001001',   // 分账接收方帐号
+    'channel'   => 'wx_pub_qr',   // 分账接收方使用的渠道
 ]);
 ```
 
 ## 查询分账接收方
+
 ```php
 \Pingpp\SplitReceiver::retrieve('recv_1fRbIo0jME7yuL');
 ```
 
 ## 删除分账接收方
+
 ```php
 \Pingpp\SplitReceiver::delete('recv_1fRbIo0jME7yuL');
 ```
 
 ## 查询分账接收方列表
+
 ```php
 \Pingpp\SplitProfit::all([
     'app' => APP_ID,
@@ -955,30 +1066,32 @@ $royalties = \Pingpp\Royalty::update(array(
 ```
 
 ## 分账创建
+
 ```php
 \Pingpp\SplitProfit::create([
     'app' => APP_ID,
-    'charge' => 'ch_aDC44OKyL8yHPG0yX9yzLy5K', //Ping++ 交易成功的 charge ID
-    'order_no' => md5(openssl_random_pseudo_bytes(30)),   //分账单号，由商家自行生成，规则参照微信分账参数规则
+    'charge' => 'ch_aDC44OKyL8yHPG0yX9yzLy5K', // Ping++ 交易成功的 charge ID
+    'order_no' => md5(random_bytes(64)), // 分账单号，由商家自行生成，规则参照微信分账参数规则
     'recipients' => [
         [
             'split_receiver' => 'recv_1fRbIo5YgIM4hl',
             'amount' => 6,
-            'name' => '示例商户全称', //可选参数,
+            'name' => '示例商户全称', // 可选参数,
             'description' => 'Your Description',
         ]
     ],
-    'type' => 'split_normal',   //分账类型: split_normal 为普通分账,split_return 为完结分账,
-    'metadata' => [],   //分账元数据
+    'type' => 'split_normal', // 分账类型: split_normal 为普通分账,split_return 为完结分账,
+    'metadata' => [], // 分账元数据
 ]);
 ```
 
 ## 请求完结分账
+
 ```php
 \Pingpp\SplitProfit::create([
     'app' => APP_ID,
     'charge' => 'ch_aDC44OKyL8yHPG0yX9yzLy5K', //Ping++ 交易成功的 charge ID
-    'order_no' => md5(openssl_random_pseudo_bytes(30)),   //分账单号，由商家自行生成，规则参照微信分账参数规则
+    'order_no' => md5(random_bytes(64)), //分账单号，由商家自行生成，规则参照微信分账参数规则
     'recipients' => [
         [
             'split_receiver' => 'recv_1fRbIo5YgIM4hl',
@@ -987,17 +1100,19 @@ $royalties = \Pingpp\Royalty::update(array(
             'description' => 'Your Description',
         ]
     ],
-    'type' => 'split_return',   //分账类型: split_normal 为普通分账,split_return 为完结分账,
-    'metadata' => [],   //分账元数据
+    'type' => 'split_return', //分账类型: split_normal 为普通分账,split_return 为完结分账,
+    'metadata' => [], //分账元数据
 ]);
 ```
 
 ## 查询分账对象
+
 ```php
 \Pingpp\SplitProfit::retrieve('sp_1iXmpPJLe71sf9');
 ```
 
 ## 查询分账列表
+
 ```php
 \Pingpp\SplitProfit::all([
     'app' => APP_ID,
@@ -1007,6 +1122,7 @@ $royalties = \Pingpp\Royalty::update(array(
 ```
 
 ## 查询分账明细列表
+
 ```php
 \Pingpp\ProfitTransaction::all([
     'app' => APP_ID,
@@ -1016,6 +1132,19 @@ $royalties = \Pingpp\Royalty::update(array(
 ```
 
 ## 查询分账明细
+
 ```php
-\Pingpp\ProfitTransaction::retrieve('ptxn_1m3x7aGbDK2cpl');
+\Pingpp\ProfitTransaction::retrieve('ptxn_1m3c7aGbDK2cpl');
+```
+
+## 查询银行支行列表
+
+```php
+\Pingpp\SubBank::query([
+    'app' => APP_ID, // Ping++ app id，必填
+    'channel' => 'chanpay', // transfer 渠道，必填
+    'open_bank_code' => '0308', // 银行编号，必填
+    'prov' => '浙江省', // 省份，必填
+    'city' => '宁波市', // 城市，必填
+]);
 ```

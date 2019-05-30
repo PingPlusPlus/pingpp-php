@@ -35,7 +35,7 @@ try {
     echo $or;
 } catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -45,12 +45,12 @@ try {
 exit;
 
 //查询充值订单
-try{
+try {
     $recharge_info = \Pingpp\Recharge::retrieve('221170807730968330240000');
     echo $recharge_info;
-}catch (\Pingpp\Error\Base $e){
+} catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -60,16 +60,16 @@ try{
 exit;
 
 //查询充值订单列表
-try{
+try {
     $params = [
         'page' => 1,
         'per_page' => 100,
     ];
     $recharge_list = \Pingpp\Recharge::all($params);
     echo $recharge_list;
-}catch (\Pingpp\Error\Base $e){
+} catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -79,15 +79,15 @@ try{
 exit;
 
 //创建充值退款
-try{
+try {
     $recharge_refund = \Pingpp\Recharge::refund('221170807730968330240000', [
         'description' => 'Rechage refund description',
         'metadata' => [],
     ]);
     echo $recharge_refund;
-}catch (\Pingpp\Error\Base $e){
+} catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -102,7 +102,7 @@ try {
     echo $recharge_refund_info;
 } catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {
@@ -117,7 +117,7 @@ try {
     echo $recharge_refund_info;
 } catch (\Pingpp\Error\Base $e) {
     // 捕获报错信息
-    if ($e->getHttpStatus() != NULL) {
+    if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;
     } else {

@@ -16,7 +16,8 @@ require dirname(__FILE__) . '/../init.php';
  * pub_key_path：读取你保存的 Ping++ 公钥的路径；
  * pub_key_contents：Ping++ 公钥，获取路径：登录 [Dashboard](https://dashboard.pingxx.com)->点击管理平台右上角公司名称->开发信息-> Ping++ 公钥
  */
-function verify_signature($raw_data, $signature, $pub_key_path) {
+function verify_signature($raw_data, $signature, $pub_key_path)
+{
     $pub_key_contents = file_get_contents($pub_key_path);
     return openssl_verify($raw_data, base64_decode($signature), $pub_key_contents, 'sha256');
 }
@@ -27,7 +28,7 @@ $raw_data = file_get_contents('php://input');
 
 $headers = \Pingpp\Util\Util::getRequestHeaders();
 // 签名在头部信息的 x-pingplusplus-signature 字段
-$signature = isset($headers['X-Pingplusplus-Signature']) ? $headers['X-Pingplusplus-Signature'] : NULL;
+$signature = isset($headers['X-Pingplusplus-Signature']) ? $headers['X-Pingplusplus-Signature'] : null;
 // 示例
 // $signature = 'BX5sToHUzPSJvAfXqhtJicsuPjt3yvq804PguzLnMruCSvZ4C7xYS4trdg1blJPh26eeK/P2QfCCHpWKedsRS3bPKkjAvugnMKs+3Zs1k+PshAiZsET4sWPGNnf1E89Kh7/2XMa1mgbXtHt7zPNC4kamTqUL/QmEVI8LJNq7C9P3LR03kK2szJDhPzkWPgRyY2YpD2eq1aCJm0bkX9mBWTZdSYFhKt3vuM1Qjp5PWXk0tN5h9dNFqpisihK7XboB81poER2SmnZ8PIslzWu2iULM7VWxmEDA70JKBJFweqLCFBHRszA8Nt3AXF0z5qe61oH1oSUmtPwNhdQQ2G5X3g==';
 

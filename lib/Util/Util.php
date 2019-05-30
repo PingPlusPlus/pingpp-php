@@ -15,13 +15,15 @@ abstract class Util
      */
     public static function isList($array)
     {
-        if (!is_array($array))
+        if (!is_array($array)) {
             return false;
+        }
 
         // TODO: generally incorrect, but it's correct given Pingpp's response
         foreach (array_keys($array) as $k) {
-            if (!is_numeric($k))
+            if (!is_numeric($k)) {
                 return false;
+            }
         }
         return true;
     }
@@ -35,7 +37,7 @@ abstract class Util
      */
     public static function convertPingppObjectToArray($values, $keep_object = false)
     {
-        $results = array();
+        $results = [];
         foreach ($values as $k => $v) {
             // FIXME: this is an encapsulation violation
             if ($k[0] == '_') {
@@ -43,7 +45,7 @@ abstract class Util
             }
             if ($v instanceof PingppObject) {
                 $results[$k] = $keep_object ? $v->__toStdObject(true) : $v->__toArray(true);
-            } else if (is_array($v)) {
+            } elseif (is_array($v)) {
                 $results[$k] = self::convertPingppObjectToArray($v, $keep_object);
             } else {
                 $results[$k] = $v;
@@ -68,7 +70,7 @@ abstract class Util
             }
             if ($v instanceof PingppObject) {
                 $results->$k = $v->__toStdObject(true);
-            } else if (is_array($v)) {
+            } elseif (is_array($v)) {
                 $results->$k = self::convertPingppObjectToArray($v, true);
             } else {
                 $results->$k = $v;
@@ -86,41 +88,47 @@ abstract class Util
      */
     public static function convertToPingppObject($resp, $opts)
     {
-        $types = array(
-            'red_envelope'=>'Pingpp\\RedEnvelope',
-            'charge' => 'Pingpp\\Charge',
-            'list' => 'Pingpp\\Collection',
-            'refund' => 'Pingpp\\Refund',
-            'event' => 'Pingpp\\Event',
-            'transfer' => 'Pingpp\\Transfer',
-            'customs' => 'Pingpp\\Customs',
-            'order' => 'Pingpp\\Order',
-            'batch_refund' => 'Pingpp\\BatchRefund',
-            'batch_transfer' => 'Pingpp\\BatchTransfer',
-            'user' => 'Pingpp\\User',
-            'balance_transaction' => 'Pingpp\\BalanceTransaction',
-            'withdrawal' => 'Pingpp\\Withdrawal',
-            'batch_withdrawal' => 'Pingpp\\BatchWithdrawal',
-            'coupon_template' => 'Pingpp\\CouponTemplate',
-            'coupon' => 'Pingpp\\Coupon',
-            'sub_app' => 'Pingpp\\SubApp',
-            'channel' => 'Pingpp\\Channel',
-            'royalty' => 'Pingpp\\Royalty',
-            'royalty_settlement' => 'Pingpp\\RoyaltySettlement',
-            'royalty_transaction' => 'Pingpp\\RoyaltyTransaction',
-            'settle_account' => 'Pingpp\\SettleAccount',
-            'royalty_template' => 'Pingpp\\RoyaltyTemplate',
-            'recharge' => 'Pingpp\\Recharge',
-            'balance_bonus' => 'Pingpp\\BalanceBonus',
-            'balance_settlements' => 'Pingpp\\BalanceSettlements',
-            'balance_transfer' => 'Pingpp\\BalanceTransfer',
-        );
+        $types = [
+            'agreement' => \Pingpp\Agreement::class,
+            'balance_bonus' => \Pingpp\BalanceBonus::class,
+            'balance_settlement' => \Pingpp\BalanceSettlements::class,
+            'balance_transaction' => \Pingpp\BalanceTransaction::class,
+            'balance_transfer' => \Pingpp\BalanceTransfer::class,
+            'batch_refund' => \Pingpp\BatchRefund::class,
+            'batch_transfer' => \Pingpp\BatchTransfer::class,
+            'batch_withdrawal' => \Pingpp\BatchWithdrawal::class,
+            'channel' => \Pingpp\Channel::class,
+            'charge' => \Pingpp\Charge::class,
+            'coupon' => \Pingpp\Coupon::class,
+            'coupon_template' => \Pingpp\CouponTemplate::class,
+            'customs' => \Pingpp\Customs::class,
+            'event' => \Pingpp\Event::class,
+            'list' => \Pingpp\Collection::class,
+            'order' => \Pingpp\Order::class,
+            'profit_transaction' => \Pingpp\ProfitTransaction::class,
+            'recharge' => \Pingpp\Recharge::class,
+            'red_envelope' => \Pingpp\RedEnvelope::class,
+            'refund' => \Pingpp\Refund::class,
+            'royalty' => \Pingpp\Royalty::class,
+            'royalty_settlement' => \Pingpp\RoyaltySettlement::class,
+            'royalty_template' => \Pingpp\RoyaltyTemplate::class,
+            'royalty_transaction' => \Pingpp\RoyaltyTransaction::class,
+            'settle_account' => \Pingpp\SettleAccount::class,
+            'split_profit' => \Pingpp\SplitProfit::class,
+            'split_receiver' => \Pingpp\SplitReceiver::class,
+            'sub_app' => \Pingpp\SubApp::class,
+            'sub_bank' => \Pingpp\SubBank::class,
+            'transfer' => \Pingpp\Transfer::class,
+            'user' => \Pingpp\User::class,
+            'withdrawal' => \Pingpp\Withdrawal::class,
+        ];
         if (self::isList($resp)) {
-            $mapped = array();
-            foreach ($resp as $i)
+            $mapped = [];
+            foreach ($resp as $i) {
                 array_push($mapped, self::convertToPingppObject($i, $opts));
+            }
             return $mapped;
-        } else if (is_object($resp)) {
+        } elseif (is_object($resp)) {
             if (isset($resp->object)
                 && is_string($resp->object)
                 && isset($types[$resp->object])) {
@@ -141,13 +149,13 @@ abstract class Util
     public static function getRequestHeaders()
     {
         if (function_exists('getallheaders')) {
-            $headers = array();
+            $headers = [];
             foreach (getallheaders() as $name => $value) {
                 $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('-', ' ', $name))))] = $value;
             }
             return $headers;
         }
-        $headers = array();
+        $headers = [];
         foreach ($_SERVER as $name => $value) {
             if (substr($name, 0, 5) == 'HTTP_') {
                 $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
@@ -165,7 +173,7 @@ abstract class Util
     public static function utf8($value)
     {
         if (is_string($value)
-            && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8"
+            && mb_detect_encoding($value, "UTF-8", true) != "UTF-8"
         ) {
             return utf8_encode($value);
         } else {

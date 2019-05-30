@@ -63,6 +63,4 @@ class Coupon extends UserBase
     {
         return self::_userBasedDelete($userId, $id, $params, $options);
     }
-
-
 }
