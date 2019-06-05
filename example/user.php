@@ -54,7 +54,7 @@ try {
         'address' => 'China',
         'name' => strval(mt_rand(1000, 9999)),
         'metadata' => [
-            'key' => 'valeu'
+            'key' => 'value'
         ],
     ]);
     echo $user;

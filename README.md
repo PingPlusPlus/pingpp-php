@@ -483,7 +483,7 @@ $params = [
     'address' => 'Shanghai',
     'name' => 'User Name',
     'metadata' => [
-        'key' => 'valeu'
+        'key' => 'value'
     ],
 ]);
 ```
