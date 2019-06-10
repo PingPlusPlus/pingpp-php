@@ -1031,7 +1031,7 @@ $royalties = \Pingpp\Royalty::update([
 \Pingpp\RoyaltyTemplate::all()
 ```
 
-## 添加分账接受方
+## 添加分账接收方
 
 ```php
 \Pingpp\SplitReceiver::create([
@@ -1058,7 +1058,7 @@ $royalties = \Pingpp\Royalty::update([
 ## 查询分账接收方列表
 
 ```php
-\Pingpp\SplitProfit::all([
+\Pingpp\SplitReceiver::all([
     'app' => APP_ID,
     'page' => 1,
     'per_page' => 10,
