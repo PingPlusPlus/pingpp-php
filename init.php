@@ -72,6 +72,8 @@ require(dirname(__FILE__) .'/lib/SplitReceiver.php');
 require(dirname(__FILE__) .'/lib/SplitProfit.php');
 require(dirname(__FILE__) .'/lib/ProfitTransaction.php');
 require(dirname(__FILE__) .'/lib/SubBank.php');
+require(dirname(__FILE__) .'/lib/UserPic.php');
+require(dirname(__FILE__) .'/lib/Contact.php');
 
 // wx_pub OAuth 2.0 method
 require(dirname(__FILE__) . '/lib/WxpubOAuth.php');

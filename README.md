@@ -875,16 +875,64 @@ YdUIxwgaBBpssNIDGQIDAQAB
 \Pingpp\SettleAccount::retrieve('user_008', '320217031816231000001001');
 ```
 
+## 更新结算账户对象(存管相关)
+
+```php
+\Pingpp\SettleAccount::update(
+    'user_001', // 用户 ID
+    '320118012216303200004401', // 结算账户 ID
+    [
+        'recipient' => [
+            'account' => '6214888888888866', // 银行卡号。
+            'name' => '张三', // 接收者姓名。
+            'type' => 'b2c', // 转账类型。b2c：企业向个人付款，b2b：企业向企业付款。
+            'open_bank_code' => '0308', // 开户银行编号
+            "open_bank" => "工商银行",
+            "sub_bank" => "招商银行股份有限公司上海陆家嘴支行",
+            "sub_bank_code" => "308290003773",
+            'card_type' => 0, // 银行卡号类型，0：银行卡；1：存折。
+            'mobile' => '13822334557', // 手机号
+            "city" => "上海市",
+            "prov" => "上海市",
+        ],
+    ]
+);
+```
+
 ## 删除结算账户对象
 
 ```php
-$delete_sa = \Pingpp\SettleAccount::delete('user_008', '320217031816231000001001');
+\Pingpp\SettleAccount::delete('user_008', '320217031816231000001001');
 ```
 
 ## 查询结算账户对象列表
 
 ```php
 \Pingpp\SettleAccount::all('user_008');
+```
+
+## 结算账户更新手机号（存管相关）
+
+```php
+\Pingpp\SettleAccount::updateMobile(
+    'user_001', // 用户 ID
+    '320118012216303200004401', // 结算账户 ID
+    [
+        'mobile' => '13822334557',
+    ]
+);
+```
+
+## 结算账号打款验证接口（存管相关）
+
+```php
+\Pingpp\SettleAccount::verify(
+    'user_001', // 用户 ID
+    '320118012216303200004401', // 结算账户 ID
+    [
+        'receive_amount' => 2,
+    ]
+);
 ```
 
 ## 批量更新分润对象
@@ -1148,3 +1196,7 @@ $royalties = \Pingpp\Royalty::update([
     'city' => '宁波市', // 城市，必填
 ]);
 ```
+
+## 其他
+
+- [部分存管相关接口](/example/depository)

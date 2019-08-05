@@ -14,7 +14,7 @@ require dirname(__FILE__) . '/../config.php';
 $channel = 'wx_pub';
 
 // 不同渠道 extra 有差别
-$extra = require_once dirname(__FILE__) . '/channel/'. $channel .'.php';
+$extra = require_once dirname(__FILE__) . '/channel_extra/'. $channel .'.php';
 
 // 创建 Transfer
 try {

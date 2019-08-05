@@ -6,12 +6,17 @@
  * 该代码仅供学习和研究 Ping++ SDK 使用，仅供参考。
  */
 
-require dirname(__FILE__) . '/../init.php';
+require dirname(dirname(__DIR__)) . '/init.php';
 // 示例配置文件，测试请根据文件注释修改其配置
-require 'config.php';
-// 设置 API Key
-\Pingpp\Pingpp::setApiKey(API_KEY);
+require dirname(__DIR__) . '/config.php';
 
-// 查询指定的 event 对象，通过 event 对象的 id 查询一个已创建的 event 对象
-$evt = \Pingpp\Event::retrieve('evt_zRFRk6ekazsH7t7yCqEeovhk');
-echo $evt;
+/** 结算账号打款验证接口（存管相关） */
+$settle_account = \Pingpp\SettleAccount::verify(
+    'user_001', // 用户 ID
+    '320118012216303200004401', // 结算账户 ID
+    [
+        'receive_amount' => 2,
+    ]
+);
+
+echo $settle_account;

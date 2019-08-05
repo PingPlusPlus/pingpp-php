@@ -11,7 +11,7 @@ require dirname(__FILE__) . '/../init.php';
 // 示例配置文件，测试请根据文件注释修改其配置
 require 'config.php';
 // 设置 API Key
-\Pingpp\Pingpp::setApiKey(APP_KEY);
+\Pingpp\Pingpp::setApiKey(API_KEY);
 
 try {
     $red = \Pingpp\RedEnvelope::create(

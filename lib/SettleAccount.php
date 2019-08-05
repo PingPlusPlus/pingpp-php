@@ -72,4 +72,46 @@ class SettleAccount extends UserBase
         $url = static::classUrlWithUserId($user_id);
         return static::_directRequest('get', $url, $params);
     }
+
+    /**
+     * 更新结算账户对象（存管相关）
+     *
+     * @param string $user_id 用户 ID
+     * @param string $settle_account_id 结算账户 ID
+     * @param array $params 需要更新的数据
+     * @return SettleAccount
+     */
+    public static function update($user_id, $settle_account_id, $params, $options = null)
+    {
+        $url = static::instanceUrlWithSettleAccountId($user_id, $settle_account_id);
+        return static::_directRequest('put', $url, $params, $options);
+    }
+
+    /**
+     * 更新手机号（存管相关）
+     *
+     * @param string $user_id 用户 ID
+     * @param string $settle_account_id 结算账户 ID
+     * @param array $params 手机号数据
+     * @return SettleAccount
+     */
+    public static function updateMobile($user_id, $settle_account_id, $params, $options = null)
+    {
+        $url = static::instanceUrlWithSettleAccountId($user_id, $settle_account_id) . "/mobile";
+        return static::_directRequest('put', $url, $params, $options);
+    }
+
+    /**
+     * 打款验证（存管相关）
+     *
+     * @param string $user_id 用户 ID
+     * @param string $settle_account_id 结算账户 ID
+     * @param array $params 验证数据
+     * @return SettleAccount
+     */
+    public static function verify($user_id, $settle_account_id, $params, $options = null)
+    {
+        $url = static::instanceUrlWithSettleAccountId($user_id, $settle_account_id) . "/verify";
+        return static::_directRequest('post', $url, $params, $options);
+    }
 }
