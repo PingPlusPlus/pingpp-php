@@ -15,6 +15,19 @@ class Royalty extends ApiResource
     }
 
     /**
+     * 创建分润
+     * @param $order_id
+     * @param array $params
+     * @param array $opts
+     * @return array|PingppObject
+     */
+    public static function createData($order_id, $params = null, $opts = null)
+    {
+        $url = Order::instanceUrlWithId($order_id) . '/royalty_datas';
+        return static::_directRequest('post', $url, $params, $opts);
+    }
+
+    /**
      * 批量更新分润对象
      * @param $params
      * @param $options
