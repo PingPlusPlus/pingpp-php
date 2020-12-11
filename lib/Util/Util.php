@@ -40,11 +40,11 @@ abstract class Util
         $results = [];
         foreach ($values as $k => $v) {
             // FIXME: this is an encapsulation violation
-            if ($k[0] == '_') {
+            if (is_array($k) && $k[0] == '_') {
                 continue;
             }
             if ($v instanceof PingppObject) {
-                $results[$k] = $keep_object ? $v->__toStdObject(true) : $v->__toArray(true);
+                $results[$k] = $keep_object ? $v->__toStdObject() : $v->__toArray(true);
             } elseif (is_array($v)) {
                 $results[$k] = self::convertPingppObjectToArray($v, $keep_object);
             } else {
@@ -69,7 +69,7 @@ abstract class Util
                 continue;
             }
             if ($v instanceof PingppObject) {
-                $results->$k = $v->__toStdObject(true);
+                $results->$k = $v->__toStdObject();
             } elseif (is_array($v)) {
                 $results->$k = self::convertPingppObjectToArray($v, true);
             } else {
@@ -132,7 +132,7 @@ abstract class Util
             if (isset($resp->object)
                 && is_string($resp->object)
                 && isset($types[$resp->object])) {
-                    $class = $types[$resp->object];
+                $class = $types[$resp->object];
             } else {
                 $class = 'Pingpp\\PingppObject';
             }

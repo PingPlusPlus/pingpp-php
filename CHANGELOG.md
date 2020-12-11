@@ -1,4 +1,7 @@
 # ChangeLog
+## 2.5.0
+
+- 修复charge查询对象转换为字符串时在PHP7.4版本 notice 报错
 
 ## 2.4.9
 
