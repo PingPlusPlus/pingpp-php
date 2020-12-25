@@ -40,7 +40,7 @@ abstract class Util
         $results = [];
         foreach ($values as $k => $v) {
             // FIXME: this is an encapsulation violation
-            if (is_array($k) && $k[0] == '_') {
+            if (is_string($k) && $k[0] == '_') {
                 continue;
             }
             if ($v instanceof PingppObject) {
