@@ -19,7 +19,7 @@ try {
     ]);
     echo $balance_bonus;
 } catch (\Pingpp\Error\Base $exception) {
-// 捕获报错信息
+    // 捕获报错信息
     if ($exception->getHttpStatus() != null) {
         echo $exception->getHttpStatus() . PHP_EOL;
         echo $exception->getHttpBody() . PHP_EOL;
@@ -33,7 +33,7 @@ try {
     $balance_bonus = \Pingpp\BalanceBonus::retrieve('651170807590953932800000');
     echo $balance_bonus;
 } catch (\Pingpp\Error\Base $exception) {
-// 捕获报错信息
+    // 捕获报错信息
     if ($exception->getHttpStatus() != null) {
         echo $exception->getHttpStatus() . PHP_EOL;
         echo $exception->getHttpBody() . PHP_EOL;
@@ -52,7 +52,7 @@ try {
     $balance_bonus = \Pingpp\BalanceBonus::all($params);
     echo $balance_bonus;
 } catch (\Pingpp\Error\Base $exception) {
-// 捕获报错信息
+    // 捕获报错信息
     if ($exception->getHttpStatus() != null) {
         echo $exception->getHttpStatus() . PHP_EOL;
         echo $exception->getHttpBody() . PHP_EOL;

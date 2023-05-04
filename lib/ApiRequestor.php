@@ -315,14 +315,14 @@ class ApiRequestor
         if ($errno == CURLE_SSL_CACERT ||
             $errno == CURLE_SSL_PEER_CERTIFICATE ||
             $errno == CURLE_SSL_CACERT_BADFILE) {
-                array_push(
-                    $headers,
-                    'X-Pingpp-Client-Info: {"ca":"using Pingpp-supplied CA bundle"}'
-                );
-                $cert = $this->caBundle();
-                curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($curl, CURLOPT_CAINFO, $cert);
-                $rbody = curl_exec($curl);
+            array_push(
+                $headers,
+                'X-Pingpp-Client-Info: {"ca":"using Pingpp-supplied CA bundle"}'
+            );
+            $cert = $this->caBundle();
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($curl, CURLOPT_CAINFO, $cert);
+            $rbody = curl_exec($curl);
         }
 
         if ($rbody === false) {

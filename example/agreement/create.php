@@ -7,9 +7,9 @@
  * 该代码仅供学习和研究 Ping++ SDK 使用，仅供参考。
  */
 
-require dirname(__FILE__) . '/../../init.php';
+require __DIR__ . '/../../init.php';
 // 示例配置文件，测试请根据文件注释修改其配置
-require dirname(__FILE__) . '/../config.php';
+require __DIR__ . '/../config.php';
 
 
 // 此处为 Content-Type 是 application/json 时获取 POST 参数的示例
@@ -20,7 +20,7 @@ if (empty($input_data['channel'])) {
 }
 $channel = strtolower($input_data['channel']);
 
-$channel_extra = dirname(__FILE__) . '/channel_extra/'. $channel .'.php';
+$channel_extra = __DIR__ . '/channel_extra/'. $channel .'.php';
 $extra = file_exists($channel_extra) ? require_once $channel_extra : [];
 
 try {

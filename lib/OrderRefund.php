@@ -4,7 +4,6 @@ namespace Pingpp;
 
 class OrderRefund extends ApiResource
 {
-
     public static function className()
     {
         return 'order_refund';
