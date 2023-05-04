@@ -4,7 +4,6 @@ namespace Pingpp;
 
 class CouponTemplate extends AppBase
 {
-
     public static function className()
     {
         return 'coupon_template';

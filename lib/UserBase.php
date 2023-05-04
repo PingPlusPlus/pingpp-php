@@ -24,11 +24,11 @@ class UserBase extends AppBase
         return "${base}/${userId}/${resourceName}s";
     }
 
-     /**
-      * @param string The user ID
-      * @param string The object ID
-      * @return string The API URL for this API resource.
-      */
+    /**
+     * @param string The user ID
+     * @param string The object ID
+     * @return string The API URL for this API resource.
+     */
     public static function instanceUrlWithObjectId($userId, $objectId)
     {
         $objectId = Util\Util::utf8($objectId);

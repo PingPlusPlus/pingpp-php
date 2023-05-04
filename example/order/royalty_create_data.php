@@ -15,7 +15,8 @@ require dirname(__FILE__) . '/../config.php';
  */
 $order_id = '2011905090000004271';
 try {
-    $royalty_data = \Pingpp\Royalty::createData($order_id,
+    $royalty_data = \Pingpp\Royalty::createData(
+        $order_id,
         [
             'app' => APP_ID,                                   // 必填，订单应用，对应 app 对象的 id
             'charge' => 'ch_SuTCO4SmHmL050a9OKnj94uH',         // 可选，charge id，对于已经成功的 order 必传该字段，若 order 未成功不支持填写

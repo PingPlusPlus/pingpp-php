@@ -58,7 +58,7 @@ try {
     $balance_transfer = \Pingpp\BalanceTransfer::all($params);
     echo $balance_transfer;
 } catch (\Pingpp\Error\Base $exception) {
-// 捕获报错信息
+    // 捕获报错信息
     if ($e->getHttpStatus() != null) {
         echo $e->getHttpStatus() . PHP_EOL;
         echo $e->getHttpBody() . PHP_EOL;

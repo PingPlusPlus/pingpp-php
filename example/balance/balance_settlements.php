@@ -14,7 +14,7 @@ try {
     $balance_settlements = \Pingpp\BalanceSettlements::retrieve('670180130750711562240000');
     echo $balance_settlements;
 } catch (\Pingpp\Error\Base $exception) {
-// 捕获报错信息
+    // 捕获报错信息
     if ($exception->getHttpStatus() != null) {
         echo $exception->getHttpStatus() . PHP_EOL;
         echo $exception->getHttpBody() . PHP_EOL;
@@ -34,7 +34,7 @@ try {
     $balance_settlements = \Pingpp\BalanceSettlements::all($params);
     echo $balance_settlements;
 } catch (\Pingpp\Error\Base $exception) {
-// 捕获报错信息
+    // 捕获报错信息
     if ($exception->getHttpStatus() != null) {
         echo $exception->getHttpStatus() . PHP_EOL;
         echo $exception->getHttpBody() . PHP_EOL;
