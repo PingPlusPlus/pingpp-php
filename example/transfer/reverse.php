@@ -13,7 +13,7 @@ require __DIR__ . '/../config.php';
 
 //查询 transfer 对象
 try {
-    $tr = \Pingpp\Transfer::reverse('tr_jnfXT8erLunHzPCiHCr1u98K');
+    $tr = \Pingpp\Transfer::reverse('tr_130250408562336460800013');
     echo $tr; // 输出 Ping++ 返回的 transfer 对象
 } catch (\Pingpp\Error\Base $e) {
     if ($e->getHttpStatus() != null) {

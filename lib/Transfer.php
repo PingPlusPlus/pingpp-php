@@ -47,7 +47,6 @@ class Transfer extends ApiResource
     public static function reverse($id, $options = null)
     {
         $url = static::classUrl() . '/' . $id . '/reverse';
-        $params = [];
-        return static::_directRequest('post', $url, $params, $options);
+        return static::_directRequest('post', $url, null, $options);
     }
 }
