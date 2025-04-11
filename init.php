@@ -74,6 +74,7 @@ require(__DIR__ .'/lib/ProfitTransaction.php');
 require(__DIR__ .'/lib/SubBank.php');
 require(__DIR__ .'/lib/UserPic.php');
 require(__DIR__ .'/lib/Contact.php');
+require(__DIR__ . '/lib/FundsTransfer.php');
 // wx_pub OAuth 2.0 method
 require(__DIR__ . '/lib/WxpubOAuth.php');
 require(__DIR__ . '/lib/WxLiteOAuth.php');
