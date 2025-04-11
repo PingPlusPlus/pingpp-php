@@ -8,7 +8,7 @@ namespace App;
  * Before using Ping++ PHP SDK, please run this file to ensure the runtime environment is supported
  */
 
-require dirname(__FILE__) . '/init.php';
+require __DIR__ . '/init.php';
 
 class PingppEnvInspect
 {
@@ -34,10 +34,10 @@ class PingppEnvInspect
             "json_decode"        => 'Pingpp needs the JSON PHP extension.',
             "mb_detect_encoding" => 'Pingpp needs the Multibyte String PHP extension.',
         ];
-    private static $minPingppVersion = "5.6";
+    private static $minPingppVersion = '5.6';
     private static $apiHost;
     private static $apiKey = 'sk_test_ibbTe5jLGCi5rzfH4OqPW9KC';
-    private static $exampleChargeId = 'ch_4WjrXPPOm1K08yLqn1LmzbTO';
+    private static $exampleChargeId = 'ch_100241226608758108160014';
 
     private static function versionCheck()
     {

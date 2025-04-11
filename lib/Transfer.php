@@ -36,4 +36,17 @@ class Transfer extends ApiResource
     {
         return self::_create($params, $options);
     }
+
+    /**
+     * 撤销 transfer 对象
+     * @param string $id The ID of the transfer.
+     * @param array|string|null $options
+     *
+     * @return transfer The reversed transfer.
+     */
+    public static function reverse($id, $options = null)
+    {
+        $url = static::classUrl() . '/' . $id . '/reverse';
+        return static::_directRequest('post', $url, null, $options);
+    }
 }

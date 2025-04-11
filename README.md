@@ -201,6 +201,12 @@ pingpp.createPayment(charge, callback, signature, false);
 \Pingpp\Transfer::retrieve('TR_ID');
 ```
 
+### 撤销指定 transfer
+
+```php
+\Pingpp\Transfer::reverse('TR_ID');
+```
+
 ### 查询 transfer 列表
 
 ```php
