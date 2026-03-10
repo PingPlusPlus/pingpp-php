@@ -8,7 +8,7 @@ example 文件夹里面是简单的接入示例，该示例仅供参考。
 ## 版本要求
 
 > **PHP 版本 8.1 及以上**  
-> PHP 5.6.x~PHP7.x 请使用 [`2.6.0`](https://github.com/PingPlusPlus/pingpp-php/tree/v2.6.0)  
+> PHP 5.6.x~PHP7.x 请使用 [`2.6.0`](https://github.com/PingPlusPlus/pingpp-php/releases/tag/2.6.0))  
 > 你可以执行目录下的环境检测脚本，来进行一些基本检测
 
 ```bash
